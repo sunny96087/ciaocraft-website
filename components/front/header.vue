@@ -66,7 +66,7 @@ const toggleMenu = (): void => {
   <!-- 漢堡選單 -->
   <div
     :class="[
-      'absolute top-[69px] w-full bg-white',
+      'absolute top-[69px] w-full bg-white z-50',
       { 'max-h-0': !isMenuOpen, 'max-h-full': isMenuOpen }
     ]"
   >
