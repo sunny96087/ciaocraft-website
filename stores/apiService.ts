@@ -24,7 +24,7 @@ export const APIStore = defineStore({
     },
     // 登入
     async apiVenderLogin(data: JsonObject) {
-      return await axios.post(`${this.api}users/sign_in`, data)
+      return await axios.post(`${this.api}vendors/login`, data)
     },
     // todo 賣家登入 本地端資料處理 localStorage
 

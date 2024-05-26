@@ -69,6 +69,10 @@ input:focus-visible {
   object-fit: cover;
 }
 
+.hover-auto {
+  @apply transition-all duration-200 ease-in-out;
+}
+
 /* todo 按鈕 btn */
 
 /* 黑底白字 */

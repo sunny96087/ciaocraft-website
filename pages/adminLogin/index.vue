@@ -5,10 +5,64 @@ import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventB
 
 const tab = ref(0)
 
+/* 忘記密碼 變數 */
 const forgetEmail = ref('')
 const checkEmailError = ref(false)
 const checkEmailErrorMessage = ref('')
 
+/* 登入 */
+const router = useRouter()
+const loginError = ref(false)
+const loginErrorMessage = ref('帳號密碼不正確，請確認後再試一次')
+
+const account = ref('')
+const password = ref('')
+
+async function login() {
+  if (account.value === '' || password.value === '') {
+    // showToast('請輸入帳號密碼')
+    loginError.value = true
+    return
+  }
+
+  let data = {
+    account: account.value,
+    password: password.value
+  }
+
+  try {
+    showLoading()
+    const res = await store.apiVenderLogin(data)
+    const result = res.data
+    console.log(`login result = ${JSON.stringify(result)}`)
+    if (result.statusCode === 200) {
+      store.saveVendorDataToLocalStorage({
+        token: result.user.token,
+        id: result.user.id,
+        brandName: result.user.name
+      })
+
+      router.push('/admin/')
+
+      showToast('登入成功')
+    } else {
+      // console.log(result.message);
+      console.log('帳號或密碼錯誤，請重新輸入！')
+      loginError.value = true
+    }
+  } catch (e: any) {
+    // showToast('帳號或密碼錯誤，請重新輸入！')
+    console.log(e.response.data.message)
+    // showToast(e.response.data.message)
+    loginError.value = true
+    loginErrorMessage.value = e.response.data.message
+  } finally {
+    hideLoading()
+  }
+}
+
+/* 忘記密碼 */
+/* 確認賣家輸入 Email 是否存在 */
 const checkForgetEmail = async () => {
   if (forgetEmail.value && forgetEmail.value !== '') {
     // 這裡進行你的檢查邏輯，例如顯示一個錯誤訊息
@@ -54,6 +108,7 @@ const checkForgetEmail = async () => {
   }
 }
 
+/* 寄出找回密碼 Email -> 功能待確認 */
 const sendForgetEmail = async () => {
   showToast('該功能製作中 ><')
   // try {
@@ -99,21 +154,32 @@ const sendForgetEmail = async () => {
       <!-- ? 登入 tab === 0 -->
       <div v-if="tab === 0" class="">
         <div class="text-[24px] font-bold">用 賣家帳號 登入</div>
+
+        <div class="mb-2 mt-4 text-left text-red-500 lg:mb-0" v-if="loginError">
+          {{ loginErrorMessage }}
+        </div>
+
         <div class="login-block-input mt-8 lg:mt-10">
           <Icon size="20" name="bi:envelope" />
-          <input type="text" placeholder="電子信箱" />
+          <input v-model="account" type="text" placeholder="電子信箱" />
         </div>
         <div class="login-block-input mt-5">
           <Icon size="20" name="fluent:key-24-regular" />
-          <input type="password" placeholder="密碼" />
+          <input v-model="password" type="password" placeholder="密碼" />
         </div>
-        <button class="mt-8 w-full rounded-[4px] bg-black py-2 text-white lg:mt-10">登入</button>
+
+        <button v-if="account !== '' && password !== ''" @click="login" class="btn-black">
+          登入
+        </button>
+        <button v-else class="btn-disabled">登入</button>
+
         <div class="mt-10 flex justify-center gap-5 lg:mt-[60px] lg:justify-end">
           <div class="cursor-pointer" @click="tab = 1">忘記密碼</div>
           <span>|</span>
           <nuxt-link to="/">成為賣家</nuxt-link>
         </div>
       </div>
+
       <!-- ? 忘記密碼 tab === 1 -->
       <div v-if="tab === 1" class="">
         <div class="text-[24px] font-bold">忘記密碼</div>
