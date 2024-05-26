@@ -10,7 +10,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 
 // import required modules
-import { Pagination, Navigation } from 'swiper/modules'
+import { Navigation, Pagination } from 'swiper/modules'
 
 export default {
   components: {
@@ -39,23 +39,23 @@ export default {
     <swiper-slide
       ><a href="#"
         ><img
-          src="~/assets/images/Banner_2.png"
+          src="~/assets/images/front/Banner_2.png"
           alt="banner圖片2"
-          class="object-cover object-top h-[400px] w-[800px] rounded-xl" /></a
+          class="h-[400px] w-[800px] rounded-xl object-cover object-top" /></a
     ></swiper-slide>
     <swiper-slide
       ><a href="#"
         ><img
-          src="~/assets/images/Banner_1.png"
+          src="~/assets/images/front/Banner_1.png"
           alt="banner圖片1"
-          class="object-cover object-top h-[400px] w-[800px] rounded-xl" /></a
+          class="h-[400px] w-[800px] rounded-xl object-cover object-top" /></a
     ></swiper-slide>
     <swiper-slide
       ><a href="#"
         ><img
-          src="~/assets/images/Banner_3.png"
+          src="~/assets/images/front/Banner_3.png"
           alt="banner圖片3"
-          class="object-cover object-top h-[400px] w-[800px] rounded-xl" /></a
+          class="h-[400px] w-[800px] rounded-xl object-cover object-top" /></a
     ></swiper-slide>
   </swiper>
 </template>
@@ -85,7 +85,7 @@ export default {
 .bannerSwiper .swiper-button-prev {
   left: 170px;
   top: 200px;
-  background-image: url('~/assets/images/Button_left_small.svg');
+  background-image: url('~/assets/images/front/Button_left_small.png');
   width: 36px;
   height: 36px;
 }
@@ -93,7 +93,7 @@ export default {
 .bannerSwiper .swiper-button-next {
   right: 150px;
   top: 200px;
-  background-image: url('~/assets/images/Button_right.svg');
+  background-image: url('~/assets/images/front/Button_right_small.png');
   width: 36px;
   height: 36px;
 }
@@ -101,13 +101,13 @@ export default {
 @media (min-width: 768px) {
   .bannerSwiper .swiper-button-prev {
     left: 240px;
-    background-image: url('~/assets/images/Button_left.svg');
+    background-image: url('~/assets/images/front/Button_left.png');
     width: 60px;
     height: 60px;
   }
   .bannerSwiper .swiper-button-next {
     right: 210px;
-    background-image: url('~/assets/images/Carousel Control Next.svg');
+    background-image: url('~/assets/images/front/Button_right.png');
     width: 60px;
     height: 60px;
   }
