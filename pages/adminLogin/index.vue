@@ -168,10 +168,14 @@ const sendForgetEmail = async () => {
           <input v-model="password" type="password" placeholder="密碼" />
         </div>
 
-        <button v-if="account !== '' && password !== ''" @click="login" class="btn-black">
+        <button
+          v-if="account !== '' && password !== ''"
+          @click="login"
+          class="btn-black mt-8 lg:mt-10"
+        >
           登入
         </button>
-        <button v-else class="btn-disabled">登入</button>
+        <button v-else class="btn-disabled mt-8 lg:mt-10">登入</button>
 
         <div class="mt-10 flex justify-center gap-5 lg:mt-[60px] lg:justify-end">
           <div class="cursor-pointer" @click="tab = 1">忘記密碼</div>
@@ -202,11 +206,11 @@ const sendForgetEmail = async () => {
         <button
           v-if="!checkEmailError && forgetEmail !== ''"
           @click="sendForgetEmail"
-          class="btn-black"
+          class="btn-black mt-8 lg:mt-10"
         >
           送出
         </button>
-        <button v-else class="btn-disabled">送出</button>
+        <button v-else class="btn-disabled mt-8 lg:mt-10">送出</button>
 
         <div class="mt-10 flex justify-center gap-5 lg:mt-[60px] lg:justify-end">
           <div class="cursor-pointer" @click="tab = 0">回上一頁</div>

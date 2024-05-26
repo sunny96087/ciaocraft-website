@@ -26,8 +26,38 @@ export const APIStore = defineStore({
     async apiVenderLogin(data: JsonObject) {
       return await axios.post(`${this.api}vendors/login`, data)
     },
-    // todo 賣家登入 本地端資料處理 localStorage
+    // 取得登入賣家資料 (Back)
+    async apiGetAdminVendor() {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(`${this.api}vendors/admin`, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+    // 編輯賣家資料 (Back)
+    async apiUpdateAdminVendor(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.patch(`${this.api}vendors/admin`, data, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+    // 修改密碼 (Back)
+    async apiUpdateAdminVendorPassword(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.patch(`${this.api}vendors/password`, data, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
 
+    // todo 賣家登入 本地端資料處理 localStorage
     // * 儲存賣家登入資料至 localStorage
     saveVendorDataToLocalStorage(data: { token: string; id: string; brandName: string }) {
       // 將資料轉化為 JSON 字符串

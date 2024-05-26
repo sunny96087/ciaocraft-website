@@ -73,24 +73,94 @@ input:focus-visible {
   @apply transition-all duration-200 ease-in-out;
 }
 
-/* todo 按鈕 btn */
-
-/* 黑底白字 */
-.btn-black {
-  @apply mt-8 w-full rounded-[4px] bg-black py-2 text-white lg:mt-10;
-}
-
-.btn-disabled {
-  @apply mt-8 w-full cursor-not-allowed rounded-[4px] bg-[var(--color-gray3)] py-2 text-[#AAAAAA] lg:mt-10;
-}
-
 /* todo 後台樣式 */
 
 /* ? 標題 */
+.admin-page-title {
+  @apply mb-[28px] text-[24px] font-semibold;
+}
+
+.admin-page-block {
+  @apply w-full bg-white px-10 py-8;
+}
+
 .admin-block-title {
   @apply mb-6 text-[14px] font-bold;
 }
 
 .admin-block {
   @apply rounded-[8px] bg-white;
+}
+
+/* ? 輸入框 input */
+.row-input {
+  @apply flex items-center gap-8;
+}
+
+.row-input-title {
+  @apply w-20 min-w-20 font-medium;
+}
+
+.admin-input {
+  @apply w-full rounded-[8px] border border-[#AAAAAA] px-3 py-2 font-medium;
+}
+
+.admin-input::placeholder {
+  color: #aaaaaa;
+}
+
+.admin-input-error {
+  @apply border-[var(--color-danger)];
+}
+
+.admin-input-error-note {
+  @apply mt-[2px] text-[12px] text-[var(--color-danger)];
+}
+
+.admin-input-disabled {
+  @apply border-[#8899A8] bg-[#EBEBEB] text-[#AAAAAA];
+}
+
+/* ? 按鈕 btn */
+
+/* 黑底白字 w-full */
+.btn-black {
+  @apply w-full rounded-[4px] bg-black py-2 text-white;
+}
+
+/* 不可選取 w-full */
+.btn-disabled {
+  @apply w-full cursor-not-allowed rounded-[4px] bg-[var(--color-gray3)] py-2 text-[#AAAAAA];
+}
+
+/* 橘邊橘字 inline */
+.btn-orange-outline {
+  @apply rounded-[8px] border border-[var(--color-primary)] px-4 py-2 text-[var(--color-primary)];
+}
+
+/* 橘底白字 inline */
+.btn-orange {
+  @apply rounded-[8px] bg-[var(--color-primary)] px-4 py-2 text-white;
+}
+
+/* ? 彈窗 Modal */
+
+.modal-bg {
+  @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 px-5;
+}
+
+.modal-box {
+  @apply min-w-full bg-white p-8 md:min-w-[520px];
+}
+
+.modal-top {
+  @apply mb-12 flex items-center justify-between;
+}
+
+.modal-title {
+  @apply text-[24px] font-medium;
+}
+
+.modal-footer {
+  @apply mt-12;
 }

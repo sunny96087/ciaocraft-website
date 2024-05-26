@@ -104,6 +104,16 @@ const barOpen = ref(false)
           <Icon size="24" name="fluent:key-24-regular" />
           <span v-show="barOpen" class="ml-[10px]">品牌管理</span>
         </nuxt-link>
+
+        <nuxt-link
+          to="/admin/profile"
+          class="bar-link"
+          exact-active-class="bar-link-active"
+          :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
+        >
+          <Icon size="24" name="fluent:key-24-regular" />
+          <span v-show="barOpen" class="ml-[10px]">帳號管理</span>
+        </nuxt-link>
       </div>
     </div>
 
