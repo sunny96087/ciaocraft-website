@@ -10,7 +10,7 @@
 
 <script setup>
 useHead({
-  title: 'DIY 手作平台 - Ciao!Craft',
+  title: 'Ciao!Craft - DIY 手作平台',
   htmlAttrs: {
     lang: 'zh-TW'
   },
@@ -18,13 +18,13 @@ useHead({
     {
       name: 'description',
       content:
-        '歡迎來到使用 Nuxt 3 開發的DIY 手作平台 - Ciao!Craft，本網站僅作為參加六角 Node.js 團體專題使用'
+        '歡迎來到使用 Nuxt 3 開發的Ciao!Craft - DIY 手作平台，本網站僅作為參加六角 Node.js 團體專題使用'
     },
-    { name: 'twitter:title', content: 'Nuxt 3 DIY 手作平台 - Ciao!Craft' },
+    { name: 'twitter:title', content: 'Ciao!Craft - DIY 手作平台' },
     {
       name: 'twitter:description',
       content:
-        '歡迎來到使用 Nuxt 3 開發的DIY 手作平台 - Ciao!Craft，本網站僅作為參加六角 Node.js 團體專題使用'
+        '歡迎來到使用 Nuxt 3 開發的Ciao!Craft - DIY 手作平台，本網站僅作為參加六角 Node.js 團體專題使用'
     },
     { name: 'twitter:image', content: 'https://i.imgur.com/AVNujNC.png' },
     { property: 'og:type', content: 'website' },
