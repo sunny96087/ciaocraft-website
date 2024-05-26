@@ -28,16 +28,14 @@ const toggleMenu = (): void => {
         </li>
         <li class="hidden lg:block">
           <ul class="flex items-center">
-            <li class="pr-6 text-Primary-Orange">
-              <a href="#" class="px-6 py-2 hover:text-Primary-light">我要開課</a>
+            <li class="text-primary pr-6">
+              <a href="#" class="hover:text-primary-light px-6 py-2">我要開課</a>
             </li>
             <li class="pr-6 text-white">
-              <button class="rounded bg-Primary-Orange px-6 py-2 hover:bg-Primary-light">
-                登入/註冊
-              </button>
+              <button class="bg-primary hover:bg-primary-light rounded px-6 py-2">登入/註冊</button>
             </li>
             <li class="pr-6 text-white">
-              <button class="rounded bg-Primary-Orange px-6 py-2 hover:bg-Primary-light">
+              <button class="bg-primary hover:bg-primary-light rounded px-6 py-2">
                 <NuxtLink to="/adminLogin">管理員登入</NuxtLink>
               </button>
             </li>

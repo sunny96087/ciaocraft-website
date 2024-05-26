@@ -5,7 +5,7 @@
     <front-header />
   </div>
   <NuxtPage></NuxtPage>
-  <div class="bg-Secondary-Blue text-white">
+  <div class="bg-secondary text-white">
     <front-footer />
   </div>
 </template>

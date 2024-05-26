@@ -16,7 +16,7 @@
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">單堂體驗課程</h2>
           <a href="#" class="flex">
-            <p class="mr-1 text-Primary-Orange">更多</p>
+            <p class="text-primary mr-1">更多</p>
             <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" />
           </a>
         </div>
@@ -26,7 +26,7 @@
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">系統培訓課程</h2>
           <a href="#" class="flex">
-            <p class="mr-1 text-Primary-Orange">更多</p>
+            <p class="text-primary mr-1">更多</p>
             <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" />
           </a>
         </div>
@@ -36,13 +36,13 @@
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">你可能適合</h2>
           <a href="#" class="flex">
-            <p class="mr-1 text-Primary-Orange">更多</p>
+            <p class="text-primary mr-1">更多</p>
             <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" />
           </a>
         </div>
         <front-product-card />
       </div>
-      <div class="mb-9 text-Primary-Text">
+      <div class="text-dark1 mb-9">
         <front-about />
       </div>
     </div>
