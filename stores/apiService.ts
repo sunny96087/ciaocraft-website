@@ -7,16 +7,25 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      // api: 'http://localhost:3666/',
+      api: 'http://localhost:3666/',
 
       // 線上
-      api: 'https://ciaocraft-api.onrender.com/',
+      // api: 'https://ciaocraft-api.onrender.com/',
 
       vendorInfo: null as any | null, // 用戶資料，初始為 null
       isVendorLoggedIn: false // 登入狀態
     }
   },
   actions: {
+    // todo 賣家 vendors (Back)
+    // 確認賣家帳號是否存在 (Back)
+    async apiCheckVenderEmail(data: JsonObject) {
+      return await axios.get(`${this.api}vendors/admin/checkAccount/${data.forgetEmail}`)
+    },
+    // 登入
+    async apiVenderLogin(data: JsonObject) {
+      return await axios.post(`${this.api}users/sign_in`, data)
+    },
     // todo 賣家登入 本地端資料處理 localStorage
 
     // * 儲存賣家登入資料至 localStorage

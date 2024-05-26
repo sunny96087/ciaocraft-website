@@ -2,9 +2,9 @@
   <div>
     <NuxtPage />
 
-    <LoadingTool class="z-50" />
-    <ToastTool class="z-50" />
-    <CustomDialog class="z-50" />
+    <common-loading-tool class="z-50" />
+    <common-toast-tool class="z-50" />
+    <common-custom-dialog class="z-50" />
   </div>
 </template>
 

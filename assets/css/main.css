@@ -68,3 +68,14 @@ input:focus-visible {
   /* vertical-align: top; */
   object-fit: cover;
 }
+
+/* todo 按鈕 btn */
+
+/* 黑底白字 */
+.btn-black {
+  @apply mt-8 w-full rounded-[4px] bg-black py-2 text-white lg:mt-10;
+}
+
+.btn-disabled {
+  @apply mt-8 w-full cursor-not-allowed rounded-[4px] bg-[var(--color-gray3)] py-2 text-[#AAAAAA] lg:mt-10;
+}
