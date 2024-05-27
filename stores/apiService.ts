@@ -57,6 +57,25 @@ export const APIStore = defineStore({
       })
     },
 
+    // todo 賣家 上傳圖片 upload
+
+    // 上傳單張圖片 (back)
+    async apiUploadAdminImage(data: JsonObject) {
+      return await axios.post(`${this.api}upload/singleImage/admin`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    },
+    // 上傳多張圖片 (不超過 5 張) (back)
+    async apiUploadAdminImages(data: JsonObject) {
+      return await axios.post(`${this.api}upload/multipleImages/admin`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+    },
+
     // todo 賣家登入 本地端資料處理 localStorage
     // * 儲存賣家登入資料至 localStorage
     saveVendorDataToLocalStorage(data: { token: string; id: string; brandName: string }) {

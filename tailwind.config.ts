@@ -60,6 +60,7 @@ module.exports = {
         dark6: '#d6d3d1',
         dark7: '#e7e5e4',
         dark8: '#f5f5f4',
+        gray: '#aaaaaa',
         gray1: '#f9fafb',
         gray2: '#f3f4f6',
         gray3: '#e5e7eb',

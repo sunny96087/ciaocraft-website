@@ -37,6 +37,7 @@
   --color-dark7: #e7e5e4;
   --color-dark8: #f5f5f4;
 
+  --color-gray: #aaaaaa;
   --color-gray1: #f9fafb;
   --color-gray2: #f3f4f6;
   --color-gray3: #e5e7eb;
@@ -97,6 +98,10 @@ input:focus-visible {
 
 .row-input-title {
   @apply w-20 min-w-20 font-medium;
+}
+
+.row-input-title-area {
+  @apply mt-1 w-20 min-w-20 self-start font-medium;
 }
 
 .admin-input {
