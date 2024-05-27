@@ -37,9 +37,9 @@ async function login() {
     console.log(`login result = ${JSON.stringify(result)}`)
     if (result.statusCode === 200) {
       store.saveVendorDataToLocalStorage({
-        token: result.user.token,
-        id: result.user.id,
-        brandName: result.user.name
+        token: result.vendor.token,
+        id: result.vendor.id,
+        brandName: result.vendor.name
       })
 
       router.push('/admin/')
@@ -52,8 +52,8 @@ async function login() {
     }
   } catch (e: any) {
     // showToast('帳號或密碼錯誤，請重新輸入！')
-    console.log(e.response.data.message)
     // showToast(e.response.data.message)
+    // console.log(e.response.data.message)
     loginError.value = true
     loginErrorMessage.value = e.response.data.message
   } finally {
