@@ -39,7 +39,8 @@ async function login() {
       store.saveVendorDataToLocalStorage({
         token: result.vendor.token,
         id: result.vendor.id,
-        brandName: result.vendor.name
+        brandName: result.vendor.brandName,
+        avatar: result.vendor.avatar
       })
 
       router.push('/admin/')

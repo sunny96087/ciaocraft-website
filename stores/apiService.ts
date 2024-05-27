@@ -78,7 +78,12 @@ export const APIStore = defineStore({
 
     // todo 賣家登入 本地端資料處理 localStorage
     // * 儲存賣家登入資料至 localStorage
-    saveVendorDataToLocalStorage(data: { token: string; id: string; brandName: string }) {
+    saveVendorDataToLocalStorage(data: {
+      token: string
+      id: string
+      brandName: string
+      avatar: string
+    }) {
       // 將資料轉化為 JSON 字符串
       const vendorInfo = JSON.stringify(data)
 
