@@ -30,6 +30,9 @@ export default {
       :space-between="20"
       :pagination="false"
       :breakpoints="{
+        '200': {
+          slidesPerView: 2
+        },
         '400': {
           slidesPerView: 3
         },
