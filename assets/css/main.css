@@ -124,6 +124,8 @@ input:focus-visible {
   @apply border-[#8899A8] bg-[#EBEBEB] text-[#AAAAAA];
 }
 
+/* ? 下拉選單 Select */
+
 /* ? 按鈕 btn */
 
 /* 黑底白字 w-full */
@@ -166,4 +168,17 @@ input:focus-visible {
 
 .modal-footer {
   @apply mt-12;
+}
+
+/* ? 表格 Table */
+.table-block {
+  @apply w-full overflow-x-auto bg-white;
+}
+
+.table-header {
+  @apply grid gap-2 bg-primary px-8 py-3 text-white;
+}
+
+.table-body {
+  @apply grid gap-2 px-8 py-6;
 }

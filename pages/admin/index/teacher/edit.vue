@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 <template>
-  <div class="">teacher</div>
+  <div class="">edit teacher</div>
 </template>
 <style scoped></style>
