@@ -60,6 +60,10 @@ input:focus-visible {
   outline: none;
 }
 
+select:focus-visible {
+  outline: none;
+}
+
 /* todo 通用 */
 .pic-auto {
   width: 100%;
@@ -125,6 +129,9 @@ input:focus-visible {
 }
 
 /* ? 下拉選單 Select */
+.admin-select {
+  @apply w-full rounded-lg border border-text-secondary bg-white px-3 py-2;
+}
 
 /* ? 按鈕 btn */
 
@@ -145,7 +152,11 @@ input:focus-visible {
 
 /* 橘底白字 inline */
 .btn-orange {
-  @apply rounded-[8px] bg-[var(--color-primary)] px-4 py-2 text-white;
+  @apply rounded-[8px] bg-[var(--color-primary)] px-4 py-2 font-medium text-white;
+}
+
+.btn-orange-icon {
+  @apply flex items-center gap-2;
 }
 
 /* ? 彈窗 Modal */
@@ -181,4 +192,8 @@ input:focus-visible {
 
 .table-body {
   @apply grid gap-2 px-8 py-6;
+}
+
+.table-th-icon {
+  @apply flex cursor-pointer items-center gap-1;
 }
