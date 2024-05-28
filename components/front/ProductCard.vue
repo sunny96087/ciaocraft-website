@@ -47,7 +47,7 @@ export default {
         <img src="~/assets/images/front/Card_Img.png" alt="課程圖片" class="mb-2 rounded" />
         <div>
           <div class="mb-2 flex items-start">
-            <p class="text-secondary bg-blue4 mr-[8px] rounded px-2 py-0.5">體驗</p>
+            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
             <p>課程名稱課程名稱</p>
           </div>
           <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
@@ -62,7 +62,7 @@ export default {
         <img src="~/assets/images/front/Card_Img.png" alt="課程圖片" class="mb-2 rounded" />
         <div>
           <div class="mb-2 flex items-start">
-            <p class="text-secondary bg-blue4 mr-[8px] rounded px-2 py-0.5">體驗</p>
+            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
             <p>課程名稱課程名</p>
           </div>
           <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
@@ -77,7 +77,7 @@ export default {
         <img src="~/assets/images/front/Card_Img.png" alt="課程圖片" class="mb-2 rounded" />
         <div>
           <div class="mb-2 flex items-start">
-            <p class="text-secondary bg-blue4 mr-[8px] rounded px-2 py-0.5">體驗</p>
+            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
             <p>課程名稱課程名</p>
           </div>
           <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
@@ -92,7 +92,7 @@ export default {
         <img src="~/assets/images/front/Card_Img.png" alt="課程圖片" class="mb-2 rounded" />
         <div>
           <div class="mb-2 flex items-start">
-            <p class="text-secondary bg-blue4 mr-[8px] rounded px-2 py-0.5">體驗</p>
+            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
             <p>課程名稱課程名</p>
           </div>
           <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
@@ -107,7 +107,7 @@ export default {
         <img src="~/assets/images/front/Card_Img.png" alt="課程圖片" class="mb-2 rounded" />
         <div>
           <div class="mb-2 flex items-start">
-            <p class="text-secondary bg-blue4 mr-[8px] rounded px-2 py-0.5">體驗</p>
+            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
             <p>課程名稱課程名</p>
           </div>
           <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
@@ -122,7 +122,7 @@ export default {
         <img src="~/assets/images/front/Card_Img.png" alt="課程圖片" class="mb-2 rounded" />
         <div>
           <div class="mb-2 flex items-start">
-            <p class="text-secondary bg-blue4 mr-[8px] rounded px-2 py-0.5">體驗</p>
+            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
             <p>課程名稱課程名</p>
           </div>
           <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
@@ -151,7 +151,7 @@ export default {
   </ul> -->
 </template>
 
-<style>
+<style scoped>
 .productCardSwiper .swiper-button-prev:after,
 .productCardSwiper .swiper-button-next:after {
   display: none;

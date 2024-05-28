@@ -60,7 +60,7 @@ export default {
   </swiper>
 </template>
 
-<style>
+<style scoped>
 .bannerSwiper .swiper-pagination-bullet {
   background: #292524;
   width: 12px;
