@@ -91,13 +91,23 @@ function logout() {
         </nuxt-link>
 
         <nuxt-link
+          to="/admin/bank"
+          class="bar-link"
+          exact-active-class="bar-link-active"
+          :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
+        >
+          <Icon size="24" name="heroicons:wallet" />
+          <span v-show="barOpen" class="ml-[10px]">帳戶管理</span>
+        </nuxt-link>
+
+        <nuxt-link
           to="/admin/payment"
           class="bar-link"
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
           <Icon size="24" name="heroicons:wallet" />
-          <span v-show="barOpen" class="ml-[10px]">財務管理</span>
+          <span v-show="barOpen" class="ml-[10px]">進帳管理</span>
         </nuxt-link>
 
         <nuxt-link
