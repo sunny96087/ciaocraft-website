@@ -18,15 +18,15 @@ export const APIStore = defineStore({
   },
   actions: {
     // todo 賣家 vendors (Back)
-    // 確認賣家帳號是否存在 (Back)
+    // * 確認賣家帳號是否存在 (Back)
     async apiCheckVenderEmail(data: JsonObject) {
       return await axios.get(`${this.api}vendors/admin/checkAccount/${data.forgetEmail}`)
     },
-    // 登入
+    // * 登入
     async apiVenderLogin(data: JsonObject) {
       return await axios.post(`${this.api}vendors/login`, data)
     },
-    // 取得登入賣家資料 (Back)
+    // * 取得登入賣家資料 (Back)
     async apiGetAdminVendor() {
       const vendorToken = await this.getVendorToken()
       console.log(`token = ${vendorToken}`)
@@ -36,7 +36,7 @@ export const APIStore = defineStore({
         }
       })
     },
-    // 編輯賣家資料 (Back)
+    // * 編輯賣家資料 (Back)
     async apiUpdateAdminVendor(data: JsonObject) {
       const vendorToken = await this.getVendorToken()
       console.log(`token = ${vendorToken}`)
@@ -46,7 +46,7 @@ export const APIStore = defineStore({
         }
       })
     },
-    // 修改密碼 (Back)
+    // * 修改密碼 (Back)
     async apiUpdateAdminVendorPassword(data: JsonObject) {
       const vendorToken = await this.getVendorToken()
       console.log(`token = ${vendorToken}`)
@@ -57,9 +57,24 @@ export const APIStore = defineStore({
       })
     },
 
+    // todo 師資 teachers (Back)
+    // * 取得所有老師 (Back)
+    async apiGetAdminTeachers(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(
+        `${this.api}teachers/admin?order=${data.order}&createdAt=${data.createdAt}&keyword=${data.keyword}&courseTerm=${data.courseTerm}`,
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
+
     // todo 賣家 上傳圖片 upload
 
-    // 上傳單張圖片 (back)
+    // * 上傳單張圖片 (back)
     async apiUploadAdminImage(data: JsonObject) {
       return await axios.post(`${this.api}upload/singleImage/admin`, data, {
         headers: {
@@ -67,7 +82,7 @@ export const APIStore = defineStore({
         }
       })
     },
-    // 上傳多張圖片 (不超過 5 張) (back)
+    // * 上傳多張圖片 (不超過 5 張) (back)
     async apiUploadAdminImages(data: JsonObject) {
       return await axios.post(`${this.api}upload/multipleImages/admin`, data, {
         headers: {
