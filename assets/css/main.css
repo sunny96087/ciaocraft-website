@@ -64,6 +64,10 @@ select:focus-visible {
   outline: none;
 }
 
+textarea:focus-visible {
+  outline: none;
+}
+
 /* todo 通用 */
 .pic-auto {
   width: 100%;
@@ -196,4 +200,10 @@ select:focus-visible {
 
 .table-th-icon {
   @apply flex cursor-pointer items-center gap-1;
+}
+
+/* ? 麵包屑 Breadcrumbs */
+
+.admin-breadcrumbs {
+  @apply mb-7 flex items-center gap-3 text-gray;
 }

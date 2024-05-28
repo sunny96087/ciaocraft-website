@@ -54,11 +54,11 @@ function toggleOrder() {
   getTeachersData()
 }
 
-function toggleCreatedAt() {
-  currentCreatedAt.value = currentCreatedAt.value === '' ? 'CREATED_AT_ASC' : ''
+// function toggleCreatedAt() {
+//   currentCreatedAt.value = currentCreatedAt.value === '' ? 'CREATED_AT_ASC' : ''
 
-  getTeachersData()
-}
+//   getTeachersData()
+// }
 </script>
 <template>
   <div v-if="teacherInfo" class="h-full w-full overflow-hidden">
@@ -83,10 +83,10 @@ function toggleCreatedAt() {
         </div>
       </div>
 
-      <button class="btn-orange btn-orange-icon mt-3 shrink-0 lg:mt-0">
+      <nuxt-link to="/admin/teacher/add" class="btn-orange btn-orange-icon mt-3 shrink-0 lg:mt-0">
         <Icon name="ic:round-add" size="24" class=""></Icon>
         新增老師
-      </button>
+      </nuxt-link>
     </div>
 
     <!-- * table -->
@@ -99,9 +99,10 @@ function toggleCreatedAt() {
         </div>
         <div class="col-span-1">老師姓名</div>
         <div class="col-span-3">基本介紹</div>
-        <div @click="toggleCreatedAt" class="table-th-icon col-span-3">
+        <div class="col-span-3">建立時間</div>
+        <!-- <div @click="toggleCreatedAt" class="table-th-icon col-span-3">
           建立時間<Icon name="fluent:arrow-sort-20-filled" size="20"></Icon>
-        </div>
+        </div> -->
         <div class="col-span-1">課程類型</div>
         <div class="col-span-1">授課狀態</div>
         <div class="col-span-1">操作</div>
@@ -112,12 +113,21 @@ function toggleCreatedAt() {
         <div class="col-span-1">{{ item.name }}</div>
         <div class="col-span-3">{{ item.description }}</div>
         <div class="col-span-3">{{ item.createdAt }}</div>
-        <div class="col-span-1">{{ item.description }}</div>
-        <div class="col-span-1">進行中：</div>
-        <div class="col-span-1 flex gap-2">
-          <button>
-            <Icon name="ph:magnifying-glass-plus" size="24" class="text-dark3"></Icon>
-          </button>
+        <div class="col-span-1">
+          <div v-for="courseId in item.courseId" :key="courseId">
+            <div v-if="courseId.courseTerm === 0">體驗課</div>
+            <div v-if="courseId.courseTerm === 1">培訓課</div>
+          </div>
+        </div>
+        <div class="col-span-1">
+          <div v-if="item.courseId && item.courseId.length">
+            進行中： {{ item.courseId.filter((course: any) => course.courseStatus === 1).length }}
+          </div>
+        </div>
+        <div class="col-span-1 flex items-start gap-2">
+          <nuxt-link :to="{ path: '/admin/teacher/edit', query: { id: item._id } }">
+            <Icon name="ic:round-edit-note" size="24" class="text-dark3"></Icon>
+          </nuxt-link>
           <button>
             <Icon name="solar:trash-bin-trash-outline" size="24" class="text-danger"></Icon>
           </button>
