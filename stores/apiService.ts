@@ -7,10 +7,10 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      // api: 'http://localhost:3666/',
+      api: 'http://localhost:3666/',
 
       // 線上
-      api: 'https://ciaocraft-api.onrender.com/',
+      // api: 'https://ciaocraft-api.onrender.com/',
 
       vendorInfo: null as any | null, // 用戶資料，初始為 null
       isVendorLoggedIn: false // 登入狀態
@@ -70,6 +70,36 @@ export const APIStore = defineStore({
           }
         }
       )
+    },
+    // * 取得單一老師 (Back)
+    async apiGetAdminTeacher(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(`${this.api}teachers/admin/${data.teacherId}`, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+    // * 新增老師 (Back)
+    async apiAddTeacher(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.post(`${this.api}teachers/`, data, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+    // * 編輯老師 (Back)
+    async apiUpdateTeacher(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.patch(`${this.api}teachers/${data.teacherId}`, data, {
+        headers: {
+          token: vendorToken
+        }
+      })
     },
 
     // todo 賣家 上傳圖片 upload
