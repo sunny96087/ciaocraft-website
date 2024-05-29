@@ -130,11 +130,7 @@ const toggleUser = (): void => {
                 >
                   <li class="mb-4 pl-2">
                     <div class="flex items-center">
-                      <img
-                        src="~/assets/images/front/userIcon.png"
-                        alt="人型icon"
-                        class="mr-3 block object-cover"
-                      />
+                      <img src="~/assets/images/front/userIcon.png" alt="人型icon" class="mr-3" />
                       <p>User Name</p>
                     </div>
                   </li>
@@ -283,11 +279,7 @@ const toggleUser = (): void => {
     >
       <li class="mb-4 flex justify-between pl-2">
         <div class="flex items-center">
-          <img
-            src="~/assets/images/front/userIcon.png"
-            alt="人型icon"
-            class="mr-3 block object-cover"
-          />
+          <img src="~/assets/images/front/userIcon.png" alt="人型icon" class="mr-3" />
           <p>User Name</p>
         </div>
         <a href="#"
@@ -379,7 +371,7 @@ const toggleUser = (): void => {
           <img
             src="~/assets/images/front/userIcon.png"
             alt="人型icon"
-            class="mr-3 block object-cover"
+            class="mr-3"
           />
           <p>User Name</p>
         </div>
