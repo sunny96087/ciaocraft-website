@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="flex justify-between py-5 pl-5 pr-4">
+  <div class="flex justify-between py-[18px] pl-5 pr-4">
     <input
       id="search"
       class="mr-3 w-full outline-none"

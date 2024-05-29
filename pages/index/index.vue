@@ -1,11 +1,13 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="mb-5 border-b border-[#DFE4EA]">
+  <header class="mb-5 border-b border-[#DFE4EA]">
     <front-header />
-  </div>
-  <NuxtPage></NuxtPage>
-  <div class="bg-secondary text-white">
+  </header>
+  <main>
+    <NuxtPage></NuxtPage>
+  </main>
+  <footer class="bg-secondary text-white">
     <front-footer />
-  </div>
+  </footer>
 </template>
