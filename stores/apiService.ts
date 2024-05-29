@@ -101,6 +101,79 @@ export const APIStore = defineStore({
         }
       })
     },
+    // * 刪除老師 (偽刪除) (Back)
+    async apiDeactivateTeacher(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.patch(
+        `${this.api}teachers/admin/deactivate/${data.teacherId}`,
+        {},
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
+
+    // todo 課程 courses (Back)
+    // * 取得全部課程 (Back)
+    async apiGetAdminCourses(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(
+        `${this.api}courses/admin?startDate=${data.startDate}&courseTerm=${data.courseTerm}&keyword=${data.keyword}&courseStatus=${data.courseStatus}`,
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
+    // * 取得單筆課程資料 + 項目資料 (Back)
+    async apiGetAdminCourse(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(`${this.api}courses/admin/${data.courseId}`, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+    // * 新增課程 + 項目資料 (Back)
+    async apiAddCourse(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.post(`${this.api}courses/`, data, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+    // * 編輯課程 + 項目資料 (Back)
+    async apiUpdateCourse(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.patch(`${this.api}courses/${data.courseId}`, data, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+    // * 刪除課程 (偽刪除) (Back)
+    async apiDeactivateCourse(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.patch(
+        `${this.api}courses/admin/deactivate/${data.courseId}`,
+        {},
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
 
     // todo 賣家 上傳圖片 upload
 
@@ -114,7 +187,7 @@ export const APIStore = defineStore({
     },
     // * 上傳多張圖片 (不超過 5 張) (back)
     async apiUploadAdminImages(data: JsonObject) {
-      return await axios.post(`${this.api}upload/multipleImages/admin`, data, {
+      return await axios.post(`${this.api}upload/multipleImage/admin`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

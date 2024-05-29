@@ -10,6 +10,9 @@ const currentCreatedAt = ref('') // CREATED_AT_ASC
 const currentKeyword = ref('') // 搜尋關鍵字, 查詢姓名欄位
 const currentCourseTerm = ref('-1') // 課程時長類型, 0: 單堂體驗 1:培訓課程
 
+const hasExperienceCourse = ref(false)
+const hasTrainingCourse = ref(false)
+
 onMounted(() => {
   getTeachersData()
 })
@@ -54,11 +57,55 @@ function toggleOrder() {
   getTeachersData()
 }
 
+// 判斷老師是否提供該課程時長
+function offersCourseTerm(teacher: { courseId: any[] }, term: any) {
+  // Check if teacher and teacher.courseId exist
+  if (teacher && teacher.courseId) {
+    return teacher.courseId.some((course) => course.courseTerm === term)
+  }
+  return false // Return false if teacher or teacher.courseId is undefined
+}
+
 // function toggleCreatedAt() {
 //   currentCreatedAt.value = currentCreatedAt.value === '' ? 'CREATED_AT_ASC' : ''
 
 //   getTeachersData()
 // }
+
+// NOTE 刪除老師 (偽刪除) (Back)
+async function deleteCourse(teacherId: string) {
+  const teacher = teacherInfo.value.find((t: any) => t._id === teacherId)
+
+  if (teacher.courseId && teacher.courseId.length > 0) {
+    showToast('老師有課程進行中，無法刪除')
+    return
+  }
+
+  const confirmed = await openDialog('注意', '刪除後不可復原，確定要刪除嗎？')
+  if (!confirmed) {
+    return
+  }
+
+  try {
+    showLoading()
+    let data = {
+      teacherId: teacherId
+    }
+    const res = await store.apiDeactivateTeacher(data)
+    const result = res.data
+    console.log(`deleteCourse result = ${JSON.stringify(result)}`)
+    if (result.statusCode === 200) {
+      showToast('刪除老師成功')
+      getTeachersData()
+    } else {
+      showToast('刪除老師失敗')
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
+}
 </script>
 <template>
   <div v-if="teacherInfo" class="h-full w-full overflow-hidden">
@@ -92,7 +139,7 @@ function toggleOrder() {
     <!-- * table -->
     <div class="table-block" v-if="teacherInfo.length > 0">
       <!-- header -->
-      <div class="table-header w-[1200px] grid-cols-11">
+      <div class="table-header min-w-[1200px] grid-cols-11">
         <div @click="toggleOrder" class="table-th-icon col-span-1">
           排序
           <Icon name="fluent:arrow-sort-20-filled" size="20"></Icon>
@@ -108,15 +155,15 @@ function toggleOrder() {
         <div class="col-span-1">操作</div>
       </div>
       <!-- body -->
-      <div class="table-body w-[1200px] grid-cols-11" v-for="item in teacherInfo">
+      <div class="table-body min-w-[1200px] grid-cols-11" v-for="item in teacherInfo">
         <div class="col-span-1">{{ item.order }}</div>
         <div class="col-span-1">{{ item.name }}</div>
         <div class="col-span-3">{{ item.description }}</div>
         <div class="col-span-3">{{ item.createdAt }}</div>
         <div class="col-span-1">
-          <div v-for="courseId in item.courseId" :key="courseId">
-            <div v-if="courseId.courseTerm === 0">體驗課</div>
-            <div v-if="courseId.courseTerm === 1">培訓課</div>
+          <div>
+            <div v-if="offersCourseTerm(item, 0)">體驗課</div>
+            <div v-if="offersCourseTerm(item, 1)">培訓課</div>
           </div>
         </div>
         <div class="col-span-1">
@@ -128,7 +175,7 @@ function toggleOrder() {
           <nuxt-link :to="{ path: '/admin/teacher/edit', query: { id: item._id } }">
             <Icon name="ic:round-edit-note" size="24" class="text-dark3"></Icon>
           </nuxt-link>
-          <button>
+          <button @click="deleteCourse(item._id)">
             <Icon name="solar:trash-bin-trash-outline" size="24" class="text-danger"></Icon>
           </button>
         </div>

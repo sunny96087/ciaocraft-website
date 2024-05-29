@@ -91,6 +91,10 @@ textarea:focus-visible {
   @apply w-full bg-white px-10 py-8;
 }
 
+.admin-page-block-with-header {
+  @apply w-full overflow-hidden rounded-[8px] bg-white;
+}
+
 .admin-block-title {
   @apply mb-6 text-[14px] font-bold;
 }
@@ -130,6 +134,14 @@ textarea:focus-visible {
 
 .admin-input-disabled {
   @apply border-[#8899A8] bg-[#EBEBEB] text-[#AAAAAA];
+}
+
+.admin-radio-row {
+  @apply flex w-full flex-wrap gap-6;
+}
+
+.admin-radio-row-label {
+  @apply flex cursor-pointer gap-3;
 }
 
 /* ? 下拉選單 Select */
@@ -191,11 +203,11 @@ textarea:focus-visible {
 }
 
 .table-header {
-  @apply grid gap-2 bg-primary px-8 py-3 text-white;
+  @apply grid w-full gap-2 bg-primary px-8 py-3 text-white;
 }
 
 .table-body {
-  @apply grid gap-2 px-8 py-6;
+  @apply grid w-full gap-2 px-8 py-6;
 }
 
 .table-th-icon {
