@@ -7,10 +7,10 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      // api: 'http://localhost:3666/',
+      api: 'http://localhost:3666/',
 
       // 線上
-      api: 'https://ciaocraft-api.onrender.com/',
+      // api: 'https://ciaocraft-api.onrender.com/',
 
       vendorInfo: null as any | null, // 用戶資料，初始為 null
       isVendorLoggedIn: false // 登入狀態
@@ -173,6 +173,57 @@ export const APIStore = defineStore({
           }
         }
       )
+    },
+
+    // todo 訂單 orders (Back)
+
+    // * 取得所有訂單 (Back)
+    async apiGetAdminOrders(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(
+        `${this.api}orders/admin?createdAt=${data.createdAt}&keyword=${data.keyword}&paidStatus=${data.paidStatus}&startDate=${data.startDate}&endDate=${data.endDate}`,
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
+    // * 取得單筆訂單 (Back)
+    async apiGetAdminOrder(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(`${this.api}orders/admin/${data.orderId}`, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
+
+    // todo 進帳 (Back)
+    // * 取得進帳詳情 (query: startDate + endDate) (Back)
+    async apiGetAdminIncome(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(
+        `${this.api}orders/admin/payment?startDate=${data.startDate}&endDate=${data.endDate}`,
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
+    // * 取得進帳總覽 (今日、近 7 天、30 天、12個月) (Back)
+    async apiGetAdminIncomeOverview() {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(`${this.api}orders/admin/payment/summary`, {
+        headers: {
+          token: vendorToken
+        }
+      })
     },
 
     // todo 賣家 上傳圖片 upload

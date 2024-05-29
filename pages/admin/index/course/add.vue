@@ -249,16 +249,19 @@ const addItem = () => {
   if (
     itemsChoose.value === '0' &&
     (newItem.value.startDate === '' ||
+      newItem.value.endDate === '' ||
       newItem.value.startTime === '' ||
       newItem.value.endTime === '')
   ) {
-    showToast('請填寫開始日期、開始時間、結束時間')
+    showToast('請填寫開始/結束日期、開始/結束時間')
     return
   } else if (
     itemsChoose.value === '1' &&
-    (newItem.value.startDate === '' || newItem.value.itemText === '')
+    (newItem.value.startDate === '' ||
+      newItem.value.endDate === '' ||
+      newItem.value.itemText === '')
   ) {
-    showToast('請填寫開始日期、自訂文字')
+    showToast('請填寫開始/結束日期、自訂文字')
     return
   }
 

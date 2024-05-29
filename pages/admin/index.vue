@@ -30,7 +30,7 @@ function logout() {
       @mouseleave="barOpen = false"
     >
       <!-- @click="barOpen = !barOpen" -->
-      <div class="logo flex cursor-pointer gap-2">
+      <div class="logo flex gap-2">
         <img src="~/assets/images/admin/slidebar/icon.svg" alt="logo" />
         <img v-show="barOpen" src="~/assets/images/admin/slidebar/text.svg" alt="Ciao!Craft" />
       </div>
