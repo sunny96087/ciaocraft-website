@@ -26,8 +26,11 @@ function logout() {
     <div
       class="hover-auto flex min-h-full w-[96px] shrink-0 flex-col items-center gap-5 bg-[#FFFBF8] px-2 py-6"
       :class="{ 'min-w-[240px]': barOpen, 'min-w-[96px]': !barOpen }"
+      @mouseover="barOpen = true"
+      @mouseleave="barOpen = false"
     >
-      <div class="logo flex gap-2" @click="barOpen = !barOpen">
+      <!-- @click="barOpen = !barOpen" -->
+      <div class="logo flex cursor-pointer gap-2">
         <img src="~/assets/images/admin/slidebar/icon.svg" alt="logo" />
         <img v-show="barOpen" src="~/assets/images/admin/slidebar/text.svg" alt="Ciao!Craft" />
       </div>
@@ -44,12 +47,28 @@ function logout() {
       品牌管理 brand
       -->
       <div class="flex w-full flex-col" v-if="store.vendorInfo">
-        <div class="bar-item" :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }">
+        <!-- <div class="bar-item" :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }">
           <Icon size="24" name="material-symbols:account-circle-full" />
           <span v-show="barOpen" class="ml-[10px]">{{
             store.vendorInfo?.brandName || 'Member'
           }}</span>
-        </div>
+        </div> -->
+
+        <nuxt-link
+          to="/admin/profile"
+          class="bar-link"
+          exact-active-class="bar-link-active"
+          :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
+        >
+          <div v-if="store.vendorInfo.avatar" class="h-6 w-6 overflow-hidden rounded-full">
+            <img :src="store.vendorInfo?.avatar" alt="" class="pic-auto" />
+          </div>
+          <Icon v-else size="24" name="material-symbols:account-circle-full" />
+          <span v-show="barOpen" class="ml-[10px]">{{
+            store.vendorInfo?.brandName || 'Member'
+          }}</span>
+        </nuxt-link>
+
         <nuxt-link
           to="/admin/"
           class="bar-link"
@@ -138,16 +157,6 @@ function logout() {
         >
           <Icon size="24" name="ph:circle-wavy-check-light" />
           <span v-show="barOpen" class="ml-[10px]">品牌管理</span>
-        </nuxt-link>
-
-        <nuxt-link
-          to="/admin/profile"
-          class="bar-link"
-          exact-active-class="bar-link-active"
-          :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
-        >
-          <Icon size="24" name="material-symbols:manage-accounts-outline-rounded" />
-          <span v-show="barOpen" class="ml-[10px]">帳號管理</span>
         </nuxt-link>
 
         <!-- logout -->
