@@ -211,6 +211,21 @@ export const APIStore = defineStore({
       })
     },
 
+    // todo 評價 (Back)
+    // * 取得賣家所有課程評價 (Back)
+    async apiGetAdminComments(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(
+        `${this.api}courses/admin/comments?startDate=${data.startDate}&endDate=${data.endDate}&tags=${data.tags}&keyword=${data.keyword}&sort=${data.sort}`,
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
+
     // todo 進帳 (Back)
     // * 取得進帳詳情 (query: startDate + endDate) (Back)
     async apiGetAdminIncome(data: JsonObject) {

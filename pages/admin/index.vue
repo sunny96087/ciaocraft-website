@@ -21,10 +21,10 @@ function logout() {
 }
 </script>
 <template>
-  <div class="flex min-h-screen w-full">
+  <div class="relative flex min-h-screen w-full">
     <!-- 左側選單 -->
     <div
-      class="hover-auto flex min-h-full w-[96px] shrink-0 flex-col items-center gap-5 bg-[#FFFBF8] px-2 py-6"
+      class="hover-auto fixed bottom-0 left-0 top-0 z-50 flex min-h-full w-[96px] shrink-0 flex-col items-center gap-5 overflow-y-auto bg-[#FFFBF8] px-2 py-6 shadow-lg"
       :class="{ 'min-w-[240px]': barOpen, 'min-w-[96px]': !barOpen }"
       @mouseover="barOpen = true"
       @mouseleave="barOpen = false"
@@ -173,6 +173,7 @@ function logout() {
     </div>
 
     <!-- 頁面 bug:奇怪的 x 軸, 暫時封印 -->
+    <div class="w-[96px] shrink-0"></div>
     <div class="w-full grow overflow-x-hidden bg-[#F9F7F7] px-6 py-10 xl:px-8 xl:py-12">
       <NuxtPage class="w-full" />
     </div>
