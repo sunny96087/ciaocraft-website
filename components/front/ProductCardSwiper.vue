@@ -44,18 +44,13 @@ export default {
     class="productCardSwiper"
   >
     <swiper-slide>
-      <a href="#">
+      <a href="#" class="relative">
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
-        <!-- <div class="course-star absolute right-0 top-0 hidden">
-          <img src="~/assets/images/front/Button(star).png" alt="收藏icon" />
-        </div> -->
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -69,15 +64,13 @@ export default {
       </a>
     </swiper-slide>
     <swiper-slide>
-      <a href="#">
+      <a href="#" class="relative">
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -91,15 +84,13 @@ export default {
       </a>
     </swiper-slide>
     <swiper-slide>
-      <a href="#">
+      <a href="#" class="relative">
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -113,15 +104,13 @@ export default {
       </a>
     </swiper-slide>
     <swiper-slide>
-      <a href="#">
+      <a href="#" class="relative">
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -135,15 +124,13 @@ export default {
       </a>
     </swiper-slide>
     <swiper-slide>
-      <a href="#">
+      <a href="#" class="relative">
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -157,15 +144,13 @@ export default {
       </a>
     </swiper-slide>
     <swiper-slide>
-      <a href="#">
+      <a href="#" class="relative">
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -206,9 +191,12 @@ export default {
 
 .productCardSwiper :deep(.swiper-slide):hover .course-star {
   display: block;
-  /* background-image: url('~/assets/images/front/Button(star).png');
-  width: 32px;
-  height: 32px; */
+  background-image: url('~/assets/images/front/Button(star).png');
+}
+
+.productCardSwiper :deep(.swiper-slide):hover .course-star:hover {
+  background-image: url('~/assets/images/front/Button(star_hover).png');
+  background-size: contain;
 }
 
 /* .productCardSwiper :deep(.swiper-slide) .course:active + .course-star:hover {

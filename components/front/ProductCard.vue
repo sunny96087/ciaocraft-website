@@ -1,8 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// // 使用 ref 選取 dom 元素
+// import { ref } from 'vue'
+
+// // 定義 isStarShow 為布林類型的 ref
+// // 使用 ref 管理漢堡選單的顯示狀態
+// const isStarShow = ref<boolean>(false)
+
+// // 定義 toggleStar 函數，其返回類型為 void
+// // 切換漢堡選單顯示狀態
+// const toggleStar = (): void => {
+//   isStarShow.value = !isStarShow.value
+// }
+</script>
 
 <!-- 切版缺：卡片點擊時星星變色並留停 -->
 <template>
-  <ul class="flex">
+  <ul class="flex grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5">
     <li>
       <a href="#" class="relative">
         <img
@@ -10,12 +23,7 @@
           alt="課程圖片"
           class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
-        <!-- <div class="course-star absolute right-0 top-0 hidden">
-          <img src="~/assets/images/front/Button(star).png" alt="收藏icon" />
-        </div> -->
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -33,11 +41,9 @@
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -55,11 +61,9 @@
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -77,11 +81,9 @@
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -99,11 +101,9 @@
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -121,11 +121,9 @@
         <img
           src="~/assets/images/front/Card_Img.png"
           alt="課程圖片"
-          class="course relative mb-2 w-full rounded"
+          class="course mb-2 w-full rounded"
         />
-        <div
-          class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px] bg-[url('~/assets/images/front/Button(star).png')] hover:bg-[url('~/assets/images/front/Button(star_hover).png')]"
-        ></div>
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
@@ -149,9 +147,12 @@ li:hover .course {
 
 li:hover .course-star {
   display: block;
-  /* background-image: url('~/assets/images/front/Button(star).png');
-    width: 32px;
-    height: 32px; */
+  background-image: url('~/assets/images/front/Button(star).png');
+}
+
+li:hover .course-star:hover {
+  background-image: url('~/assets/images/front/Button(star_hover).png');
+  background-size: contain;
 }
 
 /* li .course:active + .course-star:hover {
