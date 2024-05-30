@@ -161,6 +161,11 @@ textarea:focus-visible {
   @apply w-full cursor-not-allowed rounded-[4px] bg-[var(--color-gray3)] py-2 text-[#AAAAAA];
 }
 
+/* 不可選取 inline */
+.btn-disabled-outline {
+  @apply cursor-not-allowed rounded-[8px] border border-[#A3B5C9] px-4 py-2 text-[#A3B5C9];
+}
+
 /* 橘邊橘字 inline */
 .btn-orange-outline {
   @apply rounded-[8px] border border-[var(--color-primary)] px-4 py-2 text-[var(--color-primary)];
