@@ -200,6 +200,16 @@ export const APIStore = defineStore({
         }
       })
     },
+    // * 修改訂單 (賣家確認收款、取消訂單) (Back)
+    async apiUpdateAdminOrder(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.patch(`${this.api}orders/admin/${data.orderId}`, data, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
 
     // todo 進帳 (Back)
     // * 取得進帳詳情 (query: startDate + endDate) (Back)

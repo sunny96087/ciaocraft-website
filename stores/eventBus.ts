@@ -33,11 +33,18 @@ export function showToastError(message: any) {
 export const dialogTitle = ref('')
 export const dialogMessage = ref('')
 export const showDialog = ref(false)
-let resolveDialogPromise: (value: boolean) => void
+export const userInput = ref<string | null>(null) // 修改
+let resolveDialogPromise: (value: { confirmed: boolean; userInput: string | null }) => void
 
-export function openDialog(title: string, message: string): Promise<boolean> {
+export function openDialog(
+  title: string,
+  message: string,
+  input: string | null = null
+): Promise<{ confirmed: boolean; userInput: string | null }> {
+  // 修改
   dialogTitle.value = title
   dialogMessage.value = message
+  userInput.value = input
   showDialog.value = true
   return new Promise((resolve) => {
     resolveDialogPromise = resolve
@@ -45,17 +52,23 @@ export function openDialog(title: string, message: string): Promise<boolean> {
 }
 
 export function confirmDialog() {
-  resolveDialogPromise(true)
+  resolveDialogPromise({ confirmed: true, userInput: userInput.value })
   showDialog.value = false
 }
 
 export function cancelDialog() {
-  resolveDialogPromise(false)
+  resolveDialogPromise({ confirmed: false, userInput: null })
   showDialog.value = false
 }
+
 /**
-   const confirmed = await openDialog('注意', '確定要刪除嗎？')
-  if (!confirmed) {
+  // 再次確認
+  const Dialogresult = await openDialog(
+    '取消訂單',
+    '請確認您要取消此筆訂單，取消後不可撤銷。您確定要執行此操作嗎？',
+    '取消原因'
+  )
+  if (!Dialogresult.confirmed) {
     return
   }
  */

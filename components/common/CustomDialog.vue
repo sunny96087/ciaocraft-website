@@ -4,7 +4,8 @@ import {
   dialogMessage,
   showDialog,
   confirmDialog,
-  cancelDialog
+  cancelDialog,
+  userInput
 } from '~/stores/eventBus'
 </script>
 
@@ -16,10 +17,22 @@ import {
       </div>
       <div class="custom-dialog-body">
         <p>{{ dialogMessage }}</p>
+
+        <!-- input -->
+        <input v-if="userInput !== null" v-model="userInput" class="input" type="text" />
       </div>
       <div class="custom-dialog-footer">
-        <button @click="cancelDialog" class="btn btn-secondary">取消</button>
-        <button @click="confirmDialog" class="btn btn-danger">確認</button>
+        <button @click="cancelDialog" class="btn cancel">取消</button>
+
+        <button
+          v-if="userInput !== null"
+          @click="confirmDialog"
+          class="btn check"
+          :disabled="!userInput"
+        >
+          確認
+        </button>
+        <button v-else @click="confirmDialog" class="btn check">確認</button>
       </div>
     </div>
   </div>
@@ -30,7 +43,7 @@ import {
   position: fixed;
 
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,29 +51,46 @@ import {
 }
 
 .custom-dialog {
-  background-color: #ffffff9e;
-  backdrop-filter: blur(4px);
+  background-color: #fff;
+  /* backdrop-filter: blur(4px); */
   max-width: 300px;
   width: 100%;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-.custom-dialog-header h3 {
-  margin: 0;
+.custom-dialog-header {
+  font-size: 20px;
 }
 
 .custom-dialog-body {
-  margin-top: 20px;
+  margin-top: 12px;
+}
+
+.input {
+  @apply mt-2 w-full rounded-lg border border-gray p-2;
 }
 
 .custom-dialog-footer {
   margin-top: 20px;
-  text-align: right;
+  /* text-align: right; */
+  @apply flex gap-3;
 }
 
-.custom-dialog-footer button {
+/* .custom-dialog-footer button {
   margin-left: 12px;
+} */
+
+.btn {
+  @apply w-full rounded-lg py-[5px];
+}
+
+.cancel {
+  @apply border border-gray text-gray;
+}
+
+.check {
+  @apply bg-danger text-white;
 }
 </style>
