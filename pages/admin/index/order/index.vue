@@ -63,8 +63,8 @@ function togglePaidStatus(status: string) {
 // NOTE 轉換訂單狀態
 const statusMap: { [key: number]: string } = {
   0: '待付款',
-  1: '已付款',
-  2: '已收款',
+  1: '待確認',
+  2: '已確認',
   3: '已完課',
   4: '不成立',
   5: '不成立',
@@ -103,6 +103,14 @@ const convertStatus = (status: any) => statusMap[status]
         @click="currentPaidStatus = '1'"
       >
         待確認
+      </div>
+
+      <div
+        class="admin-tab-item"
+        :class="{ 'admin-tab-item-active': currentPaidStatus === '2' }"
+        @click="currentPaidStatus = '2'"
+      >
+        已確認
       </div>
 
       <div
@@ -177,7 +185,7 @@ const convertStatus = (status: any) => statusMap[status]
       <!-- body -->
       <div class="table-body min-w-[1400px] grid-cols-10" v-for="(item, i) in orderInfo">
         <nuxt-link :to="`/admin/order/${item._id}`" class="col-span-2">{{ item._id }}</nuxt-link>
-        <div class="col-span-1">{{ item.memberId.name }}</div>
+        <div class="col-span-1">{{ item.memberId?.name }}</div>
         <div class="col-span-3">{{ item.courseItemName }}</div>
         <div class="col-span-1">{{ item.totalPrice }}</div>
         <div class="col-span-2">{{ item.createdAt }}</div>
