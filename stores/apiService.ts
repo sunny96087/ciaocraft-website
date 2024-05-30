@@ -241,7 +241,7 @@ export const APIStore = defineStore({
       )
     },
     // * 取得進帳總覽 (今日、近 7 天、30 天、12個月) (Back)
-    async apiGetAdminIncomeOverview() {
+    async apiGetAdminIncomeSummary() {
       const vendorToken = await this.getVendorToken()
       console.log(`token = ${vendorToken}`)
       return await axios.get(`${this.api}orders/admin/payment/summary`, {
