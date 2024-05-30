@@ -294,10 +294,15 @@ const addItem = () => {
     return
   }
 
+  let dateRange =
+    newItem.value.startDate === newItem.value.endDate
+      ? newItem.value.startDate
+      : `${newItem.value.startDate} ~ ${newItem.value.endDate}`
+
   if (itemsChoose.value === '0') {
-    newItem.value.itemName = `${newItem.value.startDate} ${newItem.value.startTime} ~ ${newItem.value.endTime}`
+    newItem.value.itemName = `${dateRange} ${newItem.value.startTime} ~ ${newItem.value.endTime}`
   } else if (itemsChoose.value === '1') {
-    newItem.value.itemName = `${newItem.value.startDate} ${newItem.value.itemText}`
+    newItem.value.itemName = `${dateRange} ${newItem.value.itemText}`
   }
 
   const item = {

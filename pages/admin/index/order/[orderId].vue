@@ -250,6 +250,35 @@ async function confirmCancelPaymeny() {
           </div>
         </div>
 
+        <!-- note 3: 已完課(訂單完成) v-else-if='order.paidStatus === 3 && 有評論' -->
+        <div class="w-full" v-else-if="order.paidStatus === 3 && order.commentId">
+          <!-- ? 狀態線 -->
+          <div class="type-row">
+            <div class="type type-fill">1</div>
+            <div class="line line-fill"></div>
+            <div class="type type-fill">2</div>
+            <div class="line line-fill"></div>
+            <div class="type type-fill">3</div>
+            <div class="line line-fill"></div>
+            <div class="type type-fill">4</div>
+            <div class="line line-fill"></div>
+            <div class="type type-fill">5</div>
+          </div>
+          <!-- ? 狀態文字 -->
+          <div class="text-row">
+            <div class="text-fill">待付款</div>
+            <div class="text-fill">已付款</div>
+            <div class="text-fill">已確認</div>
+            <div class="text-fill">訂單完成</div>
+            <div class="text-fill text-with-date">
+              填寫評論
+              <div class="text-gray5">
+                {{ order.commentId?.createdAt }}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- note 3: 已完課(訂單完成) v-else-if='order.paidStatus === 3' -->
         <div class="w-full" v-else-if="order.paidStatus === 3">
           <!-- ? 狀態線 -->
@@ -271,30 +300,6 @@ async function confirmCancelPaymeny() {
             <div class="text-fill">已確認</div>
             <div class="text-fill">訂單完成</div>
             <div class="text-disable">填寫評論</div>
-          </div>
-        </div>
-
-        <!-- todo 3: 已完課(訂單完成) v-else-if='order.paidStatus === 3 && 有評論時間' -->
-        <div class="w-full" v-else-if="order.paidStatus === 3 && order.commentTime">
-          <!-- ? 狀態線 -->
-          <div class="type-row">
-            <div class="type type-fill">1</div>
-            <div class="line line-fill"></div>
-            <div class="type type-fill">2</div>
-            <div class="line line-fill"></div>
-            <div class="type type-fill">3</div>
-            <div class="line line-fill"></div>
-            <div class="type type-fill">4</div>
-            <div class="line line-fill"></div>
-            <div class="type type-fill">5</div>
-          </div>
-          <!-- ? 狀態文字 -->
-          <div class="text-row">
-            <div class="text-fill">待付款</div>
-            <div class="text-fill">已付款</div>
-            <div class="text-fill">已確認</div>
-            <div class="text-fill">訂單完成</div>
-            <div class="text-fill">填寫評論</div>
           </div>
         </div>
 
@@ -474,6 +479,18 @@ async function confirmCancelPaymeny() {
 
         <!-- ? 已確認款項 -->
         <button class="btn-disabled-outline mt-4" v-if="order.paidStatus === 2">已確認款項</button>
+      </div>
+    </section>
+
+    <!-- * 學員評論 3: 已完課(訂單完成) v-if='order.paidStatus === 3 && 有評論' -->
+    <section class="mt-5" v-if="order.paidStatus === 3 && order.commentId">
+      <div class="block-title">學員評論</div>
+
+      <div class="admin-block p-8 text-dark2">
+        <div class="grid gap-4">
+          <div class="">評論編號：{{ order.commentId?._id }}</div>
+          <div class="">評論內容：{{ order.commentId?.content }}</div>
+        </div>
       </div>
     </section>
 

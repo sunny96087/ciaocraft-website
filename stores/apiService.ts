@@ -7,10 +7,10 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      // api: 'http://localhost:3666/',
+      api: 'http://localhost:3666/',
 
       // 線上
-      api: 'https://ciaocraft-api.onrender.com/',
+      // api: 'https://ciaocraft-api.onrender.com/',
 
       vendorInfo: null as any | null, // 用戶資料，初始為 null
       isVendorLoggedIn: false // 登入狀態
@@ -211,6 +211,21 @@ export const APIStore = defineStore({
       })
     },
 
+    // todo 評價 (Back)
+    // * 取得賣家所有課程評價 (Back)
+    async apiGetAdminComments(data: JsonObject) {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(
+        `${this.api}courses/admin/comments?startDate=${data.startDate}&endDate=${data.endDate}&tags=${data.tags}&keyword=${data.keyword}&sort=${data.sort}`,
+        {
+          headers: {
+            token: vendorToken
+          }
+        }
+      )
+    },
+
     // todo 進帳 (Back)
     // * 取得進帳詳情 (query: startDate + endDate) (Back)
     async apiGetAdminIncome(data: JsonObject) {
@@ -226,7 +241,7 @@ export const APIStore = defineStore({
       )
     },
     // * 取得進帳總覽 (今日、近 7 天、30 天、12個月) (Back)
-    async apiGetAdminIncomeOverview() {
+    async apiGetAdminIncomeSummary() {
       const vendorToken = await this.getVendorToken()
       console.log(`token = ${vendorToken}`)
       return await axios.get(`${this.api}orders/admin/payment/summary`, {

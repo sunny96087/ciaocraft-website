@@ -112,8 +112,16 @@ textarea:focus-visible {
   @apply w-20 min-w-20 font-medium;
 }
 
+.row-input-title-gray {
+  @apply w-20 min-w-20 font-medium text-gray;
+}
+
 .row-input-title-area {
   @apply mt-1 w-20 min-w-20 self-start font-medium;
+}
+
+.row-input-title-area-gray {
+  @apply mt-1 w-20 min-w-20 self-start font-medium text-gray;
 }
 
 .admin-input {
@@ -183,11 +191,11 @@ textarea:focus-visible {
 /* ? 彈窗 Modal */
 
 .modal-bg {
-  @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 px-5;
+  @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 p-5;
 }
 
 .modal-box {
-  @apply min-w-full bg-white p-8 md:min-w-[520px];
+  @apply max-h-full min-w-full overflow-auto rounded-lg bg-white p-8 md:min-w-[580px];
 }
 
 .modal-top {
