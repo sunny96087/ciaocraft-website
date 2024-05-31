@@ -174,7 +174,7 @@ function logout() {
 
     <!-- 頁面 bug:奇怪的 x 軸, 暫時封印 -->
     <div class="w-[96px] shrink-0"></div>
-    <div class="w-full grow overflow-x-hidden bg-[#F9F7F7] px-6 py-10 xl:px-8 xl:py-12">
+    <div class="w-full grow overflow-auto bg-[#F9F7F7] px-6 py-10 xl:px-8 xl:py-12">
       <NuxtPage class="w-full" />
     </div>
   </div>

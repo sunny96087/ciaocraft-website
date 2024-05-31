@@ -64,6 +64,16 @@ export const APIStore = defineStore({
     async apiResetAdminVendorPassword(data: JsonObject) {
       return await axios.post(`${this.api}vendors/resetPassword`, data)
     },
+    // * 取得登入賣家儀表板總覽 (Back)
+    async apiGetAdminOverview() {
+      const vendorToken = await this.getVendorToken()
+      console.log(`token = ${vendorToken}`)
+      return await axios.get(`${this.api}vendors/admin/overview`, {
+        headers: {
+          token: vendorToken
+        }
+      })
+    },
 
     // todo 師資 teachers (Back)
     // * 取得所有老師 (Back)

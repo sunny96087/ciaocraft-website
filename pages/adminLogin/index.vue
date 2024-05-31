@@ -109,7 +109,7 @@ const checkForgetEmail = async () => {
   }
 }
 
-/* 寄出找回密碼 Email -> 功能待確認 */
+/* 寄出找回密碼 Email */
 const sendForgetEmail = async () => {
   if (forgetEmail.value && forgetEmail.value !== '') {
     try {

@@ -84,7 +84,7 @@ textarea:focus-visible {
 
 /* ? 標題 */
 .admin-page-title {
-  @apply mb-[28px] text-[24px] font-semibold;
+  @apply mb-[28px] w-full text-[24px] font-semibold;
 }
 
 .admin-page-block {
@@ -96,11 +96,11 @@ textarea:focus-visible {
 }
 
 .admin-block-title {
-  @apply mb-6 text-[14px] font-bold;
+  @apply mb-6 w-full text-[14px] font-bold;
 }
 
 .admin-block {
-  @apply rounded-[8px] bg-white;
+  @apply w-full overflow-auto rounded-[8px] bg-white;
 }
 
 /* ? 輸入框 input */
