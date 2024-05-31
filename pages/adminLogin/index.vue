@@ -111,31 +111,35 @@ const checkForgetEmail = async () => {
 
 /* 寄出找回密碼 Email -> 功能待確認 */
 const sendForgetEmail = async () => {
-  showToast('該功能製作中 ><')
-  // try {
-  //   showLoading()
+  if (forgetEmail.value && forgetEmail.value !== '') {
+    try {
+      showLoading()
 
-  //   let data = {
-  //     forgetEmail: forgetEmail.value
-  //   }
-  //   console.log(data)
+      let data = {
+        account: forgetEmail.value
+      }
+      console.log(data)
 
-  //   const res: any = await store.apiForgetPassword(data)
-  //   const result = res.data
-  //   console.log(`editEvent result = ${JSON.stringify(result)}`)
+      const res: any = await store.apiForgetAdminVendorPassword(data)
+      const result = res.data
+      console.log(`editEvent result = ${JSON.stringify(result)}`)
 
-  //   if (result.statusCode === 200) {
-  //     showToast('已寄出密碼重設信，請至信箱查看')
-  //     tab.value = 0
-  //   } else {
-  //     showToast('發生錯誤，請稍後再試')
-  //   }
-  // } catch (e) {
-  //   console.log(e)
-  //   showToast('發生錯誤，請稍後再試')
-  // } finally {
-  //   hideLoading()
-  // }
+      if (result.statusCode === 200) {
+        showToast('已寄出找回密碼信件，請至信箱查看')
+        forgetEmail.value = ''
+      } else {
+        showToast('寄出找回密碼信件失敗，請聯絡平台管理員')
+      }
+    } catch (e) {
+      console.log(e)
+      showToast('寄出找回密碼信件失敗，請聯絡平台管理員')
+    } finally {
+      hideLoading()
+    }
+  } else {
+    checkEmailErrorMessage.value = 'email 不得為空'
+    checkEmailError.value = true
+  }
 }
 </script>
 <template>

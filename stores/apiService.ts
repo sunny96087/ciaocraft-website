@@ -56,6 +56,14 @@ export const APIStore = defineStore({
         }
       })
     },
+    // * 忘記密碼 (Back)
+    async apiForgetAdminVendorPassword(data: JsonObject) {
+      return await axios.post(`${this.api}vendors/forgetPassword`, data)
+    },
+    // * 重設密碼 (Back)
+    async apiResetAdminVendorPassword(data: JsonObject) {
+      return await axios.post(`${this.api}vendors/resetPassword`, data)
+    },
 
     // todo 師資 teachers (Back)
     // * 取得所有老師 (Back)
