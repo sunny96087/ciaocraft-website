@@ -2,9 +2,10 @@
 
 // Toast
 export const toastMessage = ref('')
+export const toastType = ref('') // 新增一個 ref 來存儲 toast 的類型
 let toastTimeoutId: string | number | NodeJS.Timeout | undefined // 用於存儲計時器的 ID
 
-export function showToast(message: any) {
+export function showToast(message: any, type: 'error' | 'normal' = 'normal') {
   // 清除之前的計時器
   if (toastTimeoutId) {
     clearTimeout(toastTimeoutId)
@@ -12,13 +13,18 @@ export function showToast(message: any) {
 
   // 立即更新彈出訊息
   toastMessage.value = message
+  toastType.value = type // 更新 toast 的類型
 
   // 設置一個新的計時器，在三秒後清除彈出訊息
   toastTimeoutId = setTimeout(() => {
     toastMessage.value = ''
+    toastType.value = 'normal' // 重置 toast 的類型
   }, 3000)
 }
-/** showToast('123test'); */
+/**
+ * 成功的 showToast('test');
+ * 錯誤的 showToast('test', 'error')
+ */
 
 // ToastError
 export const toastErrorMessage = ref('')
