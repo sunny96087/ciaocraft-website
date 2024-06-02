@@ -424,7 +424,7 @@ watch(itemsChoose, () => {
               :key="index"
               class="relative h-[128px] w-[128px] overflow-hidden rounded text-white"
             >
-              <img :src="image" alt="image" />
+              <img :src="image" alt="image" class="pic-auto" />
               <div class="hover-auto absolute inset-0 bg-[#0000004D] opacity-0 hover:opacity-100">
                 <button @click="removeImage(index)" class="absolute bottom-3 right-3">
                   <Icon name="solar:trash-bin-trash-outline" size="20" class=""></Icon>
