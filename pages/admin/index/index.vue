@@ -226,7 +226,7 @@ async function getOverviewData() {
         </div>
         <div class="col-line"></div>
         <div class="status-item">
-          <div class="status-item-num">0</div>
+          <div class="status-item-num">{{ overviewInfo.todayVisitCount }}</div>
           <div class="">訪問人數</div>
         </div>
         <div class="col-line"></div>
@@ -277,7 +277,7 @@ async function getOverviewData() {
             </div>
 
             <div class="payment-item">
-              <div class="payment-item-num">0</div>
+              <div class="payment-item-num">{{ overviewInfo.visitCountLast7Days }}</div>
               <div class="">近7日訪問用戶數</div>
             </div>
           </div>
@@ -303,7 +303,7 @@ async function getOverviewData() {
             </div>
 
             <div class="payment-item">
-              <div class="payment-item-num">0</div>
+              <div class="payment-item-num">{{ overviewInfo.visitCountLast30Days }}</div>
               <div class="">近30日訪問用戶數</div>
             </div>
           </div>
@@ -317,7 +317,7 @@ async function getOverviewData() {
       </div>
     </div>
 
-    <div class="w-full lg:col-span-1">
+    <div class="mt-[30px] w-full lg:col-span-1 lg:mt-0">
       <div class="admin-block-title">待辦事項</div>
 
       <div
