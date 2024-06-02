@@ -214,17 +214,20 @@ async function updateTeacher() {
           </div>
         </div>
 
-        <div
-          @click="triggerFileUpload"
-          class="cursor-pointer rounded border border-dashed border-gray px-3 py-[26px] text-dark3"
-        >
-          <div v-if="!teacher.photo" class="flex flex-col items-center justify-center gap-1">
+        <div @click="triggerFileUpload" class="cursor-pointer rounded">
+          <div
+            v-if="!teacher.photo"
+            class="flex flex-col items-center justify-center gap-1 border border-dashed border-gray px-3 py-[26px] text-dark3"
+          >
             <Icon name="bi:images" size="48" />
             <div>新增圖片(0/1)</div>
           </div>
 
-          <div v-else class="">
-            <img :src="teacher.photo" alt="avatar" />
+          <div
+            v-else
+            class="h-[180px] min-h-[180px] w-[180px] min-w-[180px] overflow-hidden rounded"
+          >
+            <img :src="teacher.photo" alt="avatar" class="pic-auto" />
           </div>
         </div>
       </div>

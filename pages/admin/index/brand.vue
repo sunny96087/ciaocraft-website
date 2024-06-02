@@ -215,17 +215,20 @@ const tooltip2 = ref(false)
           </div>
         </div>
 
-        <div
-          @click="triggerFileUpload"
-          class="border-gray cursor-pointer rounded border border-dashed px-3 py-[26px] text-dark3"
-        >
-          <div v-if="!vendorInfo.avatar" class="flex flex-col items-center justify-center gap-1">
+        <div @click="triggerFileUpload" class="cursor-pointer">
+          <div
+            v-if="!vendorInfo.avatar"
+            class="flex flex-col items-center justify-center gap-1 rounded border border-dashed border-gray px-3 py-[26px] text-dark3"
+          >
             <Icon name="bi:images" size="48" />
             <div>新增圖片(0/1)</div>
           </div>
 
-          <div v-else class="">
-            <img :src="vendorInfo.avatar" alt="avatar" />
+          <div
+            v-else
+            class="h-[180px] min-h-[180px] w-[180px] min-w-[180px] overflow-hidden rounded"
+          >
+            <img :src="vendorInfo.avatar" alt="avatar" class="pic-auto" />
           </div>
         </div>
       </div>
@@ -248,20 +251,20 @@ const tooltip2 = ref(false)
             </div>
           </div>
         </div>
-        <div
-          @click="triggerFileUploadBanner"
-          class="border-gray cursor-pointer rounded border border-dashed px-3 py-[26px] text-dark3"
-        >
+        <div @click="triggerFileUploadBanner" class="cursor-pointer">
           <div
             v-if="!vendorInfo.bannerImage"
-            class="flex flex-col items-center justify-center gap-1"
+            class="flex flex-col items-center justify-center gap-1 rounded border border-dashed border-gray px-3 py-[26px] text-dark3"
           >
             <Icon name="bi:images" size="48" />
             <div>新增圖片(0/1)</div>
           </div>
 
-          <div v-else class="">
-            <img :src="vendorInfo.bannerImage" alt="bannerImage" />
+          <div
+            v-else
+            class="flex max-h-[240px] w-full min-w-full items-center justify-center overflow-hidden rounded"
+          >
+            <img :src="vendorInfo.bannerImage" alt="bannerImage" class="pic-auto" />
           </div>
         </div>
       </div>

@@ -200,17 +200,20 @@ function reset() {
           </div>
         </div>
 
-        <div
-          @click="triggerFileUpload"
-          class="cursor-pointer rounded border border-dashed border-gray px-3 py-[26px] text-dark3"
-        >
-          <div v-if="!teacherInfo.photo" class="flex flex-col items-center justify-center gap-1">
+        <div @click="triggerFileUpload" class="cursor-pointer">
+          <div
+            v-if="!teacherInfo.photo"
+            class="flex flex-col items-center justify-center gap-1 rounded border border-dashed border-gray px-3 py-[26px] text-dark3"
+          >
             <Icon name="bi:images" size="48" />
             <div>新增圖片(0/1)</div>
           </div>
 
-          <div v-else class="">
-            <img :src="teacherInfo.photo" alt="avatar" />
+          <div
+            v-else
+            class="h-[180px] min-h-[180px] w-[180px] min-w-[180px] overflow-hidden rounded"
+          >
+            <img :src="teacherInfo.photo" alt="avatar" class="pic-auto" />
           </div>
         </div>
       </div>
