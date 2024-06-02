@@ -46,11 +46,11 @@ const checkAccount = () => {
   } else {
     isAccountError.value = false
     accountErrorText.value = ''
-  }
-
-  if (account.value !== '') {
     checkAccountDuplicate()
   }
+
+  //   if (account.value !== '') {
+  //   }
 }
 
 // * 評論連結
@@ -193,6 +193,13 @@ async function submitApply() {
     showToast('請填寫完整資訊', 'error')
     return
   }
+
+  // 再次確認
+  const dialogresult = await openDialog(
+    '確認送出申請表',
+    '送出申請後，資料將無法修改，巧手玩藝將審核您的資料，審核結果將會寄送至電子信箱，您是否繼續?'
+  )
+  if (!dialogresult.confirmed) return
 
   try {
     showLoading()

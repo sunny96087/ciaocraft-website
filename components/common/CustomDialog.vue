@@ -91,6 +91,6 @@ import {
 }
 
 .check {
-  @apply bg-danger text-white;
+  @apply bg-primary text-white;
 }
 </style>
