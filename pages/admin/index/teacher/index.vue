@@ -158,7 +158,7 @@ async function deleteCourse(teacherId: string) {
       <div class="table-body min-w-[1200px] grid-cols-11" v-for="item in teacherInfo">
         <div class="col-span-1">{{ item.order }}</div>
         <div class="col-span-1">{{ item.name }}</div>
-        <div class="col-span-3">{{ item.description }}</div>
+        <div class="col-span-3">{{ item.intro }}</div>
         <div class="col-span-3">{{ item.createdAt }}</div>
         <div class="col-span-1">
           <div>

@@ -185,7 +185,7 @@ const sendForgetEmail = async () => {
         <div class="mt-10 flex justify-center gap-5 lg:mt-[60px] lg:justify-end">
           <div class="cursor-pointer" @click="tab = 1">忘記密碼</div>
           <span>|</span>
-          <nuxt-link to="/">成為賣家</nuxt-link>
+          <nuxt-link to="/vendorApply">成為賣家</nuxt-link>
         </div>
       </div>
 
