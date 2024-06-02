@@ -1,0 +1,164 @@
+/* todo 通用 */
+.pic-auto {
+  width: 100%;
+  height: 100%;
+  /* vertical-align: top; */
+  object-fit: cover;
+}
+
+.hover-auto {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+/* todo 後台樣式 */
+
+/* ? 標題 */
+.admin-page-title {
+  @apply mb-[28px] w-full text-[24px] font-semibold;
+}
+
+.admin-page-block {
+  @apply w-full bg-white px-10 py-8;
+}
+
+.admin-page-block-with-header {
+  @apply w-full overflow-hidden rounded-[8px] bg-white;
+}
+
+.admin-block-title {
+  @apply mb-6 w-full text-[14px] font-bold;
+}
+
+.admin-block {
+  @apply w-full overflow-auto rounded-[8px] bg-white;
+}
+
+/* ? 輸入框 input */
+.row-input {
+  @apply flex items-center gap-8;
+}
+
+.row-input-title {
+  @apply w-20 min-w-20 font-medium;
+}
+
+.row-input-title-gray {
+  @apply w-20 min-w-20 font-medium text-gray;
+}
+
+.row-input-title-area {
+  @apply mt-1 w-20 min-w-20 self-start font-medium;
+}
+
+.row-input-title-area-gray {
+  @apply mt-1 w-20 min-w-20 self-start font-medium text-gray;
+}
+
+.admin-input {
+  @apply w-full rounded-[8px] border border-[#AAAAAA] px-3 py-2 font-medium;
+}
+
+.admin-input::placeholder {
+  color: #aaaaaa;
+}
+
+.admin-input-error {
+  @apply border-[var(--color-danger)];
+}
+
+.admin-input-error-note {
+  @apply mt-[2px] text-[12px] text-[var(--color-danger)];
+}
+
+.admin-input-disabled {
+  @apply border-[#8899A8] bg-[#EBEBEB] text-[#AAAAAA];
+}
+
+.admin-radio-row {
+  @apply flex w-full flex-wrap gap-6;
+}
+
+.admin-radio-row-label {
+  @apply flex cursor-pointer gap-3;
+}
+
+/* ? 下拉選單 Select */
+.admin-select {
+  @apply w-full rounded-lg border border-text-secondary bg-white px-3 py-2;
+}
+
+/* ? 按鈕 btn */
+
+/* 黑底白字 w-full */
+.btn-black {
+  @apply w-full rounded-[4px] bg-black py-2 text-white;
+}
+
+/* 不可選取 w-full */
+.btn-disabled {
+  @apply w-full cursor-not-allowed rounded-[4px] bg-[var(--color-gray3)] py-2 text-[#AAAAAA];
+}
+
+/* 不可選取 inline */
+.btn-disabled-outline {
+  @apply cursor-not-allowed rounded-[8px] border border-[#A3B5C9] px-4 py-2 text-[#A3B5C9];
+}
+
+/* 橘邊橘字 inline */
+.btn-orange-outline {
+  @apply rounded-[8px] border border-[var(--color-primary)] px-4 py-2 text-[var(--color-primary)];
+}
+
+/* 橘底白字 inline */
+.btn-orange {
+  @apply rounded-[8px] bg-[var(--color-primary)] px-4 py-2 font-medium text-white;
+}
+
+.btn-orange-icon {
+  @apply flex items-center gap-2;
+}
+
+/* ? 彈窗 Modal */
+
+.modal-bg {
+  @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 p-5;
+}
+
+.modal-box {
+  @apply max-h-full min-w-full overflow-auto rounded-lg bg-white p-8 md:min-w-[580px];
+}
+
+.modal-top {
+  @apply mb-12 flex items-center justify-between;
+}
+
+.modal-title {
+  @apply text-[24px] font-medium;
+}
+
+.modal-footer {
+  @apply mt-12;
+}
+
+/* ? 表格 Table */
+.table-block {
+  @apply w-full overflow-x-auto bg-white;
+}
+
+.table-header {
+  @apply grid w-full gap-2 bg-primary px-8 py-3 text-white;
+}
+
+.table-body {
+  @apply grid w-full gap-2 px-8 py-6;
+}
+
+.table-th-icon {
+  @apply flex cursor-pointer items-center gap-1;
+}
+
+/* ? 麵包屑 Breadcrumbs */
+
+.admin-breadcrumbs {
+  @apply mb-7 flex items-center gap-3 text-gray;
+}
