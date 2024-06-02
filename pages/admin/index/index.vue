@@ -4,9 +4,20 @@ import { APIStore } from '~/stores/apiService'
 const store = APIStore()
 import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
 
+import { Chart, registerables } from 'chart.js'
+
 const overviewInfo: any = ref({})
 
 const dateMode = ref('7days')
+
+// NOTE Chert.js
+
+// 註冊所有可用的圖表類型
+Chart.register(...registerables)
+
+// 定義一個 ref 來存儲 canvas 的引用
+const sevenDaysChart: any = ref(null)
+const thirtyDaysChart: any = ref(null)
 
 onMounted(() => {
   getOverviewData()
@@ -19,10 +30,174 @@ async function getOverviewData() {
 
     const res = await store.apiGetAdminOverview()
     const result = res.data
-    console.log(`getOverviewData result = ${JSON.stringify(result)}`)
+    // console.log(`getOverviewData result = ${JSON.stringify(result)}`)
+
     if (result.statusCode === 200) {
       overviewInfo.value = result.data
-      console.log(`overviewInfo = ${JSON.stringify(overviewInfo.value)}`)
+      // console.log(`overviewInfo = ${JSON.stringify(overviewInfo.value)}`)
+
+      // 獲取畫布的2D繪圖上下文
+      const ctx = sevenDaysChart.value.getContext('2d')
+
+      // NOTE 7Days Chart => 檢查salesDataLast7Days是否為陣列
+      if (Array.isArray(overviewInfo.value.salesDataLast7Days)) {
+        // 獲取所有的課程期數
+        const courseTerms = Array.from(
+          new Set(
+            overviewInfo.value.salesDataLast7Days.flatMap((day: { sales: any[] }) =>
+              day.sales.map((sale) => sale.courseTerm)
+            )
+          )
+        ).sort((a: any, b: any) => a - b) // 由小到大排序
+
+        // 獲取最近七天的日期
+        const last7Days = Array.from({ length: 7 }, (_, i) => {
+          const d = new Date()
+          d.setDate(d.getDate() - i)
+          return d.toISOString().split('T')[0] // 轉換為 YYYY-MM-DD 格式
+        }).reverse()
+
+        const colors = {
+          0: { backgroundColor: '#EA580C0D', borderColor: '#EA580C' }, // 體驗課的顏色
+          1: { backgroundColor: '#005C690D', borderColor: '#005C69' } // 培訓課的顏色
+          // 其他課程期數的顏色
+        }
+
+        // 為每一種課程期數創建一個數據集
+        const datasets = courseTerms.map((courseTerm) => {
+          return {
+            label:
+              courseTerm === 0
+                ? '體驗課'
+                : courseTerm === 1
+                  ? '培訓課'
+                  : `Course Term ${courseTerm}`,
+            data: last7Days.map((date) => {
+              // 在該課程有銷售數據的天數中添加數據，否則添加0
+              const day = overviewInfo.value.salesDataLast7Days.find(
+                (day: { date: string }) => day.date === date
+              )
+              const sale = day
+                ? day.sales.find((sale: { courseTerm: any }) => sale.courseTerm === courseTerm)
+                : null
+              return sale ? sale.totalSales : 0
+            }),
+            fill: true,
+            backgroundColor: colors[courseTerm] ? colors[courseTerm].backgroundColor : '#abc',
+            borderColor: colors[courseTerm] ? colors[courseTerm].borderColor : '#abc',
+            tension: 0.1
+          }
+        })
+
+        // 創建一個新的圖表
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: last7Days.map((date) => `${date.split('-')[1]}/${date.split('-')[2]}`), // 轉換為 MM/DD 格式
+            datasets: datasets
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  var dataset = data.datasets[tooltipItem.datasetIndex]
+                  var total = dataset.data.reduce(
+                    function (previousValue, currentValue, currentIndex, array) {
+                      return previousValue + currentValue
+                    }
+                  )
+                  var currentValue = dataset.data[tooltipItem.index]
+                  var percentage = Math.floor((currentValue / total) * 100 + 0.5)
+                  return percentage + '%'
+                }
+              }
+            }
+          }
+        })
+      }
+
+      // NOTE 30Days Chart => 檢查salesDataLast30Days是否為陣列
+      if (Array.isArray(overviewInfo.value.salesDataLast30Days)) {
+        // 獲取所有的課程期數
+        const courseTerms = Array.from(
+          new Set(
+            overviewInfo.value.salesDataLast30Days.flatMap((day) =>
+              day.sales.map((sale) => sale.courseTerm)
+            )
+          )
+        )
+
+        // 獲取最近三十天的日期
+        const last30Days = Array.from({ length: 30 }, (_, i) => {
+          const d = new Date()
+          d.setDate(d.getDate() - i)
+          return d.toISOString().split('T')[0] // 轉換為 YYYY-MM-DD 格式
+        }).reverse()
+
+        const colors = {
+          0: { backgroundColor: '#EA580C0D', borderColor: '#EA580C' }, // 體驗課的顏色
+          1: { backgroundColor: '#005C690D', borderColor: '#005C69' } // 培訓課的顏色
+          // 其他課程期數的顏色
+        }
+
+        // 為每一種課程期數創建一個數據集
+        const datasets = courseTerms.map((courseTerm) => {
+          return {
+            label:
+              courseTerm === 0
+                ? '體驗課'
+                : courseTerm === 1
+                  ? '培訓課'
+                  : `Course Term ${courseTerm}`,
+            data: last30Days.map((date) => {
+              // 在該課程有銷售數據的天數中添加數據，否則添加0
+              const day = overviewInfo.value.salesDataLast30Days.find((day) => day.date === date)
+              const sale = day ? day.sales.find((sale) => sale.courseTerm === courseTerm) : null
+              return sale ? sale.totalSales : 0
+            }),
+            fill: true,
+            backgroundColor: colors[courseTerm] ? colors[courseTerm].backgroundColor : '#abc',
+            borderColor: colors[courseTerm] ? colors[courseTerm].borderColor : '#abc',
+            tension: 0.1
+          }
+        })
+
+        // 創建一個新的圖表
+        new Chart(thirtyDaysChart.value, {
+          type: 'line',
+          data: {
+            labels: last30Days.map((date) => date.split('-')[2]), // 轉換為 DD 格式
+            datasets: datasets
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  var dataset = data.datasets[tooltipItem.datasetIndex]
+                  var total = dataset.data.reduce(
+                    function (previousValue, currentValue, currentIndex, array) {
+                      return previousValue + currentValue
+                    }
+                  )
+                  var currentValue = dataset.data[tooltipItem.index]
+                  var percentage = Math.floor((currentValue / total) * 100 + 0.5)
+                  return percentage + '%'
+                }
+              }
+            }
+          }
+        })
+      }
     } else {
       console.log('取得儀表板資料失敗')
     }
@@ -88,7 +263,7 @@ async function getOverviewData() {
           </div>
         </div>
 
-        <div v-if="dateMode === '7days'">
+        <div v-show="dateMode === '7days'">
           <!-- 營收數據 -->
           <div class="mt-4 grid rounded-[8px] bg-[#FFF9F6] px-[36px] py-[32px] lg:grid-cols-3">
             <div class="payment-item">
@@ -107,13 +282,14 @@ async function getOverviewData() {
             </div>
           </div>
           <!-- 營收圖表 -->
-          <div class="mt-4">圖表待處理</div>
           <div class="mt-4">
-            <pre>{{ overviewInfo.salesDataLast7Days }}</pre>
+            <ClientOnly>
+              <canvas ref="sevenDaysChart" class="w-full"></canvas>
+            </ClientOnly>
           </div>
         </div>
 
-        <div v-else>
+        <div v-show="dateMode === '30days'">
           <!-- 營收數據 -->
           <div class="mt-4 grid rounded-[8px] bg-[#FFF9F6] px-[36px] py-[32px] lg:grid-cols-3">
             <div class="payment-item">
@@ -132,9 +308,10 @@ async function getOverviewData() {
             </div>
           </div>
           <!-- 營收圖表 -->
-          <div class="mt-4">圖表待處理</div>
           <div class="mt-4">
-            <pre>{{ overviewInfo.salesDataLast30Days }}</pre>
+            <ClientOnly>
+              <canvas ref="thirtyDaysChart" class="w-full"></canvas>
+            </ClientOnly>
           </div>
         </div>
       </div>
@@ -163,6 +340,7 @@ async function getOverviewData() {
         </div>
       </div>
 
+      <!-- 
       <div class="admin-block-title mt-6">銷售佔比</div>
 
       <div v-if="dateMode === '7days'" class="admin-block flex flex-col px-[48px] py-[32px]">
@@ -172,7 +350,8 @@ async function getOverviewData() {
       <div v-else class="admin-block flex flex-col px-[48px] py-[32px]">
         圖表待處理
         <pre>{{ overviewInfo.salesSummaryLast30Days }}</pre>
-      </div>
+      </div> 
+      -->
     </div>
   </div>
 </template>
