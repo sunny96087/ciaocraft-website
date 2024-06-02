@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <header class="mb-5 border-b border-[#DFE4EA]">
+  <header class="border-b border-[#DFE4EA] pb-5">
     <front-header />
   </header>
   <main>

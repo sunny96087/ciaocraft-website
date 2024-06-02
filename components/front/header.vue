@@ -34,7 +34,9 @@ const toggleUser = (): void => {
         <li class="hidden lg:block">
           <ul class="flex items-center">
             <li class="pr-6 text-primary">
-              <a href="#" class="px-6 py-2 hover:text-primary-light">我要開課</a>
+              <NuxtLink to="/vendorApply" class="px-6 py-2 hover:text-primary-light"
+                >我要開課</NuxtLink
+              >
             </li>
             <li class="pr-6 text-white">
               <button class="rounded bg-primary px-6 py-2 hover:bg-primary-light">登入/註冊</button>
@@ -92,7 +94,9 @@ const toggleUser = (): void => {
         <li class="relative hidden lg:block">
           <ul class="flex items-center">
             <li class="pr-6 text-primary">
-              <a href="#" class="px-6 py-2 hover:text-primary-light">我要開課</a>
+              <NuxtLink to="/vendorApply" class="px-6 py-2 hover:text-primary-light"
+                >我要開課</NuxtLink
+              >
             </li>
             <li class="pr-6">
               <a href="#"
@@ -259,7 +263,9 @@ const toggleUser = (): void => {
         >
       </li>
       <li class="mt-3">
-        <a href="#" class="block py-2 pl-5 hover:text-primary-light">我要開課</a>
+        <NuxtLink to="/vendorApply" class="block py-2 pl-5 hover:text-primary-light"
+          >我要開課</NuxtLink
+        >
       </li>
       <li><a href="#" class="block py-2 pl-5 hover:text-primary-light">如何累積點數</a></li>
     </ul>
@@ -355,7 +361,11 @@ const toggleUser = (): void => {
           />登出</a
         >
       </li>
-      <li><a href="#" class="block py-2 pl-5 hover:text-primary-light">我要開課</a></li>
+      <li>
+        <NuxtLink to="/vendorApply" class="block py-2 pl-5 hover:text-primary-light"
+          >我要開課</NuxtLink
+        >
+      </li>
     </ul>
   </div>
   <!-- 桌機時頭像點擊後出現選單-已登入(2擇1) -->
