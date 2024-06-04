@@ -92,7 +92,8 @@ watch(roomId, async (newRoomId) => {
   }
 
   // 建立新的 WebSocket 連線
-  ws = new WebSocket('ws://localhost:3666/ws')
+  // ws = new WebSocket('ws://localhost:3666/ws')
+  ws = new WebSocket('wss://ciaocraft-api.onrender.com/ws')
 
   ws.onopen = () => {
     console.log('Connected to WebSocket')
@@ -290,7 +291,7 @@ onUpdated(scrollToBottomM)
     </div>
 
     <!-- * mb 聊天框 -->
-    <div class="m-message-block" v-if="messages.length">
+    <div class="m-message-block" v-if="messages && roomId">
       <!-- ? 測試資料 -->
       <!-- <div>
         <p>
@@ -406,7 +407,7 @@ onUpdated(scrollToBottomM)
     </div>
 
     <!-- * pc 聊天框 -->
-    <div class="message-block" v-if="messages.length">
+    <div class="message-block" v-if="messages && roomId">
       <!-- ? 測試資料 -->
       <!-- <div>
         <p>

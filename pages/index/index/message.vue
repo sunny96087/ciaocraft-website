@@ -4,6 +4,7 @@ const store = APIStore()
 import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
 
 const route = useRoute()
+// http://localhost:3000/message?vendorId=66517253807e0d84e5c8d514
 
 let ws: any
 
@@ -32,83 +33,6 @@ const sendMemberMessage = () => {
   inputMemberMessage.value = ''
 }
 
-watch(roomId, async (newRoomId) => {
-  if (roomId.value === '') return
-
-  // 如果已經存在一個開啟的 WebSocket 連線，則先關閉它
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    ws.close()
-  }
-
-  // * 獲取指定廠商的所有聊天室
-  try {
-    showLoading()
-    let data = {
-      memberId: memberId.value
-    }
-    const res = await store.apiGetMemberRooms(data)
-    const result = res.data
-    if (result && result.statusCode === 200) {
-      rooms.value = result.data
-    }
-  } catch (e) {
-    console.log(e)
-  } finally {
-    hideLoading()
-  }
-
-  // 當 roomId 改變時，重新獲取該聊天室的訊息
-  try {
-    showLoading()
-    let data = {
-      roomId: newRoomId
-    }
-    const res = await store.apiGetMessages(data)
-    const result = res.data
-    if (result && result.statusCode === 200) {
-      messages.value = result.data.messages
-      currentVendorInfo.value = result.data.vendor
-    }
-  } catch (e) {
-    console.log(e)
-  } finally {
-    hideLoading()
-  }
-
-  // 建立新的 WebSocket 連線
-  ws = new WebSocket('ws://localhost:3666/ws')
-
-  ws.onopen = () => {
-    console.log('Connected to WebSocket')
-    ws.send(
-      JSON.stringify({ roomId: roomId.value, memberId: memberId.value, vendorId: vendorId.value })
-    )
-  }
-
-  ws.onmessage = (message: { data: string }) => {
-    const data = JSON.parse(message.data)
-    if (data.context === 'user') {
-      spanUUID.value = data.uuid
-    } else if (
-      data.context === 'message' &&
-      data.roomId === roomId.value &&
-      data.uuid !== spanUUID.value
-    ) {
-      messages.value.push(data)
-    }
-  }
-
-  ws.onclose = function () {
-    console.log('WebSocket connection closed')
-  }
-})
-
-const selectRoom = (room: { _id: string; vendorId: { _id: string } }) => {
-  // 點擊聊天室列表的項目時，將該聊天室的 ID 設置為當前的 roomId
-  roomId.value = room._id
-  vendorId.value = room.vendorId._id
-}
-
 onMounted(async () => {
   //   const memberInfo = await store.getVendorInfoFromLocalStorage()
   //   console.log(memberInfo)
@@ -135,7 +59,7 @@ onMounted(async () => {
         console.log(`rooms: ${JSON.stringify(rooms.value)}`)
 
         const room = await rooms.value.find((room: any) => room.vendorId?._id === vendorId.value)
-        console.log(`room: ${room}`)
+        console.log(`room: ${JSON.stringify(room)}`)
 
         if (room) {
           roomId.value = room._id // 如果存在聊天室，則設置 roomId
@@ -186,13 +110,91 @@ onMounted(async () => {
   }
 })
 
+watch(roomId, async (newRoomId) => {
+  if (roomId.value === '') return
+
+  // 如果已經存在一個開啟的 WebSocket 連線，則先關閉它
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.close()
+  }
+
+  // * 獲取指定廠商的所有聊天室
+  try {
+    showLoading()
+    let data = {
+      memberId: memberId.value
+    }
+    const res = await store.apiGetMemberRooms(data)
+    const result = res.data
+    if (result && result.statusCode === 200) {
+      rooms.value = result.data
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
+
+  // 當 roomId 改變時，重新獲取該聊天室的訊息
+  try {
+    showLoading()
+    let data = {
+      roomId: newRoomId
+    }
+    const res = await store.apiGetMessages(data)
+    const result = res.data
+    if (result && result.statusCode === 200) {
+      messages.value = result.data.messages
+      currentVendorInfo.value = result.data.vendor
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
+
+  // 建立新的 WebSocket 連線 https://ciaocraft-api.onrender.com
+  //   ws = new WebSocket('ws://localhost:3666/ws')
+  ws = new WebSocket('wss://ciaocraft-api.onrender.com/ws')
+
+  ws.onopen = () => {
+    console.log('Connected to WebSocket')
+    ws.send(
+      JSON.stringify({ roomId: roomId.value, memberId: memberId.value, vendorId: vendorId.value })
+    )
+  }
+
+  ws.onmessage = (message: { data: string }) => {
+    const data = JSON.parse(message.data)
+    if (data.context === 'user') {
+      spanUUID.value = data.uuid
+    } else if (
+      data.context === 'message' &&
+      data.roomId === roomId.value &&
+      data.uuid !== spanUUID.value
+    ) {
+      messages.value.push(data)
+    }
+  }
+
+  ws.onclose = function () {
+    console.log('WebSocket connection closed')
+  }
+})
+
+const selectRoom = (room: { _id: string; vendorId: { _id: string } }) => {
+  // 點擊聊天室列表的項目時，將該聊天室的 ID 設置為當前的 roomId
+  roomId.value = room._id
+  vendorId.value = room.vendorId._id
+}
+
 const closeChatRoom = () => {
   if (ws && ws.readyState === WebSocket.OPEN) {
     ws.close()
   }
   roomId.value = ''
-  memberId.value = ''
-  // vendorId.value = ''
+  //   memberId.value = ''
+  vendorId.value = ''
   currentVendorInfo.value = {}
   inputMemberMessage.value = ''
   // rooms.value = []
@@ -276,7 +278,7 @@ onUpdated(scrollToBottomM)
       </div>
 
       <!-- * mb 聊天框 -->
-      <div class="m-message-block" v-if="messages.length">
+      <div class="m-message-block" v-if="messages && roomId">
         <!-- ? 測試資料 -->
         <!-- <div>
             <p>
@@ -394,7 +396,7 @@ onUpdated(scrollToBottomM)
       </div>
 
       <!-- * pc 聊天框 -->
-      <div class="message-block" v-if="messages.length">
+      <div class="message-block" v-if="messages && roomId">
         <!-- ? 測試資料 -->
         <!-- <div>
             <p>
