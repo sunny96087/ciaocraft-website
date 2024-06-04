@@ -289,6 +289,9 @@ onUpdated(scrollToBottomM)
         </div>
       </div>
     </div>
+    <div v-else class="text-center text-gray">
+      目前還沒有聊天室歐，可以到訂單管理開啟與消費者的問答！
+    </div>
 
     <!-- * mb 聊天框 -->
     <div class="m-message-block" v-if="messages && roomId">
@@ -366,6 +369,7 @@ onUpdated(scrollToBottomM)
       <button type="button" id="memberSendBtn" @click="sendMemberMessage">會員送出</button> 
     --></div>
   </div>
+
   <!-- * pc -->
   <div class="hidden h-[90vh] items-start gap-[30px] overflow-hidden lg:flex">
     <!-- * pc 聊天室列表 -->
@@ -404,6 +408,9 @@ onUpdated(scrollToBottomM)
           </div>
         </div>
       </div>
+    </div>
+    <div v-else class="text-center text-gray">
+      目前還沒有聊天室歐，可以到訂單管理開啟與消費者的問答！
     </div>
 
     <!-- * pc 聊天框 -->

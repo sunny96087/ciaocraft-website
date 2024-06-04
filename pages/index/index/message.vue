@@ -276,6 +276,9 @@ onUpdated(scrollToBottomM)
           </div>
         </div>
       </div>
+      <div v-else class="text-center text-gray">
+        目前還沒有聊天室，可以到品牌賣場或訂單管理進行詢問或建議歐！
+      </div>
 
       <!-- * mb 聊天框 -->
       <div class="m-message-block" v-if="messages && roomId">
@@ -393,6 +396,9 @@ onUpdated(scrollToBottomM)
             </div>
           </div>
         </div>
+      </div>
+      <div v-else class="text-center text-gray">
+        目前還沒有聊天室，可以到品牌賣場或訂單管理進行詢問或建議歐！
       </div>
 
       <!-- * pc 聊天框 -->

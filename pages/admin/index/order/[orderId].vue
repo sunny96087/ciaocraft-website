@@ -158,9 +158,12 @@ async function confirmCancelPaymeny() {
 
     <!-- * btn -->
     <div class="mb-7 flex justify-end">
-      <button class="btn-orange btn-orange-icon">
+      <nuxt-link
+        :to="{ path: '/admin/message', query: { memberId: order.memberId?._id } }"
+        class="btn-orange btn-orange-icon"
+      >
         <Icon size="24" name="ph:chat-centered-dots-light" />訊息中心
-      </button>
+      </nuxt-link>
     </div>
 
     <!-- >> Info -->
