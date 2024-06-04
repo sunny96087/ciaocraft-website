@@ -2,7 +2,6 @@
 import { APIStore } from '~/stores/apiService'
 const store = APIStore()
 import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
-import axios from 'axios'
 
 const router = useRouter()
 const route = useRoute()
@@ -325,7 +324,7 @@ onUpdated(scrollToBottomM)
           <div v-if="message.memberId">
             <div class="text-[14px] text-text-secondary">{{ currentMemberInfo.name }}</div>
             <div class="message left">
-              <div class="left-context">{{ message.content }}</div>
+              <div class="left-content">{{ message.content }}</div>
             </div>
             <div class="message-date">{{ message.timestamp }}</div>
           </div>
@@ -441,7 +440,7 @@ onUpdated(scrollToBottomM)
           <div v-if="message.memberId">
             <div class="text-[14px] text-text-secondary">{{ currentMemberInfo.name }}</div>
             <div class="message left">
-              <div class="left-context">{{ message.content }}</div>
+              <div class="left-content">{{ message.content }}</div>
             </div>
             <div class="message-date">{{ message.timestamp }}</div>
           </div>

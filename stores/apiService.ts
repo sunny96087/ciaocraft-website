@@ -285,6 +285,10 @@ export const APIStore = defineStore({
     async apiGetVendorRooms(data: JsonObject) {
       return await axios.get(`${this.api}messages/admin/rooms/${data.vendorId}`)
     },
+    // * 獲取指定會員的所有聊天室
+    async apiGetMemberRooms(data: JsonObject) {
+      return await axios.get(`${this.api}messages/rooms/${data.memberId}`)
+    },
     // * 建立聊天室
     async apiCreateRoom(data: JsonObject) {
       return await axios.post(`${this.api}messages/rooms`, data)
