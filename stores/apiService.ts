@@ -7,10 +7,10 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      // api: 'http://localhost:3666/',
+      api: 'http://localhost:3666/',
 
       // 線上
-      api: 'https://ciaocraft-api.onrender.com/',
+      // api: 'https://ciaocraft-api.onrender.com/',
 
       vendorInfo: null as any | null, // 用戶資料，初始為 null
       isVendorLoggedIn: false // 登入狀態
@@ -275,6 +275,19 @@ export const APIStore = defineStore({
           token: vendorToken
         }
       })
+    },
+    // todo 取得歷史訊息 messages
+    // * 取得該聊天室所有訊息 (Back)
+    async apiGetMessages(data: JsonObject) {
+      return await axios.get(`${this.api}messages/${data.roomId}`)
+    },
+    // * 獲取指定廠商的所有聊天室
+    async apiGetVendorRooms(data: JsonObject) {
+      return await axios.get(`${this.api}messages/admin/rooms/${data.vendorId}`)
+    },
+    // * 建立聊天室
+    async apiCreateRoom(data: JsonObject) {
+      return await axios.post(`${this.api}messages/rooms`, data)
     },
 
     // todo 賣家 上傳圖片 upload
