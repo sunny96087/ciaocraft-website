@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
+import { useAuthStore } from '~/stores/authStore'
 
 // 定義 isMenuOpen 為布林類型的 ref
 // 使用 ref 管理漢堡選單的顯示狀態
@@ -15,6 +16,28 @@ const toggleMenu = (): void => {
 
 const toggleUser = (): void => {
   isUserOpen.value = !isUserOpen.value
+}
+
+const authStore = useAuthStore()
+const isLogin = ref<boolean>(authStore.isLogin)
+
+// 監聽 authStore 的 isLogin 狀態
+watch(
+  () => isLogin,
+  (value) => {
+    if (value) {
+      console.log('已登入')
+    }
+  }
+)
+
+console.log(isLogin.value)
+
+// 登入/註冊 modal 控制
+const isLoginModalOpen = ref<boolean>(false)
+const openLoginModal = (): void => {
+  isLoginModalOpen.value = !isLoginModalOpen.value
+  isMenuOpen.value = false
 }
 </script>
 
@@ -39,7 +62,12 @@ const toggleUser = (): void => {
               >
             </li>
             <li class="pr-6 text-white">
-              <button class="rounded bg-primary px-6 py-2 hover:bg-primary-light">登入/註冊</button>
+              <button
+                class="rounded bg-primary px-6 py-2 hover:bg-primary-light"
+                @click="openLoginModal"
+              >
+                登入/註冊
+              </button>
             </li>
             <li class="pr-6 text-white">
               <button class="rounded bg-primary px-6 py-2 hover:bg-primary-light">
@@ -78,6 +106,7 @@ const toggleUser = (): void => {
       </ul>
     </div>
   </div>
+
   <!-- 已登入 -->
   <div class="mx-9 hidden lg:mx-[100px]">
     <div class="mx-auto max-w-screen-xl">
@@ -255,7 +284,9 @@ const toggleUser = (): void => {
       ]"
     >
       <li class="border-b border-[#AAAAAA]">
-        <a href="#" class="block p-2 pb-5 pl-5 hover:text-primary-light">登入/註冊</a>
+        <a href="#" class="block p-2 pb-5 pl-5 hover:text-primary-light" @click="openLoginModal"
+          >登入/註冊</a
+        >
       </li>
       <li>
         <NuxtLink to="/adminLogin" class="block p-2 pb-5 pl-5 hover:text-primary-light"
@@ -454,6 +485,9 @@ const toggleUser = (): void => {
       </li>
     </ul>
   </div> -->
+
+  <!-- 登入/註冊彈窗 -->
+  <FrontLoginModal v-if="isLoginModalOpen" @close="isLoginModalOpen = false"></FrontLoginModal>
 </template>
 
 <style scoped></style>

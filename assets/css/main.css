@@ -16,6 +16,12 @@ body {
   color: var(--color-text-primary);
 }
 
+input:-webkit-autofill {
+  background: transparent;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: unset;
+}
+
 /* 共用消樣式 */
 input:focus-visible {
   outline: none;
@@ -28,3 +34,25 @@ select:focus-visible {
 textarea:focus-visible {
   outline: none;
 }
+
+/* ? 彈窗 Modal */
+
+.modal-bg {
+  @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 p-5;
+}
+
+.modal-box {
+  @apply max-h-full min-w-full overflow-auto rounded-lg bg-white p-8 md:min-w-[580px];
+}
+
+/* .modal-top {
+  @apply mb-12 flex items-center justify-between;
+} */
+
+.modal-title {
+  @apply text-[24px] font-medium;
+}
+
+/* .modal-footer {
+  @apply mt-12;
+} */
