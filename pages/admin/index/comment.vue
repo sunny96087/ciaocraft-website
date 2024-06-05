@@ -81,7 +81,7 @@ function closeDialog() {
     <div class="mb-7 flex w-full flex-col items-start gap-3">
       <div class="flex w-full flex-col gap-3 lg:flex-row">
         <!-- Tags -->
-        <select v-model="currentTags" class="admin-select w-[180px] max-w-[180px] shrink-0">
+        <select v-model="currentTags" class="admin-select w-full shrink-0 lg:max-w-[180px]">
           <option value="-1">全部類型</option>
           <option value="師生互動">師生互動</option>
           <option value="教學環境">教學環境</option>
@@ -90,7 +90,7 @@ function closeDialog() {
         </select>
 
         <!-- Sort -->
-        <select v-model="currentSort" class="admin-select w-[180px] max-w-[180px] shrink-0">
+        <select v-model="currentSort" class="admin-select w-full shrink-0 lg:max-w-[180px]">
           <option value="createdAtDesc">建立日期新到舊</option>
           <option value="createdAtAsc">建立日期舊到新</option>
           <option value="ratingAsc">評分高到低</option>
@@ -98,12 +98,12 @@ function closeDialog() {
         </select>
 
         <!-- Keyword -->
-        <div class="admin-select flex w-[360px] max-w-[360px] shrink-0">
+        <div class="admin-select flex w-full shrink-0 lg:max-w-[360px]">
           <input
             type="text"
             class="w-full"
             v-model="currentKeyword"
-            placeholder="訂單編號/評價內容"
+            placeholder="完整訂單編號/評價內容"
           />
           <button class="" @click="getCommentsData">
             <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
@@ -112,7 +112,7 @@ function closeDialog() {
       </div>
 
       <!-- Date -->
-      <div class="flex gap-3">
+      <div class="flex w-full flex-col gap-3 sm:flex-row">
         <input type="date" class="admin-select w-full md:w-[180px]" v-model="currentStartDate" />
         <input type="date" class="admin-select w-full md:w-[180px]" v-model="currentEndDate" />
         <button class="btn-orange-outline shrink-0" @click="getCommentsData">日期查詢</button>

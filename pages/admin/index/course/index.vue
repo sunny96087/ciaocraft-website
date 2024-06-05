@@ -60,9 +60,21 @@ function toggleStartDate() {
 }
 
 // NOTE 刪除課程 (偽刪除) (Back)
-async function deleteCourse(courseId: string) {
+async function deleteCourse(courseId: string, latestEndTime: string) {
+  // 將 latestEndTime 轉換為 Date 物件
+  const latestEndTimeDate = new Date(latestEndTime)
+
+  // 獲取今天的日期
+  const today = new Date()
+
+  // 如果 latestEndTime 大於今天，則返回錯誤訊息並停止執行函數
+  if (latestEndTimeDate > today) {
+    showToast('該課程還有販售中項目，不可刪除', 'error')
+    return
+  }
+
   const confirmed = await openDialog('注意', '刪除後不可復原，確定要刪除嗎？')
-  if (!confirmed) {
+  if (!confirmed.confirmed) {
     return
   }
 
@@ -122,13 +134,13 @@ async function deleteCourse(courseId: string) {
       class="mb-7 flex w-full flex-col items-start lg:flex-row lg:items-center lg:justify-between"
     >
       <div class="flex w-full flex-col gap-3 lg:flex-row">
-        <select v-model="currentCourseTerm" class="admin-select w-[180px] max-w-[180px] shrink-0">
+        <select v-model="currentCourseTerm" class="admin-select w-full shrink-0 lg:max-w-[180px]">
           <option value="-1">全部</option>
           <option value="0">體驗課</option>
           <option value="1">培訓課</option>
         </select>
 
-        <div class="admin-select flex w-[360px] max-w-[360px] shrink-0">
+        <div class="admin-select flex w-full shrink-0 lg:max-w-[360px]">
           <input type="text" class="w-full" v-model="currentKeyword" placeholder="課程名稱/老師" />
           <button class="" @click="getCoursesData">
             <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
@@ -170,7 +182,7 @@ async function deleteCourse(courseId: string) {
           <nuxt-link :to="{ path: '/admin/course/edit', query: { id: item._id } }">
             <Icon name="ic:round-edit-note" size="24" class="text-dark3"></Icon>
           </nuxt-link>
-          <button @click="deleteCourse(item._id)">
+          <button @click="deleteCourse(item._id, item.latestEndTime)">
             <Icon name="solar:trash-bin-trash-outline" size="24" class="text-danger"></Icon>
           </button>
         </div>

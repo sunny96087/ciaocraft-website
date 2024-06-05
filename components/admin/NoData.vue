@@ -5,7 +5,7 @@
     <div class="w-full max-w-[300px]">
       <img src="~/assets/images/admin/nodata.png" alt="nodata" class="pic-auto" />
     </div>
-    <div class="mt-7 text-[14px]">沒有課程</div>
+    <div class="mt-7 text-[14px]">沒有資料</div>
   </div>
 </template>
 

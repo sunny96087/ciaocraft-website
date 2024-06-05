@@ -80,72 +80,74 @@ const convertStatus = (status: any) => statusMap[status]
     <!-- ? 匯出表格 先緩緩 -->
 
     <!-- * tab -->
-    <div class="admin-tab">
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '-1' }"
-        @click="currentPaidStatus = '-1'"
-      >
-        全部
-      </div>
+    <div class="hide-scrollbar overflow-auto">
+      <div class="admin-tab">
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '-1' }"
+          @click="currentPaidStatus = '-1'"
+        >
+          全部
+        </div>
 
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '0' }"
-        @click="currentPaidStatus = '0'"
-      >
-        待付款
-      </div>
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '0' }"
+          @click="currentPaidStatus = '0'"
+        >
+          待付款
+        </div>
 
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '1' }"
-        @click="currentPaidStatus = '1'"
-      >
-        待確認
-      </div>
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '1' }"
+          @click="currentPaidStatus = '1'"
+        >
+          待確認
+        </div>
 
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '2' }"
-        @click="currentPaidStatus = '2'"
-      >
-        已確認
-      </div>
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '2' }"
+          @click="currentPaidStatus = '2'"
+        >
+          已確認
+        </div>
 
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '3' }"
-        @click="currentPaidStatus = '3'"
-      >
-        已完課
-      </div>
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '3' }"
+          @click="currentPaidStatus = '3'"
+        >
+          已完課
+        </div>
 
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '4' }"
-        @click="currentPaidStatus = '4'"
-      >
-        不成立
-      </div>
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '4' }"
+          @click="currentPaidStatus = '4'"
+        >
+          不成立
+        </div>
 
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '6' }"
-        @click="currentPaidStatus = '6'"
-      >
-        待退款
-      </div>
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '6' }"
+          @click="currentPaidStatus = '6'"
+        >
+          待退款
+        </div>
 
-      <div
-        class="admin-tab-item"
-        :class="{ 'admin-tab-item-active': currentPaidStatus === '7' }"
-        @click="currentPaidStatus = '7'"
-      >
-        已退款
-      </div>
+        <div
+          class="admin-tab-item"
+          :class="{ 'admin-tab-item-active': currentPaidStatus === '7' }"
+          @click="currentPaidStatus = '7'"
+        >
+          已退款
+        </div>
 
-      <div class="line-b"></div>
+        <div class="line-b"></div>
+      </div>
     </div>
 
     <!-- * search -->
@@ -154,13 +156,13 @@ const convertStatus = (status: any) => statusMap[status]
     >
       <div class="flex w-full flex-col gap-3 lg:flex-row">
         <!-- Date -->
-        <div class="flex gap-3">
+        <div class="flex flex-col gap-3 sm:flex-row">
           <input type="date" class="admin-select w-full" v-model="currentStartDate" />
           <input type="date" class="admin-select w-full" v-model="currentEndDate" />
           <button class="btn-orange-outline shrink-0" @click="getOrderData">日期查詢</button>
         </div>
         <!-- keyeord -->
-        <div class="admin-select flex w-[360px] max-w-[360px] shrink-0">
+        <div class="admin-select flex w-full shrink-0 md:max-w-[360px]">
           <input type="text" class="w-full" v-model="currentKeyword" placeholder="訂單號/用戶" />
           <button class="" @click="getOrderData">
             <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
@@ -198,8 +200,17 @@ const convertStatus = (status: any) => statusMap[status]
   </div>
 </template>
 <style scoped>
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .admin-tab {
-  @apply relative mb-7 flex gap-8;
+  @apply relative mb-7 flex min-w-[620px] gap-8;
 }
 .admin-tab-item {
   @apply z-10 cursor-pointer border-b-2 border-[#C7C6C6] pb-5 text-gray;

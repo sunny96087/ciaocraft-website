@@ -35,7 +35,7 @@
 
 /* ? 輸入框 input */
 .row-input {
-  @apply flex items-center gap-8;
+  @apply flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-8;
 }
 
 .row-input-title {
@@ -121,7 +121,7 @@
 /* ? 彈窗 Modal */
 
 .modal-bg {
-  @apply fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 p-5;
+  @apply fixed inset-0 z-[200] flex items-center justify-center bg-black bg-opacity-40 p-5;
 }
 
 .modal-box {

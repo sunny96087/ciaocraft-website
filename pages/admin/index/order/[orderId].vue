@@ -157,7 +157,7 @@ async function confirmCancelPaymeny() {
     <div class="admin-page-title">訂單詳情</div>
 
     <!-- * btn -->
-    <div class="mb-7 flex justify-end">
+    <div v-if="order.memberId && order.memberId.status === 1" class="mb-7 flex justify-end">
       <nuxt-link
         :to="{ path: '/admin/message', query: { memberId: order.memberId?._id } }"
         class="btn-orange btn-orange-icon"

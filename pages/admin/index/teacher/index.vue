@@ -82,7 +82,7 @@ async function deleteCourse(teacherId: string) {
   }
 
   const confirmed = await openDialog('注意', '刪除後不可復原，確定要刪除嗎？')
-  if (!confirmed) {
+  if (!confirmed.confirmed) {
     return
   }
 
@@ -115,14 +115,14 @@ async function deleteCourse(teacherId: string) {
     <div
       class="mb-7 flex w-full flex-col items-start lg:flex-row lg:items-center lg:justify-between"
     >
-      <div class="flex w-full flex-col gap-3 lg:flex-row">
-        <select v-model="currentCourseTerm" class="admin-select w-[180px] max-w-[180px] shrink-0">
+      <div class="flex w-full flex-col gap-3 md:flex-row">
+        <select v-model="currentCourseTerm" class="admin-select w-full shrink-0 md:max-w-[180px]">
           <option value="-1">全部</option>
           <option value="0">單堂體驗</option>
           <option value="1">培訓課程</option>
         </select>
 
-        <div class="admin-select flex w-[360px] max-w-[360px] shrink-0">
+        <div class="admin-select flex w-full shrink-0 md:max-w-[360px]">
           <input type="text" class="w-full" v-model="currentKeyword" placeholder="老師名稱" />
           <button class="" @click="getTeachersData">
             <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
