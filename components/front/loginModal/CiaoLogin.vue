@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { useAuthStore } from '~/stores/authStore'
-// api Url
-const baseUrl = 'http://127.0.0.1:3666'
+
+// const baseUrl = 'http://127.0.0.1:3666'
+const baseUrl = 'https://ciaocraft-api.onrender.com'
 
 const authStore = useAuthStore()
 

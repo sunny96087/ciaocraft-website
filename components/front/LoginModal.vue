@@ -40,6 +40,11 @@ const changeContent = async (viewName: string) => {
       currentView.value = 'forgetPwd'
       hideNextBtn.value = false
       break
+    case 'forgetPwdSuccess':
+      lastView.value = 'forgetPwd'
+      currentView.value = 'forgetPwdSuccess'
+      hideNextBtn.value = true
+      break
     case 'register':
       lastView.value = 'ciaoLogin'
       currentView.value = 'register'
@@ -53,11 +58,7 @@ const changeContent = async (viewName: string) => {
     case 'profile':
       lastView.value = 'registerSuccess'
       currentView.value = 'profile'
-      break
-    case 'forgetPwdSuccess':
-      lastView.value = 'forgetPwd'
-      currentView.value = 'forgetPwdSuccess'
-      hideNextBtn.value = true
+      hideNextBtn.value = false
       break
     default:
       emit('close')
