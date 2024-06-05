@@ -69,7 +69,7 @@ async function getPaymentSummary() {
     <div class="admin-block-title">進帳總覽(NT$)</div>
     <div
       v-if="summaryInfo"
-      class="admin-block flex items-center justify-center gap-[10px] px-[36px] py-[32px]"
+      class="admin-block grid grid-cols-2 items-center justify-center gap-x-[10px] gap-y-6 p-4 md:flex md:gap-[10px] md:px-[36px] md:py-[32px]"
     >
       <div class="status-item">
         <div class="">今日</div>
@@ -100,7 +100,7 @@ async function getPaymentSummary() {
     >
       <div class="flex w-full flex-col gap-3 lg:flex-row">
         <!-- Date -->
-        <div class="flex gap-3">
+        <div class="flex flex-col gap-3 sm:flex-row">
           <input type="date" class="admin-select w-full" v-model="currentStartDate" />
           <input type="date" class="admin-select w-full" v-model="currentEndDate" />
           <button class="btn-orange-outline shrink-0" @click="getPaymentData">日期查詢</button>
@@ -138,10 +138,10 @@ async function getPaymentSummary() {
 }
 
 .status-item-num {
-  @apply text-[40px] font-bold;
+  @apply text-[30px] font-bold md:text-[40px];
 }
 
 .col-line {
-  @apply h-[64px] w-[1px] bg-[#00000033];
+  @apply hidden h-[64px] w-[1px] bg-[#00000033] md:block;
 }
 </style>

@@ -311,7 +311,7 @@ const tooltip2 = ref(false)
 
     <!-- * btn -->
     <div class="mt-[28px] flex gap-3">
-      <button class="btn-orange-outline" @click="cancelEdit">取消</button>
+      <!-- <button class="btn-orange-outline" @click="cancelEdit">取消</button> -->
       <button class="btn-orange" @click="editVendorData">儲存</button>
     </div>
   </div>
