@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import axios from 'axios'
 
-const baseUrl = 'http://127.0.0.1:3666'
+// const baseUrl = 'http://127.0.0.1:3666'
+const baseUrl = 'https://ciaocraft-api.onrender.com'
 
 const email = ref('')
 const hasError = ref(false)
@@ -25,12 +26,11 @@ const sendForgetPwdEmail = async () => {
       .post(`${baseUrl}/auth/forgotPassword`, { account: email.value })
       .then((res) => {
         toForgetPwdSuccess()
+        hideLoading()
       })
       .catch((err) => {
         hasError.value = true
         alert.value = err.response.data.message
-      })
-      .finally(() => {
         hideLoading()
       })
   }
