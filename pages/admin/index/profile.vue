@@ -60,8 +60,9 @@ async function editVendorData() {
     } else {
       console.log('修改失敗')
     }
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    showToast(e.response.data.message, 'error')
   } finally {
     hideLoading()
   }
@@ -120,11 +121,11 @@ async function editPassword() {
       cancelEditPassword()
     } else {
       console.log('修改密碼失敗')
-      showToast('修改密碼失敗')
+      showToast('修改密碼失敗', 'error')
     }
   } catch (e: any) {
     console.log(e)
-    showToast(e.response.data.message)
+    showToast(e.response.data.message, 'error')
   } finally {
     hideLoading()
   }
@@ -187,7 +188,13 @@ async function editPassword() {
     <!-- btn -->
     <div class="mt-[28px] flex gap-3">
       <!-- <button class="btn-orange-outline" @click="cancelEdit">取消</button> -->
-      <button class="btn-orange" @click="editVendorData">儲存</button>
+      <button
+        class="btn-disabled-inline"
+        v-if="vendorInfo.representative === '' || vendorInfo.mobile === ''"
+      >
+        儲存
+      </button>
+      <button v-else class="btn-orange" @click="editVendorData">儲存</button>
     </div>
 
     <!-- >> component: modal -->
@@ -246,7 +253,13 @@ async function editPassword() {
         </div>
 
         <div class="modal-footer">
-          <button class="btn-orange" @click="editPassword">儲存</button>
+          <button
+            class="btn-disabled-inline"
+            v-if="currentPassword === '' || password === '' || confirmPassword === ''"
+          >
+            儲存
+          </button>
+          <button v-else class="btn-orange" @click="editPassword">儲存</button>
         </div>
       </div>
     </div>
