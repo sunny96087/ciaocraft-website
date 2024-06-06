@@ -318,8 +318,19 @@ function reset() {
 
     <!-- * btn -->
     <div class="mt-[28px] flex gap-3">
-      <button class="btn-orange-outline" @click="reset">取消</button>
-      <button class="btn-orange" @click="addTeacher">儲存</button>
+      <!-- <button class="btn-orange-outline" @click="reset">取消</button> -->
+      <button
+        class="btn-disabled-inline"
+        v-if="
+          teacherInfo.name === '' ||
+          teacherInfo.intro === '' ||
+          teacherInfo.description === '' ||
+          teacherInfo.order <= 0
+        "
+      >
+        儲存
+      </button>
+      <button v-else class="btn-orange" @click="addTeacher">儲存</button>
     </div>
   </div>
 </template>

@@ -68,8 +68,9 @@ async function editVendorData() {
     } else {
       console.log('修改失敗')
     }
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    showToast(e.response.data.message, 'error')
   } finally {
     hideLoading()
   }
@@ -131,11 +132,11 @@ async function handleFileUpload(event: any, type: string) {
       showToast('上傳圖片成功')
     } else {
       console.log('上傳圖片失敗，系統錯誤')
-      showToast('上傳圖片失敗')
+      showToast('上傳圖片失敗', 'error')
     }
   } catch (e) {
     console.log(e)
-    showToast('上傳圖片失敗，請換一張圖片')
+    showToast('上傳圖片失敗，請換一張圖片', 'error')
   } finally {
     hideLoading()
   }
@@ -312,7 +313,13 @@ const tooltip2 = ref(false)
     <!-- * btn -->
     <div class="mt-[28px] flex gap-3">
       <!-- <button class="btn-orange-outline" @click="cancelEdit">取消</button> -->
-      <button class="btn-orange" @click="editVendorData">儲存</button>
+      <button
+        class="btn-disabled-inline"
+        v-if="vendorInfo.brandName === '' || vendorInfo.intro === ''"
+      >
+        儲存
+      </button>
+      <button v-else class="btn-orange" @click="editVendorData">儲存</button>
     </div>
   </div>
 </template>

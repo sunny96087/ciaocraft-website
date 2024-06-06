@@ -93,8 +93,8 @@ function closeDialog() {
         <select v-model="currentSort" class="admin-select w-full shrink-0 lg:max-w-[180px]">
           <option value="createdAtDesc">建立日期新到舊</option>
           <option value="createdAtAsc">建立日期舊到新</option>
-          <option value="ratingAsc">評分高到低</option>
-          <option value="ratingDesc">評分低到高</option>
+          <option value="ratingDesc">評分高到低</option>
+          <option value="ratingAsc">評分低到高</option>
         </select>
 
         <!-- Keyword -->
@@ -134,7 +134,10 @@ function closeDialog() {
       </div>
       <!-- body -->
       <div class="table-body min-w-[1500px] grid-cols-12" v-for="item in commentInfo">
-        <div class="col-span-2">{{ item.orderId?._id }}</div>
+        <nuxt-link :to="`/admin/order/${item.orderId?._id}`" class="col-span-2">{{
+          item.orderId?._id
+        }}</nuxt-link>
+        <!-- <div class="col-span-2">{{ item.orderId?._id }}</div> -->
         <div class="col-span-2">{{ item._id }}</div>
         <div class="col-span-1">
           {{

@@ -122,8 +122,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="heroicons:wallet" />
-          <span class="ml-[10px]">財務管理</span>
+          <Icon size="24" name="material-symbols-light:monetization-on-outline-rounded" />
+          <span class="ml-[10px]">我的進帳</span>
         </nuxt-link>
 
         <nuxt-link
@@ -188,7 +188,7 @@ watch(route, () => {
       課程管理 course
       師資管理 teacher
       訂單管理 order
-      財務管理 payment
+      我的進帳 payment
       訊息中心 message
       評論管理 comment
       品牌管理 brand
@@ -272,8 +272,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="heroicons:wallet" />
-          <span v-show="barOpen" class="ml-[10px]">財務管理</span>
+          <Icon size="24" name="material-symbols-light:monetization-on-outline-rounded" />
+          <span v-show="barOpen" class="ml-[10px]">我的進帳</span>
         </nuxt-link>
 
         <nuxt-link
