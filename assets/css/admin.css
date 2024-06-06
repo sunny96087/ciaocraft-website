@@ -100,6 +100,11 @@
 }
 
 /* 不可選取 inline */
+.btn-disabled-inline {
+  @apply cursor-not-allowed rounded-[8px] bg-[var(--color-gray3)] px-4 py-2 text-[#AAAAAA];
+}
+
+/* 不可選取 inline */
 .btn-disabled-outline {
   @apply cursor-not-allowed rounded-[8px] border border-[#A3B5C9] px-4 py-2 text-[#A3B5C9];
 }

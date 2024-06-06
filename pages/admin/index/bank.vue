@@ -63,9 +63,11 @@ async function editVendorData() {
       getVendorData()
     } else {
       console.log('修改失敗')
+      showToast(result.message, 'error')
     }
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    showToast(e.response.data.message, 'error')
   } finally {
     hideLoading()
   }
@@ -162,7 +164,19 @@ function cancelEdit() {
     <!-- * btn -->
     <div class="mt-[28px] flex gap-3">
       <!-- <button class="btn-orange-outline" @click="cancelEdit">取消</button> -->
-      <button class="btn-orange" @click="editVendorData">儲存</button>
+      <button
+        class="btn-disabled-inline"
+        v-if="
+          vendorInfo.bankName === '' ||
+          vendorInfo.bankCode === '' ||
+          vendorInfo.bankBranch === '' ||
+          vendorInfo.bankAccountName === '' ||
+          vendorInfo.bankAccount === ''
+        "
+      >
+        儲存
+      </button>
+      <button v-else class="btn-orange" @click="editVendorData">儲存</button>
     </div>
   </div>
 </template>
