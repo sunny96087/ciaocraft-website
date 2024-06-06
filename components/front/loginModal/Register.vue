@@ -33,7 +33,7 @@ const checkEmail = () => {
       <input class="w-full" type="email" name="email" v-model="email" placeholder="電子信箱*" />
     </div>
     <button
-      class="box my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white"
+      class="box my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light hover:text-white"
       @click="checkEmail()"
     >
       驗證
@@ -110,7 +110,7 @@ const checkEmail = () => {
     </div>
     <div class="space-y-3">
       <button
-        class="box flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white"
+        class="box flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light hover:text-white"
         @click="registerMember()"
       >
         註冊
@@ -119,11 +119,11 @@ const checkEmail = () => {
         註冊即同意
         <a
           href="#"
-          class="underline-2 underline-offset-3 underlin-4 underline-offset-3 px-1 text-secondary underline underline-offset-4"
+          class="underline-2 underline-offset-3 underlin-4 underline-offset-3 px-1 text-secondary underline underline-offset-4 hover:text-secondary-light"
           >隱私權政策</a
         >
         和
-        <a href="#" class="px-1 text-secondary">使用者條款</a>
+        <a href="#" class="px-1 text-secondary hover:text-secondary-light">使用者條款</a>
       </span>
     </div>
   </div>

@@ -91,7 +91,12 @@ const clickMaskToCloseModal = (e: MouseEvent) => {
       </div>
       <div class="mt-[30px]" v-if="!hideNextBtn">
         <div class="flex justify-center">
-          <button class="text-primary" @click="changeContent(lastView)">回上一頁</button>
+          <button
+            class="inline-block text-primary transition hover:text-primary-light"
+            @click="changeContent(lastView)"
+          >
+            回上一頁
+          </button>
         </div>
       </div>
     </div>

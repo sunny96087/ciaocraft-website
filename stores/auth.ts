@@ -6,9 +6,9 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     apiUrl: 'https://ciaocraft-api.onrender.com',
     // apiUrl: 'http://127.0.0.1:3666',
-    memberId: '',
-    token: '',
-    photo: '',
+    memberId: null as any,
+    token: null as any,
+    photo: null as any,
     isLogin: false
   }),
   getters: {},

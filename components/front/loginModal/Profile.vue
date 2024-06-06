@@ -66,13 +66,13 @@ const toMemberProfile = () => {
     </div>
     <div class="flex w-full space-x-2">
       <button
-        class="w-1/2 rounded-[4px] border-[1px] border-solid border-primary py-2"
+        class="w-1/2 rounded-[4px] border-[1px] border-solid border-primary py-2 text-center text-primary transition duration-300 hover:bg-primary hover:text-white"
         @click="toHome()"
       >
         逛逛賣場
       </button>
       <button
-        class="w-1/2 rounded-[4px] border-[1px] border-solid bg-primary py-2 text-center text-white"
+        class="w-1/2 rounded-[4px] border-[1px] border-solid bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light hover:text-white"
         @click="toMemberProfile()"
       >
         填寫完整個人資料

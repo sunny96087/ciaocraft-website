@@ -49,7 +49,7 @@ const sendForgetPwdEmail = async () => {
       <input class="w-full" type="email" name="email" v-model="email" placeholder="電子信箱*" />
     </div>
     <button
-      class="box my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white"
+      class="box my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light"
       @click="sendForgetPwdEmail()"
     >
       送出

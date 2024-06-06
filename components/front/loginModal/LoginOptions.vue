@@ -17,12 +17,19 @@ const toCiaoLogin = (): void => {
     </div>
     <span class="self-center">Enjoy Your Learning !</span>
     <div class="mt-6 flex flex-col items-center space-y-3">
-      <button type="button" class="btn">
-        <Icon name="basil:google-solid" class="translate-x-[-70%] transform" />
+      <button
+        type="button"
+        class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"
+      >
+        <Icon name="basil:google-solid" class="mr-5" />
         <span>使用 Google 登入</span>
       </button>
-      <button type="button" class="btn" @click="toCiaoLogin()">
-        <Icon name="clarity:email-solid" />
+      <button
+        type="button"
+        class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"
+        @click="toCiaoLogin()"
+      >
+        <Icon name="clarity:email-solid" class="" />
         <span class="ml-2">使用 會員帳號 登入</span>
       </button>
     </div>

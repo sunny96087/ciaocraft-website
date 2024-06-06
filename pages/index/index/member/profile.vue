@@ -19,7 +19,7 @@
           </div>
           <button
             type="button"
-            class="w-full rounded-[4px] border-[1px] border-solid border-primary py-2 text-base tracking-wider"
+            class="w-full rounded-[4px] border-[1px] border-solid border-primary py-2 text-base tracking-wider transition duration-300 hover:border-primary-light hover:bg-primary hover:text-white"
           >
             編輯照片
           </button>
@@ -34,7 +34,7 @@
         <div class="space-y-2">
           <h2>密碼 <span class="text-danger">*</span></h2>
           <button
-            class="rounded-[4px] bg-secondary px-6 py-2 text-center tracking-wider text-white"
+            class="rounded-[4px] bg-secondary px-6 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light hover:text-white"
           >
             修改密碼
           </button>
@@ -107,14 +107,16 @@
               <input type="email" name="email" placeholder="請輸入" class="w-full px-5 py-2" />
             </div>
             <button
-              class="items-center justify-center rounded-[4px] bg-secondary px-4 py-2 text-center tracking-wider text-white"
+              class="items-center justify-center rounded-[4px] bg-secondary px-4 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light"
             >
               取消連結
             </button>
           </div>
         </div>
       </div>
-      <button class="rounded-[4px] bg-primary px-4 py-2 text-center tracking-wider text-white">
+      <button
+        class="rounded-[4px] bg-primary px-4 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-primary-light"
+      >
         儲存資料
       </button>
     </div>

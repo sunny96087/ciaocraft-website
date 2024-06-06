@@ -86,17 +86,25 @@ async function login() {
       </div>
     </div>
     <button
-      class="my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white"
+      class="my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white transition hover:bg-primary-light hover:text-white"
       @click="login()"
     >
       登入
     </button>
     <div class="m-2 flex items-center">
-      <button class="inline-block text-secondary" @click="chnageContent('forgetPwd')">
+      <button
+        class="inline-block text-secondary transition hover:text-secondary-light"
+        @click="chnageContent('forgetPwd')"
+      >
         忘記密碼
       </button>
       <span class="inline-block px-2">|</span>
-      <button class="inline-block text-primary" @click="chnageContent('register')">註冊會員</button>
+      <button
+        class="inline-block text-primary transition hover:text-primary-light"
+        @click="chnageContent('register')"
+      >
+        註冊會員
+      </button>
     </div>
   </div>
 </template>

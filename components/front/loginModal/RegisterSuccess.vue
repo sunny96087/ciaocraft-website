@@ -25,14 +25,14 @@ const toProfileContent = (viewName: string) => {
     <div class="mt-6 flex flex-col items-center space-y-3">
       <button
         type="button"
-        class="font- w-[300px] rounded-[4px] border-[1px] border-solid border-primary bg-primary py-2 text-white"
+        class="font- w-[300px] rounded-[4px] border-[1px] border-solid border-primary bg-primary py-2 text-white transition hover:bg-primary-light hover:text-white"
         @click="toProfileContent('profile')"
       >
         填寫基本資料，推薦適合課程
       </button>
       <button
         type="button"
-        class="w-[300px] rounded-[4px] border-[1px] border-solid border-primary py-2"
+        class="w-[300px] rounded-[4px] border-[1px] border-solid border-primary py-2 transition duration-300 hover:border-primary-light hover:bg-primary hover:text-white"
         @click="toHome('close')"
       >
         逛逛賣場

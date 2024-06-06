@@ -5,7 +5,7 @@ const setActiveButton = (button: string) => {
 }
 </script>
 <template>
-  <div class="bg-gray1 p-5 lg:px-[100px]">
+  <div class="bg-gray1 p-5 lg:px-[80px]">
     <div class="mx-auto py-14 lg:max-w-screen-xl">
       <div class="mb-14 flex space-x-8">
         <!-- 大頭貼 -->
@@ -24,11 +24,12 @@ const setActiveButton = (button: string) => {
               <span class="block text-xl md:text-base">User Name</span>
               <span class="block text-sm">user@mail.com</span>
             </div>
-            <button
-              class="rounded-[4px] border-[1px] border-solid bg-primary px-6 py-2 text-center text-white"
+            <NuxtLink
+              class="block rounded-[4px] border-[1px] border-solid bg-primary px-6 py-2 text-center text-white transition duration-500 hover:bg-primary-light hover:text-white"
+              to="/member/profile"
             >
               會員資料
-            </button>
+            </NuxtLink>
           </div>
           <!-- 數字計算 -->
           <div class="flex space-x-4 md:space-x-8">
@@ -54,7 +55,7 @@ const setActiveButton = (button: string) => {
           :class="{ 'bg-secondary text-white': activeButton === 'orders' }"
           @click="setActiveButton('orders')"
         >
-          <Icon name="ph:receipt" class="mr-1 pb-1 text-2xl" />
+          <Icon name="ph:receipt" class="mr-1 text-xl" />
           訂單紀錄
         </button>
         <button
