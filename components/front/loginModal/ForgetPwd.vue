@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios'
-
-// const baseUrl = 'http://127.0.0.1:3666'
-const baseUrl = 'https://ciaocraft-api.onrender.com'
+const authStore = useAuthStore()
 
 const email = ref('')
 const hasError = ref(false)
@@ -10,9 +8,6 @@ const alert = ref('')
 
 // modal 內容切換
 const emit = defineEmits(['changeContent'])
-const toForgetPwdSuccess = (): void => {
-  emit('changeContent', 'forgetPwdSuccess')
-}
 
 const sendForgetPwdEmail = async () => {
   console.log('sendForgetPwdEmail')
@@ -22,16 +17,17 @@ const sendForgetPwdEmail = async () => {
     return
   } else {
     showLoading()
-    const response = await axios
-      .post(`${baseUrl}/auth/forgotPassword`, { account: email.value })
+    const data = { account: email.value }
+    authStore
+      .sendForgetPasswordEmail(data)
       .then((res) => {
-        toForgetPwdSuccess()
         hideLoading()
+        emit('changeContent', 'forgetPwdSuccess')
       })
       .catch((err) => {
+        hideLoading()
         hasError.value = true
         alert.value = err.response.data.message
-        hideLoading()
       })
   }
 }

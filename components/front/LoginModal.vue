@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import ForgetPwdSuccess from './loginModal/ForgetPwdSuccess.vue'
-
-console.log('Ciao.vue')
-
 // 利用 dynamic component 動態替換 modal 內容
 const currentView = ref('loginOptions')
 const lastView = ref('close')

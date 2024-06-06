@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
-import { useAuthStore } from '~/stores/authStore'
+import { useAuthStore } from '~/stores/auth'
 
 // 定義 isMenuOpen 為布林類型的 ref
 // 使用 ref 管理漢堡選單的顯示狀態
@@ -18,27 +18,23 @@ const toggleUser = (): void => {
   isUserOpen.value = !isUserOpen.value
 }
 
-const authStore = useAuthStore()
-const isLogin = ref<boolean>(authStore.isLogin)
-
-// 監聽 authStore 的 isLogin 狀態
-watch(
-  () => isLogin,
-  (value) => {
-    if (value) {
-      console.log('已登入')
-    }
-  }
-)
-
-console.log(isLogin.value)
-
 // 登入/註冊 modal 控制
 const isLoginModalOpen = ref<boolean>(false)
 const openLoginModal = (): void => {
   isLoginModalOpen.value = !isLoginModalOpen.value
   isMenuOpen.value = false
 }
+
+// 監控使用者登入狀態
+const authStore = useAuthStore()
+const isLogin = ref<boolean>(false)
+watch(
+  () => authStore.isLogin,
+  (newVal) => {
+    isLogin.value = newVal
+    console.log('isLogin', isLogin.value)
+  }
+)
 </script>
 
 <template>
@@ -487,7 +483,34 @@ const openLoginModal = (): void => {
   </div> -->
 
   <!-- 登入/註冊彈窗 -->
-  <FrontLoginModal v-if="isLoginModalOpen" @close="isLoginModalOpen = false"></FrontLoginModal>
+  <transition name="modal">
+    <FrontLoginModal v-if="isLoginModalOpen" @close="isLoginModalOpen = false"></FrontLoginModal>
+  </transition>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* modal transition 動畫設置  */
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.5s ease;
+}
+.modal-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.modal-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modal-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modal-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+</style>
