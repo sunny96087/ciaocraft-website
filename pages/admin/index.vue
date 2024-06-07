@@ -1,4 +1,20 @@
 <script setup lang="ts">
+import {
+  PhUserCircle,
+  PhHouse,
+  PhBooks,
+  PhAddressBook,
+  PhNewspaperClipping,
+  PhCardholder,
+  PhCurrencyCircleDollar,
+  PhChatCenteredDots,
+  PhStar,
+  PhSealCheck,
+  PhSignOut,
+  PhHeart
+} from '@phosphor-icons/vue'
+// <PhHeart :size="32" color="hotpink" weight="fill" />
+
 import { useRoute } from 'vue-router'
 import { APIStore } from '~/stores/apiService'
 const store = APIStore()
@@ -46,13 +62,6 @@ watch(route, () => {
       v-show="barOpenM"
     >
       <div class="flex w-full flex-col" v-if="store.vendorInfo">
-        <!-- <div class="bar-item" :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }">
-          <Icon size="24" name="material-symbols:account-circle-full" />
-          <span v-show="barOpen" class="ml-[10px]">{{
-            store.vendorInfo?.brandName || 'Member'
-          }}</span>
-        </div> -->
-
         <nuxt-link
           to="/admin/profile"
           class="bar-link"
@@ -62,7 +71,8 @@ watch(route, () => {
           <div v-if="store.vendorInfo.avatar" class="h-6 w-6 overflow-hidden rounded-full">
             <img :src="store.vendorInfo?.avatar" alt="" class="pic-auto" />
           </div>
-          <Icon v-else size="24" name="material-symbols:account-circle-full" />
+          <!-- <Icon v-else size="24" name="material-symbols:account-circle-full" /> -->
+          <PhUserCircle v-else :size="24" />
           <span class="ml-[10px]">{{ store.vendorInfo?.brandName || 'Member' }}</span>
         </nuxt-link>
 
@@ -72,7 +82,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:house-light" />
+          <!-- <Icon size="24" name="ph:house-light" /> -->
+          <PhHouse :size="24" />
           <span class="ml-[10px]">首頁</span>
         </nuxt-link>
 
@@ -82,7 +93,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:books-light" />
+          <!-- <Icon size="24" name="ph:books-light" /> -->
+          <PhBooks :size="24" />
           <span class="ml-[10px]">課程管理</span>
         </nuxt-link>
 
@@ -92,7 +104,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ri:contacts-book-3-line" />
+          <!-- <Icon size="24" name="ri:contacts-book-3-line" /> -->
+          <PhAddressBook :size="24" />
           <span class="ml-[10px]">師資管理</span>
         </nuxt-link>
 
@@ -102,7 +115,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:newspaper-clipping-light" />
+          <!-- <Icon size="24" name="ph:newspaper-clipping-light" /> -->
+          <PhNewspaperClipping :size="24" />
           <span class="ml-[10px]">訂單管理</span>
         </nuxt-link>
 
@@ -112,7 +126,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="heroicons:wallet" />
+          <!-- <Icon size="24" name="heroicons:wallet" /> -->
+          <PhCardholder :size="24" />
           <span class="ml-[10px]">帳戶管理</span>
         </nuxt-link>
 
@@ -122,7 +137,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="material-symbols-light:monetization-on-outline-rounded" />
+          <!-- <Icon size="24" name="material-symbols-light:monetization-on-outline-rounded" /> -->
+          <PhCurrencyCircleDollar :size="24" />
           <span class="ml-[10px]">我的進帳</span>
         </nuxt-link>
 
@@ -132,7 +148,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:chat-centered-dots-light" />
+          <!-- <Icon size="24" name="ph:chat-centered-dots-light" /> -->
+          <PhChatCenteredDots :size="24" />
           <span class="ml-[10px]">訊息中心</span>
         </nuxt-link>
 
@@ -142,7 +159,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:star-light" />
+          <!-- <Icon size="24" name="ph:star-light" /> -->
+          <PhStar :size="24" />
           <span class="ml-[10px]">評論管理</span>
         </nuxt-link>
 
@@ -152,7 +170,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:circle-wavy-check-light" />
+          <!-- <Icon size="24" name="ph:circle-wavy-check-light" /> -->
+          <PhSealCheck :size="24" />
           <span class="ml-[10px]">品牌管理</span>
         </nuxt-link>
 
@@ -163,7 +182,8 @@ watch(route, () => {
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
           @click="logout"
         >
-          <Icon size="24" name="material-symbols:logout-rounded" />
+          <!-- <Icon size="24" name="material-symbols:logout-rounded" /> -->
+          <PhSignOut :size="24" />
           <span class="ml-[10px]">登出</span>
         </div>
       </div>
@@ -210,7 +230,8 @@ watch(route, () => {
           <div v-if="store.vendorInfo.avatar" class="h-6 w-6 overflow-hidden rounded-full">
             <img :src="store.vendorInfo?.avatar" alt="" class="pic-auto" />
           </div>
-          <Icon v-else size="24" name="material-symbols:account-circle-full" />
+          <!-- <Icon v-else size="24" name="material-symbols:account-circle-full" /> -->
+          <PhUserCircle v-else :size="24" />
           <span v-show="barOpen" class="ml-[10px]">{{
             store.vendorInfo?.brandName || 'Member'
           }}</span>
@@ -222,7 +243,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:house-light" />
+          <!-- <Icon size="24" name="ph:house-light" /> -->
+          <PhHouse :size="24" />
           <span v-show="barOpen" class="ml-[10px]">首頁</span>
         </nuxt-link>
 
@@ -232,7 +254,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:books-light" />
+          <!-- <Icon size="24" name="ph:books-light" /> -->
+          <PhBooks :size="24" />
           <span v-show="barOpen" class="ml-[10px]">課程管理</span>
         </nuxt-link>
 
@@ -242,7 +265,9 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ri:contacts-book-3-line" />
+          <!-- <Icon size="24" name="ri:contacts-book-3-line" /> -->
+          <PhAddressBook :size="24" />
+
           <span v-show="barOpen" class="ml-[10px]">師資管理</span>
         </nuxt-link>
 
@@ -252,7 +277,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:newspaper-clipping-light" />
+          <!-- <Icon size="24" name="ph:newspaper-clipping-light" /> -->
+          <PhNewspaperClipping :size="24" />
           <span v-show="barOpen" class="ml-[10px]">訂單管理</span>
         </nuxt-link>
 
@@ -262,7 +288,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="heroicons:wallet" />
+          <!-- <Icon size="24" name="heroicons:wallet" /> -->
+          <PhCardholder :size="24" />
           <span v-show="barOpen" class="ml-[10px]">帳戶管理</span>
         </nuxt-link>
 
@@ -272,7 +299,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="material-symbols-light:monetization-on-outline-rounded" />
+          <!-- <Icon size="24" name="material-symbols-light:monetization-on-outline-rounded" /> -->
+          <PhCurrencyCircleDollar :size="24" />
           <span v-show="barOpen" class="ml-[10px]">我的進帳</span>
         </nuxt-link>
 
@@ -282,7 +310,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:chat-centered-dots-light" />
+          <!-- <Icon size="24" name="ph:chat-centered-dots-light" /> -->
+          <PhChatCenteredDots :size="24" />
           <span v-show="barOpen" class="ml-[10px]">訊息中心</span>
         </nuxt-link>
 
@@ -292,7 +321,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:star-light" />
+          <!-- <Icon size="24" name="ph:star-light" /> -->
+          <PhStar :size="24" />
           <span v-show="barOpen" class="ml-[10px]">評論管理</span>
         </nuxt-link>
 
@@ -302,7 +332,8 @@ watch(route, () => {
           exact-active-class="bar-link-active"
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
         >
-          <Icon size="24" name="ph:circle-wavy-check-light" />
+          <!-- <Icon size="24" name="ph:circle-wavy-check-light" /> -->
+          <PhSealCheck :size="24" />
           <span v-show="barOpen" class="ml-[10px]">品牌管理</span>
         </nuxt-link>
 
@@ -313,7 +344,8 @@ watch(route, () => {
           :class="{ 'justify-start': barOpen, 'justify-center': !barOpen }"
           @click="logout"
         >
-          <Icon size="24" name="material-symbols:logout-rounded" />
+          <!-- <Icon size="24" name="material-symbols:logout-rounded" /> -->
+          <PhSignOut :size="24" />
           <span v-show="barOpen" class="ml-[10px]">登出</span>
         </div>
       </div>
