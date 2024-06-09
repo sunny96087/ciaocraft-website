@@ -17,7 +17,7 @@ const hasError = ref(false)
           <div class="space-y-2">
             <h2>密碼<span class="text-danger">*</span></h2>
             <div
-              class="flex items-center justify-between rounded-[4px] border border-solid border-gray px-4 py-2"
+              class="flex items-center justify-between rounded-[4px] border border-solid border-gray bg-white px-4 py-2"
             >
               <div class="flex w-full">
                 <input
@@ -39,7 +39,7 @@ const hasError = ref(false)
           <div class="space-y-2">
             <h2>確認新密碼<span class="text-danger">*</span></h2>
             <div
-              class="flex items-center justify-between rounded-[4px] border border-solid border-gray px-4 py-2"
+              class="flex items-center justify-between rounded-[4px] border border-solid border-gray bg-white px-4 py-2"
             >
               <div class="flex w-full">
                 <input

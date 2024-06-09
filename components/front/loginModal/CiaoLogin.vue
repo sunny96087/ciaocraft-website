@@ -44,6 +44,7 @@ async function login() {
         alert.value = err.response.data.message
         hasError.value = true
       })
+    hideLoading()
   }
 }
 </script>
