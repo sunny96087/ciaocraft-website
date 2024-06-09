@@ -11,7 +11,9 @@ const fetchMember = async () => {
   try {
     const res = await memberStore.getMember()
     member.value = res.data.data
-  } catch (err) {}
+  } catch (err) {
+    router.push('/error')
+  }
 }
 
 // 訂單和收藏區
@@ -31,14 +33,12 @@ const setCurrentView = async (viewName: string) => {
   rawData.value = [] // 清空原始資料
   data.value = [] // 清空filter用資料
   currentView.value = viewName // 根據 頁面名稱 取得資料
-
   // 根據畫面取得資料
   if (viewName === 'orders') {
     await fetchOrdersData()
   } else {
     await fetchCollectionData()
   }
-
   // 重置篩選條件 (預設為點選 all 標籤)
   setFilter('all')
 }

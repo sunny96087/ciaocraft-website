@@ -42,13 +42,13 @@ const getOrderStatusName = (status: number) => {
 const getPaidStatusTagColor: any = (status: number) => {
   switch (status) {
     case 0:
-      return 'bg-primary'
+      return 'bg-primary text-white'
     case 1:
-      return 'bg-success'
+      return 'bg-success text-white'
     case 2:
-      return 'bg-success'
+      return 'bg-success text-white'
     case 3:
-      return 'bg-secondary-light'
+      return 'bg-secondary-light text-white'
     case 4:
       return 'bg-gray3 text-black'
     case 5:
@@ -68,33 +68,34 @@ const getPaidStatusTagColor: any = (status: number) => {
     class="items-center rounded-lg border-[1px] border-solid border-gray3 bg-white p-4 md:flex md:justify-between"
     :id="order._id"
   >
-    <div class="mb-8 flex md:m-0">
-      <div class="group mr-6 aspect-square w-28 overflow-hidden rounded bg-gray2">
-        <NuxtLink :to="{ name: 'index-index-course-id', params: { id: order.courseId } }">
-          <img
-            :src="order.courseImage"
-            alt="course-img"
-            class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
-          />
-        </NuxtLink>
-      </div>
+    <div class="mb-8 flex items-center md:m-0">
+      <NuxtLink
+        :to="{ name: 'index-index-course-id', params: { id: order.courseId } }"
+        class="group mr-6 block aspect-square max-w-[120px] overflow-hidden rounded bg-gray2"
+      >
+        <img
+          :src="order.courseImage"
+          alt="course-img"
+          class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+        />
+      </NuxtLink>
       <div class="space-y-1">
         <NuxtLink :to="{ name: 'index-index-course-id', params: { id: order.courseId } }">
-          <h2 class="line-clamp-1 font-medium leading-6 transition hover:text-gray">
+          <h2 class="line-clamp-1 font-medium leading-[22px] transition hover:text-gray">
             {{ order.courseName }}
           </h2>
         </NuxtLink>
         <div class="line-clamp-1 text-sm font-medium">{{ order.brandName }}</div>
-        <div class="space-x-3 text-sm">
+        <div class="space-x-3 text-sm leading-[22px]">
           <span class="font-medium">總計</span>
           <span>NT$ {{ order.totalPrice }}</span>
         </div>
-        <div class="space-x-3 text-sm">
+        <div class="space-x-3 text-sm leading-[22px]">
           <span class="font-medium">訂單編號 </span>
-          <span>{{ order._id }}</span>
+          <span class="break-all">{{ order._id }}</span>
         </div>
         <span
-          class="inline-block rounded-full px-2 py-1 text-center text-sm text-white"
+          class="inline-block rounded-full px-2 py-1 text-sm leading-[22px]"
           :class="getPaidStatusTagColor(order.paidStatus)"
           >{{ getOrderStatusName(order.paidStatus) }}</span
         >
@@ -102,12 +103,12 @@ const getPaidStatusTagColor: any = (status: number) => {
     </div>
     <div class="space-y-3">
       <NuxtLink
-        to=""
+        to="/message"
         class="block rounded border-[1px] border-solid border-primary bg-white py-2 text-center transition hover:border-primary hover:bg-primary hover:text-white md:px-10 md:py-2"
         >品牌聊聊</NuxtLink
       >
       <NuxtLink
-        to=""
+        :to="{ name: 'index-index-member-order-id', params: { id: order._id } }"
         class="block rounded border-[1px] border-solid border-primary bg-white py-2 text-center transition hover:border-primary hover:bg-primary hover:text-white md:px-10 md:py-2"
         >訂單詳情</NuxtLink
       >
