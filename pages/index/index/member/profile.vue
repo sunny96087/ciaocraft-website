@@ -3,7 +3,7 @@
 <template>
   <div class="bg-gray1 p-5 lg:px-[100px]">
     <div class="mx-auto py-6 lg:max-w-screen-xl">
-      <h1 class="mb-3 mt-3 text-4xl">會員資料</h1>
+      <h1 class="mb-3 mt-3 text-4xl lg:text-4xl">會員資料</h1>
       <p class="mb-8 text-base">
         請放心，你的電子郵件及所有與品牌溝通的訊息、檔案及相關購買資料，網站將依照個人資料保護法保障你的個人隱私！
       </p>
