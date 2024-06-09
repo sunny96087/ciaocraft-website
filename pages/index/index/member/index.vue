@@ -70,13 +70,14 @@ const setFilter: any = (filterName: string) => {
 }
 
 const handleCollectionFilter = (filterName: string) => {
+  console.log(filter.value)
+  console.log(filterName)
   if (filterName === 'experience') {
-    data.value = data.value.value.filter((item: any) => item.courseTerm === 1)
+    data.value = rawData.value.filter((item: any) => item.courseTerm === 1)
   } else if (filterName === 'training') {
-    data.value = data.value.value.filter((item: any) => item.courseTerm === 0)
-  } else if (filterName === 'newest') {
-    // 根據日期最新排最前面
-    data.value = data.value.sort((a: any, b: any) => b.createdAt - a.createdAt)
+    data.value = rawData.value.filter((item: any) => item.courseTerm === 0)
+  } else {
+    data.value = rawData.value
   }
 }
 
