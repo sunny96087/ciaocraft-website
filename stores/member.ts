@@ -2,9 +2,9 @@ import type { JsonObject } from 'type-fest'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-// const apiUrl: 'https://ciaocraft-api.onrender.com';
+const apiUrl = 'https://ciaocraft-api.onrender.com'
 // const apiUrl = 'http://localhost:3666'
-const apiUrl = 'http://127.0.0.1:3666'
+// const apiUrl = 'http://127.0.0.1:3666'
 
 export const useMemberStore = defineStore('member', {
   state: () => ({
