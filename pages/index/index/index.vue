@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// 需要的 icon 再引入即可
+import { PhCaretRight } from '@phosphor-icons/vue'
+</script>
 
 <template>
   <div class="mb-[30px]">
@@ -17,7 +20,8 @@
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">單堂體驗課程</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
-            <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" />
+            <PhCaretRight :size="20" class="text-primary" />
+            <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
         <front-product-card-swiper />
@@ -27,7 +31,8 @@
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">系統培訓課程</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
-            <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" />
+            <PhCaretRight :size="20" class="text-primary" />
+            <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
         <front-product-card-swiper />
@@ -37,7 +42,8 @@
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">你可能適合</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
-            <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" />
+            <PhCaretRight :size="20" class="text-primary" />
+            <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
         <front-product-card-swiper />
