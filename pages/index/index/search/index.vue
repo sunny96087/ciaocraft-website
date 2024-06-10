@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// 需要的 icon 再引入即可
+import { PhArrowsDownUp } from '@phosphor-icons/vue'
+
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
 
@@ -45,7 +48,8 @@ const toggleSort = (): void => {
       <div class="relative">
         <a href="#" class="flex items-center" @click="toggleSort">
           <p class="mr-0.5 text-primary">排序</p>
-          <img src="~/assets/images/front/sort.png" alt="排序icon" />
+          <PhArrowsDownUp :size="20" />
+          <!-- <img src="~/assets/images/front/sort.png" alt="排序icon" /> -->
         </a>
         <ul
           :class="[

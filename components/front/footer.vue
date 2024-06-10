@@ -2,7 +2,7 @@
 
 <template>
   <div class="px-5 lg:px-[100px]">
-    <ul class="mx-auto max-w-screen-xl pb-[60px] pt-[30px] lg:py-[60px]">
+    <ul class="mx-auto max-w-full pb-[60px] pt-[30px] lg:py-[60px]">
       <li class="mb-10 lg:mb-5">
         <a href="#"><img src="~/assets/images/front/Logo_Img(footer).png" alt="logo" /></a>
       </li>

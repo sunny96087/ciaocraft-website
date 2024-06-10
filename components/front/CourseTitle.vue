@@ -1,6 +1,14 @@
 <script setup lang="ts">
 // 需要的 icon 再引入即可
 import { PhCalendarDots, PhChats, PhMapPinLine, PhStar } from '@phosphor-icons/vue'
+
+import { defineEmits } from 'vue'
+
+const emit = defineEmits(['toggleBooking'])
+
+const handleBookingClick = (): void => {
+  emit('toggleBooking')
+}
 </script>
 
 <template>
@@ -34,7 +42,10 @@ import { PhCalendarDots, PhChats, PhMapPinLine, PhStar } from '@phosphor-icons/v
       寺六至亭同抄、告午白。色朵還十黑歌几，誰室蛋扒肉唱鳥好南或冬節開會回具安因活貝，什哪條樹比真和收彩只公。
     </p>
     <div class="mb-3 rounded bg-primary hover:bg-primary-light">
-      <button class="mx-auto flex items-center text-lg leading-[3rem] text-white">
+      <button
+        class="mx-auto flex items-center text-lg leading-[3rem] text-white"
+        @click="handleBookingClick"
+      >
         <PhCalendarDots :size="20" class="mr-2" />
         預約課程
       </button>
