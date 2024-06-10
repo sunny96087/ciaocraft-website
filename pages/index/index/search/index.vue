@@ -66,9 +66,9 @@ const toggleSort = (): void => {
       <front-product-card />
     </div>
     <div class="mb-9 flex justify-center">
-      <a href="#" class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
-        >載入更多</a
-      >
+      <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
+        載入更多
+      </button>
     </div>
     <!-- 搜尋結果無效(內容) -->
     <!-- <div class="mb-24 flex items-center justify-center hidden">

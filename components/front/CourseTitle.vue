@@ -5,7 +5,9 @@ import { PhCalendarDots, PhChats, PhMapPinLine, PhStar } from '@phosphor-icons/v
 
 <template>
   <div class="lg:w-[45%]">
-    <p class="mb-3 w-[82px] rounded bg-[#2B71BF] px-2 py-0.5 text-secondary text-white">單堂體驗</p>
+    <p class="mb-3 inline-block rounded bg-[#2B71BF] px-2 py-0.5 text-secondary text-white">
+      單堂體驗
+    </p>
     <h3 class="mb-5 text-[40px] font-medium leading-[48px]">課程標題</h3>
     <ul class="mb-[22px] flex items-center">
       <li class="mr-2 text-[18px] font-medium leading-[26px]">4.0</li>

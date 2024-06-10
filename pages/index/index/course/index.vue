@@ -23,9 +23,25 @@ import { PhCaretRight } from '@phosphor-icons/vue'
       <front-photo-carousel class="mb-[60px] lg:mb-0" />
       <front-course-title />
     </section>
-    <section>
+    <section class="mb-[30px]">
       <front-course-info />
     </section>
+    <article class="mb-[30px]">
+      <front-course-detail />
+    </article>
+    <article class="mb-[30px]">
+      <front-course-comments />
+    </article>
+    <div class="mb-9">
+      <h4 class="mb-5 border-b border-dark1 pb-3 text-[30px] font-medium leading-[38px]">
+        其他相似的課程
+      </h4>
+      <front-product-card />
+      <div class="flex justify-center">
+        <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
+          更多課程
+        </button>
+      </div>
+    </div>
   </div>
-  <article></article>
 </template>

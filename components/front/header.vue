@@ -49,7 +49,7 @@ watch(
 
 <template>
   <div class="mx-9 lg:mx-[100px]">
-    <div class="mx-auto max-w-screen-xl">
+    <div class="mx-auto max-w-full">
       <ul class="my-3.5 flex items-center justify-between lg:my-[30px]">
         <li>
           <h1>

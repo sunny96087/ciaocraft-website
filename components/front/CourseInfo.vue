@@ -4,8 +4,8 @@ import { PhBuildingOffice, PhClockUser, PhStar, PhUsersFour } from '@phosphor-ic
 </script>
 
 <template>
-  <ul class="flex justify-between">
-    <li class="w-[43%]">
+  <ul class="justify-between lg:flex">
+    <li class="mb-[30px] lg:mb-0 lg:w-[43%]">
       <h4 class="mb-5 border-b border-dark1 pb-3 text-[30px] font-medium leading-[45px]">
         課程資訊
       </h4>
@@ -41,7 +41,7 @@ import { PhBuildingOffice, PhClockUser, PhStar, PhUsersFour } from '@phosphor-ic
           <img
             src="~/assets/images/front/userphoto.png"
             alt="授課者大頭照"
-            class="h-[60px] w-[60px] rounded-full"
+            class="h-[60px] w-[60px] rounded-full object-cover"
           />
         </li>
         <li class="flex w-full justify-between">
@@ -57,18 +57,18 @@ import { PhBuildingOffice, PhClockUser, PhStar, PhUsersFour } from '@phosphor-ic
         </li>
       </ul>
     </li>
-    <li class="w-[43%]">
+    <li class="lg:w-[43%]">
       <h4 class="mb-5 border-b border-dark1 pb-3 text-[30px] font-medium leading-[45px]">
         關於品牌
       </h4>
-      <ul>
+      <ul class="rounded border border-[#DFE4EA] p-5">
         <li class="flex">
           <ul class="flex items-center justify-between">
-            <li class="w-[30%]">
+            <li class="mr-4 basis-32">
               <img
                 src="~/assets/images/front/userphoto.png"
                 alt="品牌logo"
-                class="h-[120px] w-[120px] rounded"
+                class="h-[120px] w-[120px] rounded object-cover"
               />
             </li>
             <li class="w-full">
@@ -76,7 +76,7 @@ import { PhBuildingOffice, PhClockUser, PhStar, PhUsersFour } from '@phosphor-ic
               <p class="mb-3">
                 品牌描述品牌描述品牌描述品牌描述品牌描述品牌描述品牌描述品牌描述牌描述品牌描述牌描述品牌描述牌描述品牌描述牌描述品牌描述牌描述品牌描述牌描述品牌描述牌牌描述品牌描述
               </p>
-              <ul class="mb-[22px] flex items-center">
+              <ul class="mb-5 flex items-center">
                 <li class="mr-2 text-[18px] font-medium leading-[26px]">4.0</li>
                 <li class="mr-2 flex">
                   <PhStar :size="24" color="#ea580c" weight="fill" />
