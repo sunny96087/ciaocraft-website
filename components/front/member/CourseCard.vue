@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { PhStar, PhX } from '@phosphor-icons/vue'
-
 const props = defineProps<{
   collection: {
     _id: string
@@ -39,13 +37,12 @@ const removeCollection = (collectionId: string) => {
           />
         </div>
         <button
-          class="absolute right-0 top-0 p-2"
+          class="absolute right-0 top-0 block p-3"
           @click.stop.prevent="removeCollection(collection._id)"
         >
-          <PhX
-            :size="24"
-            color="#78716c"
-            class="pointer-events-auto opacity-0 transition duration-500 hover:-translate-y-1 group-hover:opacity-100"
+          <Icon
+            name="ph:x"
+            class="text-xl opacity-0 transition duration-300 hover:text-dark4 group-hover:-translate-y-1 group-hover:opacity-100"
           />
         </button>
       </div>
@@ -56,7 +53,7 @@ const removeCollection = (collectionId: string) => {
         >
           {{ collection.courseTerm === 1 ? '體驗' : '培訓' }}
         </div>
-        <h2 class="line-clamp-2">
+        <h2 class="line-clamp-2 group-hover:text-dark3">
           {{ collection.courseName }}
         </h2>
       </div>

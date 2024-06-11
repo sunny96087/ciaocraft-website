@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useMemberStore } from '~/stores/member'
-import { PhArrowsDownUp } from '@phosphor-icons/vue'
 import defaultImg from '@/assets/images/front/userphoto.png'
 const memberStore = useMemberStore()
 const router = useRouter()
@@ -30,6 +29,7 @@ const content: any = {
 }
 
 const setCurrentView = async (viewName: string) => {
+  showLoading()
   rawData.value = [] // 清空原始資料
   data.value = [] // 清空filter用資料
   currentView.value = viewName // 根據 頁面名稱 取得資料
@@ -41,12 +41,13 @@ const setCurrentView = async (viewName: string) => {
   }
   // 重置篩選條件 (預設為點選 all 標籤)
   setFilter('all')
+  hideLoading()
 }
 
 // 排序下拉選單
-const showDropdown = ref(true)
+const showDropdown = ref(false)
 const toggleDropdown = () => {
-  showDropdown.value = true
+  showDropdown.value = !showDropdown.value
 }
 
 // 處理排序
@@ -61,6 +62,7 @@ const handleOrder = (orderName: string) => {
 
 // 透過 filter 名稱篩選資料
 const setFilter: any = (filterName: string) => {
+  showDropdown.value = false
   filter.value = filterName
   if (currentView.value === 'orders') {
     handleOrderFilter(filterName)
@@ -186,9 +188,9 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="mb-8 w-full border-b-[1px] border-solid border-[#E5E7EB]">
+      <div class="mb-8 flex w-full border-b-[1px] border-solid border-[#E5E7EB]">
         <button
-          class="rounded-t-lg px-5 py-2 text-base md:text-xl"
+          class="flex items-center rounded-t-lg px-5 py-2 text-base md:text-xl"
           :class="{ 'bg-secondary text-white': currentView === 'orders' }"
           @click="setCurrentView('orders')"
         >
@@ -196,7 +198,7 @@ onMounted(() => {
           訂單紀錄
         </button>
         <button
-          class="rounded-t-lg px-5 py-2 text-base md:text-xl"
+          class="flex items-center rounded-t-lg px-5 py-2 text-base md:text-xl"
           :class="{ 'bg-secondary text-white': currentView === 'collections' }"
           @click="setCurrentView('collections')"
         >
@@ -250,35 +252,65 @@ onMounted(() => {
             }})
           </button>
         </div>
-        <div class="custom-select w-40" v-if="currentView === 'orders'">
-          <select
+        <div class="relative w-40 cursor-pointer lg:hidden" v-if="currentView === 'orders'">
+          <!-- <div
             name="paidStatus"
-            id="paidStatus"
-            class="custom-select-input w-full rounded border-[1px] border-solid border-primary bg-white px-4 py-2 lg:hidden"
+            class="rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
+          ></div> -->
+          <div
+            value="all"
+            class="rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
+            @click="toggleDropdown"
           >
-            <option value="all" class="appearance-none px-4 py-2">
+            所有課程({{ rawData.length || 0 }})
+          </div>
+          <div
+            class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center"
+            v-if="showDropdown"
+          >
+            <div
+              value="unpaid"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('unpaid')"
+            >
               所有課程({{ rawData.length || 0 }})
-            </option>
-            <option value="unpaid">
+            </div>
+            <div
+              value="unpaid"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('unpaid')"
+            >
               待付款({{ rawData.filter((item: any) => item.paidStatus === 0).length || 0 }})
-            </option>
-            <option value="paid">
+            </div>
+            <div
+              value="paid"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('paid')"
+            >
               報名成功({{ rawData.filter((item: any) => item.paidStatus === 1).length || 0 }})
-            </option>
-            <option value="completed">
+            </div>
+            <div
+              value="completed"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('completed')"
+            >
               已完課({{ rawData.filter((item: any) => item.paidStatus === 3).length || 0 }})
-            </option>
-            <option value="cancel">
+            </div>
+            <div
+              value="cancel"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('cancel')"
+            >
               課程取消({{ rawData.filter((item: any) => item.paidStatus === 4).length || 0 }})
-            </option>
-          </select>
+            </div>
+          </div>
         </div>
 
         <!-- 排序只有 Orders 會出現 -->
         <div class="group relative mb-1 px-6" v-if="currentView === 'orders'">
           <button class="flex text-primary">
             <span class="mr-1 inline-block">排序</span>
-            <PhArrowsDownUp :size="24" color="#292524" />
+            <Icon name="ph:arrows-down-up" class="mr-1 text-2xl text-dark1" />
           </button>
           <ul
             class="absolute left-0 right-0 z-10 hidden max-h-48 cursor-pointer rounded border-[1px] border-solid border-black bg-white group-hover:block"
@@ -331,6 +363,45 @@ onMounted(() => {
             培訓課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
           </button>
         </div>
+
+        <div
+          class="relative z-10 w-40 cursor-pointer lg:hidden"
+          v-if="currentView === 'collections'"
+        >
+          <div
+            value="all"
+            class="rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
+            @click="toggleDropdown"
+          >
+            所有課程({{ rawData.length || 0 }})
+          </div>
+          <div
+            class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center"
+            v-if="showDropdown"
+          >
+            <div
+              value="unpaid"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('all')"
+            >
+              所有課程({{ rawData.length || 0 }})
+            </div>
+            <div
+              value="unpaid"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('experience')"
+            >
+              體驗課程({{ rawData.filter((item: any) => item.courseTerm === 1).length || 0 }})
+            </div>
+            <div
+              value="unpaid"
+              class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
+              @click="setFilter('training')"
+            >
+              培訓課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Card -->
       <ul
@@ -362,7 +433,7 @@ onMounted(() => {
 </template>
 
 <style>
-.custom-select {
+/* .custom-select {
   position: relative;
   background-color: white;
 }
@@ -379,5 +450,5 @@ onMounted(() => {
 
 .custom-select-input::-ms-expand {
   display: none;
-}
+} */
 </style>
