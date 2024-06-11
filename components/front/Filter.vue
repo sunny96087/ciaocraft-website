@@ -24,7 +24,7 @@ export default {
 </script>
 
 <template>
-  <div class="mx-5 my-2.5 flex">
+  <div class="flex bg-white px-5 py-2.5">
     <swiper
       :slides-per-view="1"
       :space-between="20"

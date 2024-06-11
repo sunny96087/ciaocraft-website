@@ -1,26 +1,31 @@
 <script setup lang="ts">
 // 需要的 icon 再引入即可
-import { PhCaretRight } from '@phosphor-icons/vue'
+// import { PhCaretRight } from '@phosphor-icons/vue'
 </script>
 
 <template>
-  <div class="mb-[30px]">
+  <div class="mb-[30px] pt-5">
     <front-banner />
   </div>
-  <div class="mx-5 mb-[30px] rounded-[40px] border border-gray md:mx-[84px] lg:mx-[360px]">
+  <div
+    class="mx-5 mb-[30px] overflow-hidden rounded-[40px] border border-gray md:mx-[84px] lg:mx-[360px]"
+  >
     <front-search />
   </div>
-  <div class="mx-5 mb-[66px] rounded-xl border border-white filter md:mx-10 lg:mx-[350px]">
+  <div
+    class="mx-5 mb-[66px] overflow-hidden rounded-xl border border-white filter md:mx-10 lg:mx-[350px]"
+  >
     <front-filter />
   </div>
   <div class="mx-5 lg:mx-[100px]">
-    <div class="mx-auto max-w-screen-xl">
+    <div class="mx-auto max-w-screen-xl pb-9">
       <div class="mb-9">
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">單堂體驗課程</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
-            <PhCaretRight :size="20" class="text-primary" />
+            <Icon name="ph:caret-right" class="text-xl text-primary" />
+            <!-- <PhCaretRight :size="20" class="text-primary" /> -->
             <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
@@ -31,7 +36,8 @@ import { PhCaretRight } from '@phosphor-icons/vue'
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">系統培訓課程</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
-            <PhCaretRight :size="20" class="text-primary" />
+            <Icon name="ph:caret-right" class="text-xl text-primary" />
+            <!-- <PhCaretRight :size="20" class="text-primary" /> -->
             <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
@@ -42,13 +48,14 @@ import { PhCaretRight } from '@phosphor-icons/vue'
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">你可能適合</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
-            <PhCaretRight :size="20" class="text-primary" />
+            <Icon name="ph:caret-right" class="text-xl text-primary" />
+            <!-- <PhCaretRight :size="20" class="text-primary" /> -->
             <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
         <front-product-card-swiper />
       </div>
-      <div class="mb-9 text-dark1">
+      <div class="text-dark1">
         <front-about />
       </div>
     </div>

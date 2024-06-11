@@ -1,15 +1,5 @@
 <script setup lang="ts">
 // 需要的 icon 再引入即可
-import {
-  PhChats,
-  PhCurrencyCircleDollar,
-  PhInfo,
-  PhKey,
-  PhReceipt,
-  PhSignOut,
-  PhStar,
-  PhUser
-} from '@phosphor-icons/vue'
 import { ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
@@ -48,7 +38,8 @@ watch(
 </script>
 
 <template>
-  <div class="mx-9 lg:mx-[100px]">
+  <!-- 未登入 -->
+  <div class="mx-9 lg:mx-[100px]" v-if="!isLogin">
     <div class="mx-auto max-w-full">
       <ul class="my-3.5 flex items-center justify-between lg:my-[30px]">
         <li>
@@ -84,16 +75,20 @@ watch(
               <a href="#">
                 <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
               /> -->
-                <PhStar :size="32"
-              /></a>
+                <Icon name="ph:star-bold" class="text-[32px]" />
+                <!-- <PhStar :size="32"
+              /> -->
+              </a>
             </li>
             <li>
               <a href="#">
                 <!-- <img
                   src="~/assets/images/front/Button(money).png"
                   alt="關於我們/如何累積點數icon" /> -->
-                <PhCurrencyCircleDollar :size="32"
-              /></a>
+                <Icon name="ph:currency-circle-dollar" class="text-[32px]" />
+                <!-- <PhCurrencyCircleDollar :size="32"
+              /> -->
+              </a>
             </li>
           </ul>
         </li>
@@ -104,7 +99,8 @@ watch(
               <a href="#">
                 <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
               /> -->
-                <PhStar :size="32" />
+                <Icon name="ph:star-bold" class="text-[32px]" />
+                <!-- <PhStar :size="32" /> -->
               </a>
             </li>
             <li class="active:cursor-pointer" @click="toggleMenu">
@@ -121,7 +117,7 @@ watch(
   </div>
 
   <!-- 已登入 -->
-  <div class="mx-9 hidden lg:mx-[100px]">
+  <div class="mx-9 hidden lg:mx-[100px]" v-else>
     <div class="mx-auto max-w-screen-xl">
       <ul class="my-3.5 flex items-center justify-between lg:my-[30px]">
         <li>
@@ -144,13 +140,15 @@ watch(
               <a href="#">
                 <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
               /> -->
-                <PhStar :size="32" />
+                <Icon name="ph:star-bold" class="text-[32px]" />
+                <!-- <PhStar :size="32" /> -->
               </a>
             </li>
             <li class="pr-6">
               <a href="#">
                 <!-- <img src="~/assets/images/front/messages.png" alt="訊息icon" /> -->
-                <PhChats :size="32" />
+                <Icon name="ph:chats" class="text-[32px]" />
+                <!-- <PhChats :size="32" /> -->
               </a>
             </li>
             <!-- 切缺：有訊息要切換到這icon -->
@@ -188,7 +186,8 @@ watch(
                   <li class="mb-4 pl-2">
                     <div class="flex items-center">
                       <!-- <img src="~/assets/images/front/userIcon.png" alt="人型icon" class="mr-3" /> -->
-                      <PhUser :size="17" class="mr-3" />
+                      <Icon name="ph:user" class="mr-3 text-[17px]" />
+                      <!-- <PhUser :size="17" class="mr-3" /> -->
                       <p>User Name</p>
                     </div>
                   </li>
@@ -198,7 +197,8 @@ watch(
                       alt="點數icon"
                       class="mr-3"
                     /> -->
-                    <PhCurrencyCircleDollar :size="17" color="#EA580C" class="mr-3" />
+                    <Icon name="ph:currency-circle-dollar" class="mr-3 text-[17px] text-primary" />
+                    <!-- <PhCurrencyCircleDollar :size="17" color="#EA580C" class="mr-3" /> -->
                     <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">
                       0
                     </p>
@@ -210,7 +210,8 @@ watch(
                         alt="資訊icon"
                         class="mr-1"
                       /> -->
-                      <PhChats :size="17" class="mr-1" />
+                      <Icon name="ph:chats" class="mr-1 text-[17px]" />
+                      <!-- <PhChats :size="17" class="mr-1" /> -->
                       如何累積點數？
                     </a>
                   </li>
@@ -221,7 +222,8 @@ watch(
                         alt="訊息icon"
                         class="mr-2.5"
                       /> -->
-                      <PhChats :size="17" class="mr-2.5" />
+                      <Icon name="ph:chats" class="mr-2.5 text-[17px]" />
+                      <!-- <PhChats :size="17" class="mr-2.5" /> -->
                       我的訊息</a
                     >
                   </li>
@@ -234,7 +236,8 @@ watch(
                         alt="訊息icon"
                         class="mr-2.5"
                       /> -->
-                      <PhChats :size="17" class="mr-2.5" />
+                      <Icon name="ph:chats" class="mr-2.5 text-[17px]" />
+                      <!-- <PhChats :size="17" class="mr-2.5" /> -->
                       我的訊息</a
                     >
                   </li>
@@ -245,7 +248,8 @@ watch(
                         alt="訂單icon"
                         class="mr-2.5"
                       /> -->
-                      <PhReceipt :size="17" class="mr-2.5" />
+                      <Icon name="ph:receipt" class="mr-2.5 text-[17px]" />
+                      <!-- <PhReceipt :size="17" class="mr-2.5" /> -->
                       訂單紀錄
                     </a>
                   </li>
@@ -256,7 +260,8 @@ watch(
                         alt="收藏icon"
                         class="mr-2.5"
                       /> -->
-                      <PhStar :size="17" class="mr-2.5" />
+                      <Icon name="ph:star-bold" class="mr-2.5 text-[17px]" />
+                      <!-- <PhStar :size="17" class="mr-2.5" /> -->
                       我的收藏</a
                     >
                   </li>
@@ -267,7 +272,8 @@ watch(
                         alt="會員管理icon"
                         class="mr-2.5"
                       /> -->
-                      <PhKey :size="17" class="mr-2.5" />
+                      <Icon name="ph:key" class="mr-2.5 text-[17px]" />
+                      <!-- <PhKey :size="17" class="mr-2.5" /> -->
                       會員管理</a
                     >
                   </li>
@@ -278,7 +284,8 @@ watch(
                         alt="會員管理icon"
                         class="mr-2.5"
                       /> -->
-                      <PhSignOut :size="17" class="mr-2.5" />
+                      <Icon name="ph:sign-out" class="mr-2.5 text-[17px]" />
+                      <!-- <PhSignOut :size="17" class="mr-2.5" /> -->
                       登出</a
                     >
                   </li>
@@ -293,7 +300,8 @@ watch(
             <li class="pr-6">
               <a href="#">
                 <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏" /> -->
-                <PhStar :size="32" />
+                <Icon name="ph:star-bold" class="text-[32px]" />
+                <!-- <PhStar :size="32" /> -->
               </a>
             </li>
             <li class="active:cursor-pointer" @click="toggleMenu">
@@ -312,12 +320,13 @@ watch(
       </ul>
     </div>
   </div>
-  <!-- 漢堡選單 -->
+  <!-- 漢堡選單(未登入) -->
   <div
     :class="[
       'absolute top-[69px] z-50 w-full bg-white',
       { 'max-h-0': !isMenuOpen, 'max-h-full': isMenuOpen }
     ]"
+    v-if="!isLogin"
   >
     <ul
       :class="[
@@ -343,12 +352,13 @@ watch(
       <li><a href="#" class="block py-2 pl-5 hover:text-primary-light">如何累積點數</a></li>
     </ul>
   </div>
-  <!-- 漢堡選單-已登入 -->
+  <!-- 漢堡選單(已登入) -->
   <div
     :class="[
       'absolute top-[69px] z-50 hidden w-full bg-white',
       { 'max-h-0': !isMenuOpen, 'max-h-full': isMenuOpen }
     ]"
+    v-else
   >
     <ul
       :class="[
@@ -359,7 +369,8 @@ watch(
       <li class="mb-4 flex justify-between pl-2">
         <div class="flex items-center">
           <!-- <img src="~/assets/images/front/userIcon.png" alt="人型icon" class="mr-3" /> -->
-          <PhUser :size="24" class="mr-3" />
+          <Icon name="ph:user" class="mr-3 text-2xl" />
+          <!-- <PhUser :size="24" class="mr-3" /> -->
           <p>User Name</p>
         </div>
         <a href="#"
@@ -371,13 +382,15 @@ watch(
       </li>
       <li class="mb-4 flex items-center pl-2">
         <!-- <img src="~/assets/images/front/Button(usermoney).png" alt="點數icon" class="mr-3" /> -->
-        <PhCurrencyCircleDollar :size="24" color="#EA580C" class="mr-3" />
+        <Icon name="ph:currency-circle-dollar" class="mr-3 text-2xl text-primary" />
+        <!-- <PhCurrencyCircleDollar :size="24" color="#EA580C" class="mr-3" /> -->
         <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">0</p>
       </li>
       <li class="border-b border-[#AAAAAA] pb-3">
         <a href="#" class="flex items-center text-xs leading-[20px] text-secondary">
           <!-- <img src="~/assets/images/front/information.png" alt="資訊icon" class="mr-1" /> -->
-          <PhInfo :size="14" class="mr-1" />
+          <Icon name="ph:info" class="mr-1 text-sm" />
+          <!-- <PhInfo :size="14" class="mr-1" /> -->
           如何累積點數？
         </a>
       </li>
@@ -388,7 +401,8 @@ watch(
             alt="訊息icon"
             class="mr-2.5"
           /> -->
-          <PhChats :size="24" class="mr-2.5" />
+          <Icon name="ph:chats" class="mr-2.5 text-2xl" />
+          <!-- <PhChats :size="24" class="mr-2.5" /> -->
           我的訊息
         </a>
       </li>
@@ -412,7 +426,8 @@ watch(
             alt="訂單icon"
             class="mr-2.5"
           /> -->
-          <PhReceipt :size="24" class="mr-2.5" />
+          <Icon name="ph:receipt" class="mr-2.5 text-2xl" />
+          <!-- <PhReceipt :size="24" class="mr-2.5" /> -->
           訂單紀錄</a
         >
       </li>
@@ -423,7 +438,8 @@ watch(
             alt="收藏icon"
             class="mr-2.5"
           /> -->
-          <PhStar :size="20" class="mr-2.5" />
+          <Icon name="ph:star-bold" class="mr-2.5 text-xl" />
+          <!-- <PhStar :size="20" class="mr-2.5" /> -->
           我的收藏</a
         >
       </li>
@@ -434,7 +450,8 @@ watch(
             alt="會員管理icon"
             class="mr-2.5"
           /> -->
-          <PhKey :size="24" class="mr-2.5" />
+          <Icon name="ph:key" class="mr-2.5 text-2xl" />
+          <!-- <PhKey :size="24" class="mr-2.5" /> -->
           會員管理</a
         >
       </li>
@@ -445,7 +462,8 @@ watch(
             alt="會員管理icon"
             class="mr-2.5"
           /> -->
-          <PhSignOut :size="24" class="mr-2.5" />
+          <Icon name="ph:sign-out" class="mr-2.5 text-2xl" />
+          <!-- <PhSignOut :size="24" class="mr-2.5" /> -->
           登出</a
         >
       </li>
@@ -456,92 +474,6 @@ watch(
       </li>
     </ul>
   </div>
-  <!-- 桌機時頭像點擊後出現選單-已登入(訊息2擇1) -->
-  <!-- <div
-    :class="[
-      'absolute right-10 top-[123px] z-50 hidden bg-white',
-      { 'max-h-0': !isUserOpen, 'max-h-full': isUserOpen }
-    ]"
-  >
-    <ul :class="['m-3 overflow-hidden', { 'max-h-0': !isUserOpen, 'max-h-full': isUserOpen }]">
-      <li class="mb-4 pl-2">
-        <div class="flex items-center">
-          <img
-            src="~/assets/images/front/userIcon.png"
-            alt="人型icon"
-            class="mr-3"
-          />
-          <p>User Name</p>
-        </div>
-      </li>
-      <li class="mb-4 flex items-center pl-2">
-        <img src="~/assets/images/front/Button(usermoney).png" alt="點數icon" class="mr-3" />
-        <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">0</p>
-      </li>
-      <li class="border-b border-[#AAAAAA] pb-3">
-        <a href="#" class="flex items-center text-xs leading-[20px] text-secondary">
-          <img src="~/assets/images/front/information.png" alt="資訊icon" class="mr-1" />
-          如何累積點數？
-        </a>
-      </li>
-      <li>
-        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-          <img
-            src="~/assets/images/front/user_messages_Icon.png"
-            alt="訊息icon"
-            class="mr-2.5"
-          />我的訊息</a
-        >
-      </li> -->
-  <!-- 切缺：有訊息要切換到這icon -->
-  <!-- <li>
-        <a href="#" class="flex items-center py-2 pl-1 hover:text-primary-light">
-          <span class="mr-[7px] h-1.5 w-1.5 rounded-full bg-danger"></span>
-          <img
-            src="~/assets/images/front/user_messages_Icon.png"
-            alt="訊息icon"
-            class="mr-2.5"
-          />我的訊息</a
-        >
-      </li>
-      <li>
-        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light"
-          ><img
-            src="~/assets/images/front/orderIcon.png"
-            alt="訂單icon"
-            class="mr-2.5"
-          />訂單紀錄</a
-        >
-      </li>
-      <li>
-        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light"
-          ><img
-            src="~/assets/images/front/user_starIcon.png"
-            alt="收藏icon"
-            class="mr-2.5"
-          />我的收藏</a
-        >
-      </li>
-      <li>
-        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light"
-          ><img
-            src="~/assets/images/front/user_keyIcon.png"
-            alt="會員管理icon"
-            class="mr-2.5"
-          />會員管理</a
-        >
-      </li>
-      <li>
-        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light"
-          ><img
-            src="~/assets/images/front/sign_out_Icon.png"
-            alt="會員管理icon"
-            class="mr-2.5"
-          />登出</a
-        >
-      </li>
-    </ul>
-  </div> -->
 
   <!-- 登入/註冊彈窗 -->
   <transition name="modal">
