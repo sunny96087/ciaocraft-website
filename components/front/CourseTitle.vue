@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // 需要的 icon 再引入即可
-import { PhCalendarDots, PhChats, PhMapPinLine, PhStar } from '@phosphor-icons/vue'
 
 import { defineEmits } from 'vue'
 
@@ -20,11 +19,16 @@ const handleBookingClick = (): void => {
     <ul class="mb-[22px] flex items-center">
       <li class="mr-2 text-[18px] font-medium leading-[26px]">4.0</li>
       <li class="mr-2 flex">
+        <Icon name="ph:star-fill" class="text-2xl text-primary" />
+        <Icon name="ph:star-fill" class="text-2xl text-primary" />
+        <Icon name="ph:star-fill" class="text-2xl text-primary" />
+        <Icon name="ph:star-fill" class="text-2xl text-primary" />
+        <Icon name="ph:star-bold" class="text-2xl text-primary" />
+        <!-- <PhStar :size="24" color="#ea580c" weight="fill" />
         <PhStar :size="24" color="#ea580c" weight="fill" />
         <PhStar :size="24" color="#ea580c" weight="fill" />
         <PhStar :size="24" color="#ea580c" weight="fill" />
-        <PhStar :size="24" color="#ea580c" weight="fill" />
-        <PhStar :size="24" color="#ea580c" />
+        <PhStar :size="24" color="#ea580c" /> -->
       </li>
       <li>(61)</li>
     </ul>
@@ -32,7 +36,8 @@ const handleBookingClick = (): void => {
     <ul class="mb-5 flex">
       <li>
         <!-- <img src="~/assets/images/front/location.png" alt="地標icon" class="mr-2" /> -->
-        <PhMapPinLine :size="24" class="mr-2" />
+        <Icon name="ph:map-pin-line" class="mr-2 text-2xl" />
+        <!-- <PhMapPinLine :size="24" class="mr-2" /> -->
       </li>
       <li>台北市</li>
     </ul>
@@ -43,22 +48,25 @@ const handleBookingClick = (): void => {
     </p>
     <div class="mb-3 rounded bg-primary hover:bg-primary-light">
       <button
-        class="mx-auto flex items-center text-lg leading-[3rem] text-white"
+        class="flex w-full items-center justify-center text-lg leading-[3rem] text-white"
         @click="handleBookingClick"
       >
-        <PhCalendarDots :size="20" class="mr-2" />
+        <Icon name="ph:calendar-dots" class="mr-2 text-xl" />
+        <!-- <PhCalendarDots :size="20" class="mr-2" /> -->
         預約課程
       </button>
     </div>
     <div class="mb-3 rounded bg-secondary hover:bg-[#2B71BF]">
-      <button class="mx-auto flex items-center text-lg leading-[3rem] text-white">
-        <PhStar :size="20" class="mr-2" />
+      <button class="flex w-full items-center justify-center text-lg leading-[3rem] text-white">
+        <Icon name="ph:star-bold" class="mr-2 text-xl" />
+        <!-- <PhStar :size="20" class="mr-2" /> -->
         收藏課程
       </button>
     </div>
-    <div class="rounded border border-primary hover:bg-primary-light hover:text-white">
-      <button class="mx-auto flex items-center text-lg leading-[3rem]">
-        <PhChats :size="20" class="mr-2" />
+    <div class="rounded border border-primary bg-white hover:bg-primary-light hover:text-white">
+      <button class="flex w-full items-center justify-center text-lg leading-[3rem]">
+        <Icon name="ph:chats" class="mr-2 text-xl" />
+        <!-- <PhChats :size="20" class="mr-2" /> -->
         品牌聊聊
       </button>
     </div>

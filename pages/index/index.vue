@@ -1,10 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <header class="border-b border-[#DFE4EA] pb-5">
+  <header class="border-b border-[#DFE4EA]">
     <front-header />
   </header>
-  <main>
+  <main class="bg-gray1">
     <NuxtPage></NuxtPage>
   </main>
   <footer class="bg-secondary text-white">

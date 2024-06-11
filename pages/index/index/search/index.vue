@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // 需要的 icon 再引入即可
-import { PhArrowsDownUp } from '@phosphor-icons/vue'
+// import { PhArrowsDownUp } from '@phosphor-icons/vue'
 
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
@@ -17,10 +17,14 @@ const toggleSort = (): void => {
 </script>
 
 <template>
-  <div class="mx-5 mb-[30px] mt-14 rounded-[40px] border border-gray md:mx-[84px] lg:mx-[360px]">
-    <front-search />
+  <div class="pt-14">
+    <div
+      class="mx-5 mb-[30px] overflow-hidden rounded-[40px] border border-gray md:mx-[84px] lg:mx-[360px]"
+    >
+      <front-search />
+    </div>
   </div>
-  <div class="mx-[20px] lg:mx-[100px]">
+  <div class="mx-[20px] pb-9 lg:mx-[100px]">
     <!-- 搜尋結果有效(搜尋筆數) -->
     <div class="mb-[30px] text-xl font-medium leading-[30px]">
       <span class="mr-1">有</span>
@@ -48,8 +52,8 @@ const toggleSort = (): void => {
       <div class="relative">
         <a href="#" class="flex items-center" @click="toggleSort">
           <p class="mr-0.5 text-primary">排序</p>
-          <PhArrowsDownUp :size="20" />
-          <!-- <img src="~/assets/images/front/sort.png" alt="排序icon" /> -->
+          <!-- <PhArrowsDownUp :size="20" /> -->
+          <img src="~/assets/images/front/sort.png" alt="排序icon" />
         </a>
         <ul
           :class="[
@@ -57,9 +61,21 @@ const toggleSort = (): void => {
             { hidden: !isSortOpen, block: isSortOpen }
           ]"
         >
-          <li><a href="#" class="block py-1 hover:bg-secondary hover:text-white">最近時間</a></li>
-          <li><a href="#" class="block py-1 hover:bg-secondary hover:text-white">熱門課程</a></li>
-          <li><a href="#" class="block py-1 hover:bg-secondary hover:text-white">評分最高</a></li>
+          <li>
+            <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
+              >最近時間</a
+            >
+          </li>
+          <li>
+            <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
+              >熱門課程</a
+            >
+          </li>
+          <li>
+            <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
+              >評分最高</a
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -69,7 +85,7 @@ const toggleSort = (): void => {
     <div class="mx-[30px] mb-5">
       <front-product-card />
     </div>
-    <div class="mb-9 flex justify-center">
+    <div class="flex justify-center">
       <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
         載入更多
       </button>

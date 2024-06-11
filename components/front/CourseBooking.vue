@@ -1,24 +1,6 @@
 <script setup lang="ts">
 // 需要的 icon 再引入即可
-import {
-  PhArrowClockwise,
-  PhMinusCircle,
-  PhPaperPlaneRight,
-  PhPlusCircle
-} from '@phosphor-icons/vue'
-
-// // 使用 ref 選取 dom 元素
-// import { ref } from 'vue'
-
-// // 定義 isBookingVisible 為布林類型的 ref
-// // 使用 ref 管理元件顯示狀態
-// const isBookingVisible = ref(true)
-
-// // 定義 toggleBooking 函數，其返回類型為 void
-// // 切換排序選單顯示狀態
-// const toggleBookingVisible = (): void => {
-//   isBookingVisible.value = !isBookingVisible.value
-// }
+// import { PhPaperPlaneRight } from '@phosphor-icons/vue'
 
 import { defineEmits } from 'vue'
 
@@ -30,7 +12,7 @@ const handleBookingCancel = () => {
 </script>
 
 <template>
-  <ul class="rounded-xl border border-[#DFE4EA] p-5">
+  <ul class="rounded-xl border border-[#DFE4EA] bg-white p-5">
     <li class="mb-5 flex justify-between">
       <h4 class="text-[30px] font-medium leading-[38px]">預約課程</h4>
       <button
@@ -48,7 +30,8 @@ const handleBookingCancel = () => {
       <p class="text-lg font-medium leading-[26px]">選擇課程日期、場次、人數</p>
       <a href="#" class="flex items-center text-primary">
         重新填寫
-        <PhArrowClockwise :size="20" color="#EA580C" class="ml-1" />
+        <Icon name="ph:arrow-clockwise" class="ml-1 text-xl text-primary" />
+        <!-- <PhArrowClockwise :size="20" color="#EA580C" class="ml-1" /> -->
       </a>
     </li>
     <li>
@@ -80,9 +63,11 @@ const handleBookingCancel = () => {
               <li class="flex items-center">
                 <p class="mr-5">NT$<span class="mx-2">9,999</span>/ 每人</p>
                 <div class="flex items-center">
-                  <PhMinusCircle :size="32" class="hover:cursor-pointer" />
+                  <Icon name="ph:minus-circle" class="text-[32px] hover:cursor-pointer" />
+                  <!-- <PhMinusCircle :size="32" class="hover:cursor-pointer" /> -->
                   <p class="mx-5">1</p>
-                  <PhPlusCircle :size="32" class="hover:cursor-pointer" />
+                  <Icon name="ph:plus-circle" class="text-[32px] hover:cursor-pointer" />
+                  <!-- <PhPlusCircle :size="32" class="hover:cursor-pointer" /> -->
                 </div>
               </li>
               <li>剩餘<span class="mx-2">8</span>人</li>
@@ -116,7 +101,8 @@ const handleBookingCancel = () => {
         <button
           class="flex items-center rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
         >
-          <PhPaperPlaneRight :size="20" class="mr-2" />
+          <Icon name="ph:paper-plane-right" class="mr-2 text-xl" />
+          <!-- <PhPaperPlaneRight :size="20" class="mr-2" /> -->
           送出訂單
         </button>
       </div>
