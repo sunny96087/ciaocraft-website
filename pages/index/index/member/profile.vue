@@ -33,11 +33,12 @@
         </div>
         <div class="space-y-2">
           <h2>密碼 <span class="text-danger">*</span></h2>
-          <button
-            class="rounded-[4px] bg-secondary px-6 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light hover:text-white"
+          <NuxtLink
+            to="/member/resetPwd"
+            class="inline-block rounded-[4px] bg-secondary px-6 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light hover:text-white"
           >
             修改密碼
-          </button>
+          </NuxtLink>
         </div>
         <div class="space-y-2">
           <h2>顯示暱稱 <span class="text-danger">*</span></h2>
