@@ -117,7 +117,7 @@ watch(
   </div>
 
   <!-- 已登入 -->
-  <div class="mx-9 hidden lg:mx-[100px]" v-else>
+  <div class="mx-9 lg:mx-[100px]" v-else>
     <div class="mx-auto max-w-screen-xl">
       <ul class="my-3.5 flex items-center justify-between lg:my-[30px]">
         <li>
@@ -355,7 +355,7 @@ watch(
   <!-- 漢堡選單(已登入) -->
   <div
     :class="[
-      'absolute top-[69px] z-50 hidden w-full bg-white',
+      'absolute top-[69px] z-50 w-full bg-white',
       { 'max-h-0': !isMenuOpen, 'max-h-full': isMenuOpen }
     ]"
     v-else
