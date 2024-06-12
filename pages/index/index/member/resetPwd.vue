@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+// 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
+definePageMeta({
+  middleware: ['auth']
+})
 // 響應變數
 const password = ref('')
 const passwordVisible = ref(false)

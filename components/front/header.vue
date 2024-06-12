@@ -25,16 +25,25 @@ const openLoginModal = (): void => {
   isMenuOpen.value = false
 }
 
+const logout = (): void => {
+  authStore.logout()
+}
+
 // 監控使用者登入狀態
 const authStore = useAuthStore()
-const isLogin = ref<boolean>(false)
+const loginState = authStore.isLogin
+const isLogin = ref<boolean>(loginState)
 watch(
   () => authStore.isLogin,
-  (newVal) => {
-    isLogin.value = newVal
-    console.log('isLogin', isLogin.value)
+  (v) => {
+    isLogin.value = v
+    console.log('header isLogin', isLogin.value)
   }
 )
+
+onMounted(() => {
+  authStore.checkLogin()
+})
 </script>
 
 <template>

@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+// 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
+definePageMeta({
+  middleware: ['auth']
+})
+
 const order = {
   _id: '20240430001C',
   courseId: '20240430001C',
@@ -334,41 +339,4 @@ const getBtnTextByPaidStatus = (status: number) => {
   </div>
 </template>
 
-<style>
-/* 隱藏原本的 checkbox */
-input[type='checkbox'] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  position: relative;
-  min-width: 20px;
-  min-height: 20px;
-  border: 1px solid var(--color-secondary);
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-  margin-right: 8px; /* 增加與文字的間距 */
-}
-
-/* 模擬未選中的狀態 */
-input[type='checkbox']::before {
-  content: '';
-  display: block;
-  min-width: 12px;
-  min-height: 12px;
-  border-radius: 50%;
-  background: #fff;
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-/* 模擬選中的狀態 */
-input[type='checkbox']:checked::before {
-  background: var(--color-secondary);
-}
-
-label {
-  display: flex;
-  align-items: center; /* 垂直居中 */
-}
-</style>
+<style></style>

@@ -34,7 +34,6 @@ async function login() {
         const result = res.data
         if (result.statusCode === 200) {
           authStore.setMember(result.user)
-          authStore.isLogin = true
           showToast('登入成功')
           emit('changeContent', 'close')
         }
@@ -44,7 +43,6 @@ async function login() {
         alert.value = err.response.data.message
         hasError.value = true
       })
-    hideLoading()
   }
 }
 </script>

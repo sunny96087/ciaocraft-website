@@ -1,4 +1,9 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+// 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
+definePageMeta({
+  middleware: ['auth']
+})
+</script>
 <template>
   <div class="bg-gray1 p-5 lg:px-[100px]">
     <div class="mx-auto py-6 lg:max-w-screen-xl">

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import auth from '~/middleware/auth'
+
+const authStore = useAuthStore()
+
 const isEmailCheck = ref(false)
 const password = ref('')
 const passwordVisible = ref(false)
@@ -10,21 +14,75 @@ const emit = defineEmits(['changeContent'])
 const hasError = ref(false)
 const alertText = ref('歡迎您成為巧手玩藝的一員!')
 
-const registerMember = () => {
-  console.log('registerMember')
-  console.log('register success')
-  emit('changeContent', 'registerSuccess')
+const registerMember = async () => {
+  if (!email.value) {
+    alertText.value = '請輸入帳號'
+    hasError.value = true
+  } else if (!password.value) {
+    alertText.value = '請輸入密碼'
+    hasError.value = true
+  } else if (!confirmPassword.value || password.value !== confirmPassword.value) {
+    alertText.value = '密碼不一致，請確認後再試一次。'
+    hasError.value = true
+  } else {
+    showLoading()
+    await authStore
+      .register({
+        account: email.value,
+        password: password.value,
+        confirmPassword: confirmPassword.value
+      })
+      .then((res) => {
+        hideLoading()
+        const result = res.data
+        console.log('result', result)
+        if (result.status === 'success') {
+          authStore.setMember(result.user)
+          showToast('登入成功')
+          emit('changeContent', 'registerSuccess')
+        }
+      })
+      .catch((err) => {
+        hideLoading()
+        alertText.value = err.response.data.message
+        hasError.value = true
+      })
+  }
 }
 
 const checkEmail = () => {
-  isEmailCheck.value = true
+  if (!email.value) {
+    alertText.value = '請輸入帳號'
+    hasError.value = true
+  } else {
+    showLoading()
+    const propsData = {
+      account: email.value
+    }
+    authStore
+      .checkAccountExist(propsData)
+      .then((res) => {
+        hideLoading()
+        const result = res.data
+        if (result.status === 'success') {
+          isEmailCheck.value = true
+        }
+      })
+      .catch((err) => {
+        hideLoading()
+        alertText.value = err.response.data.message
+        hasError.value = true
+      })
+    hasError.value = false
+  }
 }
 </script>
 <template>
   <div class="space-y-8 md:px-[60px]" v-if="!isEmailCheck">
     <div class="space-y-4">
       <span class="flex justify-center self-center text-2xl font-medium">電子信箱驗證</span>
-      <span class="block">為了確認您本人曾否註冊會員，我們將先進行驗證。</span>
+      <span class="block text-center">為了確認您本人曾否註冊會員，我們將先進行驗證。</span>
+      <span class="block text-center text-danger" v-if="hasError">{{ alertText }}</span>
     </div>
     <div
       class="flex w-full items-center justify-between rounded-[4px] border border-solid border-gray px-4 py-2 text-sm"
@@ -108,6 +166,7 @@ const checkEmail = () => {
         </button>
       </div>
     </div>
+    <span class="text-sm text-dark3">密碼需包含英文及數字，且至少 8 碼</span>
     <div class="space-y-3">
       <button
         class="box flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light hover:text-white"

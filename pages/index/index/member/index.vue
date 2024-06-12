@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { useMemberStore } from '~/stores/member'
-import defaultImg from '@/assets/images/front/userphoto.png'
+
+// 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
+definePageMeta({
+  middleware: ['auth']
+})
+const defaultImg: any = ref('https://dummyimage.com/300x300/#F8F8F8')
+
 const memberStore = useMemberStore()
 const router = useRouter()
 
@@ -18,6 +24,8 @@ const fetchMember = async () => {
 // 訂單和收藏區
 const currentView = ref('orders') // 當前畫面
 const filter = ref('all') // 篩選條件
+const selectedFilterName = ref('所有課程') // 篩選條件名稱
+const selectedFilterCount = ref(0) // 選中的條件數量 (下拉選單用)
 const rawData: any = ref([])
 const data: any = ref([])
 const hasData = ref(true)
@@ -72,29 +80,37 @@ const setFilter: any = (filterName: string) => {
 }
 
 const handleCollectionFilter = (filterName: string) => {
-  console.log(filter.value)
-  console.log(filterName)
   if (filterName === 'experience') {
     data.value = rawData.value.filter((item: any) => item.courseTerm === 1)
+    selectedFilterName.value = '體驗課程'
   } else if (filterName === 'training') {
     data.value = rawData.value.filter((item: any) => item.courseTerm === 0)
+    selectedFilterName.value = '培訓課程'
   } else {
     data.value = rawData.value
+    selectedFilterName.value = '所有課程'
   }
+  selectedFilterCount.value = data.value.length
 }
 
 const handleOrderFilter = (filterName: string) => {
   if (filterName === 'paid') {
     data.value = rawData.value.filter((item: any) => [1, 2].includes(item.paidStatus))
+    selectedFilterName.value = '報名成功'
   } else if (filterName === 'unpaid') {
     data.value = rawData.value.filter((item: any) => item.paidStatus === 0)
+    selectedFilterName.value = '待付款'
   } else if (filterName === 'completed') {
     data.value = rawData.value.filter((item: any) => item.paidStatus === 3)
+    selectedFilterName.value = '已完課'
   } else if (filterName === 'cancel') {
     data.value = rawData.value.filter((item: any) => [4, 5, 6, 7].includes(item.paidStatus))
+    selectedFilterName.value = '課程取消'
   } else {
     data.value = rawData.value
+    selectedFilterName.value = '所有課程'
   }
+  selectedFilterCount.value = data.value.length
 }
 
 // 取得訂單資料
@@ -259,19 +275,20 @@ onMounted(() => {
           ></div> -->
           <div
             value="all"
-            class="rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
+            class="flex items-center justify-between rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
             @click="toggleDropdown"
           >
-            所有課程({{ rawData.length || 0 }})
+            {{ selectedFilterName }}({{ selectedFilterCount }})
+            <Icon name="ph:caret-down-fill" class="text-lg text-dark1" />
           </div>
           <div
             class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center"
             v-if="showDropdown"
           >
             <div
-              value="unpaid"
+              value="all"
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
-              @click="setFilter('unpaid')"
+              @click="setFilter('all')"
             >
               所有課程({{ rawData.length || 0 }})
             </div>
@@ -287,7 +304,9 @@ onMounted(() => {
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('paid')"
             >
-              報名成功({{ rawData.filter((item: any) => item.paidStatus === 1).length || 0 }})
+              報名成功({{
+                rawData.filter((item: any) => [1, 2].includes(item.paidStatus)).length || 0
+              }})
             </div>
             <div
               value="completed"
@@ -301,7 +320,9 @@ onMounted(() => {
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('cancel')"
             >
-              課程取消({{ rawData.filter((item: any) => item.paidStatus === 4).length || 0 }})
+              課程取消({{
+                rawData.filter((item: any) => [4, 5, 6, 7].includes(item.paidStatus)).length || 0
+              }})
             </div>
           </div>
         </div>
@@ -346,7 +367,7 @@ onMounted(() => {
             :class="{ 'bg-orange3 ': filter === 'all', 'bg-white': filter !== 'all' }"
             @click="setFilter('all')"
           >
-            所有課程({{ rawData.length || 0 }})
+            {{ selectedFilterName }}({{ rawData.length || 0 }})
           </button>
           <button
             class="rounded border-[1px] border-solid border-primary px-5 py-2"
@@ -370,10 +391,11 @@ onMounted(() => {
         >
           <div
             value="all"
-            class="rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
+            class="flex items-center justify-between rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
             @click="toggleDropdown"
           >
-            所有課程({{ rawData.length || 0 }})
+            {{ selectedFilterName }}({{ selectedFilterCount }})
+            <Icon name="ph:caret-down-fill" class="text-lg text-dark1" />
           </div>
           <div
             class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center"

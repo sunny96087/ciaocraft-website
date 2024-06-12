@@ -1,19 +1,32 @@
-<
-<script>
-export default {
-  // get query string from URL
-  mounted() {
-    const urlParams = new URLSearchParams(window.location.search)
-    const user = urlParams.get('user')
-    if (user) {
-      localStorage.setItem('token', user)
+<script setup lang="ts">
+const authStore = useAuthStore()
+const route = useRoute()
+const router = useRouter()
+
+onMounted(() => {
+  if (process.client) {
+    const token = route.query.user
+    const memberId = route.query.memberId
+    const name = route.query.name
+    const photo = route.query.photo
+    if (token) {
+      localStorage.setItem('token', token)
+      localStorage.setItem('memberId', memberId)
+      localStorage.setItem('name', name)
+      localStorage.setItem('photo', photo)
     }
 
-    // redirect to home page
+    console.log('ssoLogin', token)
+    console.log('ssoLogin', memberId)
+    console.log('ssoLogin', name)
+    console.log('ssoLogin', photo)
+
     if (localStorage.getItem('token')) {
-      this.$router.push('/')
+      authStore.isLogin = true
+      router.push('/')
     }
   }
-}
+})
 </script>
->
+
+<template></template>
