@@ -59,7 +59,7 @@ const toggleDropdown = () => {
 }
 
 // 處理排序
-const handleOrder = (orderName: string) => {
+const handleSort = (orderName: string) => {
   if (orderName === 'newest') {
   } else if (orderName === 'experience') {
     data.value = rawData.sort((a: any, b: any) => a.courseTerm - b.courseTerm)
@@ -339,21 +339,21 @@ onMounted(() => {
             <li
               value="newest"
               class="py-1 text-center hover:bg-secondary hover:text-white"
-              @click="handleOrder('newest')"
+              @click="handleSort('newest')"
             >
               最近時間
             </li>
             <li
               value="expirence"
               class="py-1 text-center hover:bg-secondary hover:text-white"
-              @click="handleOrder('expirence')"
+              @click="handleSort('expirence')"
             >
               體驗課程優先
             </li>
             <li
               value="training"
               class="py-1 text-center hover:bg-secondary hover:text-white"
-              @click="handleOrder('training')"
+              @click="handleSort('training')"
             >
               培訓課程優先
             </li>
