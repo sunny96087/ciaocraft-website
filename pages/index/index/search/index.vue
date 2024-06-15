@@ -52,8 +52,7 @@ const toggleSort = (): void => {
       <div class="relative">
         <a href="#" class="flex items-center" @click="toggleSort">
           <p class="mr-0.5 text-primary">排序</p>
-          <!-- <PhArrowsDownUp :size="20" /> -->
-          <img src="~/assets/images/front/sort.png" alt="排序icon" />
+          <Icon name="ph:arrows-down-up" class="text-xl" />
         </a>
         <ul
           :class="[
