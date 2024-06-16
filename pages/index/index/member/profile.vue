@@ -201,7 +201,7 @@ onMounted(() => {
                 type="checkbox"
                 id="craft"
                 name="craft"
-                value="craft"
+                value="工藝手作"
                 v-model="member.interests"
               />
               <label for="craft">工藝手作</label>

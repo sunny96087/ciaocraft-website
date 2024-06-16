@@ -163,7 +163,7 @@ onMounted(() => {
       <div class="mx-auto mb-14 flex space-x-8">
         <!-- 大頭貼 -->
         <div
-          class="aspect-square max-h-[120px] max-w-[120px] overflow-hidden md:max-h-[180px] md:max-w-[180px]"
+          class="aspect-square max-h-[120px] w-1/3 max-w-[120px] overflow-hidden md:max-h-[180px] md:max-w-[180px]"
         >
           <img
             :src="member.photo || defaultImg"

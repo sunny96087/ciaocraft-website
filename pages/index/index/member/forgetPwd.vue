@@ -29,7 +29,9 @@ const resetPassword = async () => {
     showToast('密碼不一致')
     return
   }
+
   try {
+    showLoading()
     let postData = {
       token: route.query.token,
       password: password.value,
@@ -45,11 +47,15 @@ const resetPassword = async () => {
       router.push('/')
     } else {
       console.log(result)
-      showToast('修改失敗')
+      showToastError('未帶有效權杖，請重新申請忘記密碼')
+      router.push('/')
     }
   } catch (e) {
     console.log(e)
+    showToastError('未帶有效權杖，請重新申請忘記密碼')
+    router.push('/')
   }
+  hideLoading()
 }
 
 onMounted(() => {
