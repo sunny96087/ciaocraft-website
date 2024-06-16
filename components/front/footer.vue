@@ -4,7 +4,10 @@
   <div class="px-5 lg:px-[100px]">
     <ul class="mx-auto max-w-full pb-[60px] pt-[30px] lg:py-[60px]">
       <li class="mb-10 lg:mb-5">
-        <a href="#"><img src="~/assets/images/front/Logo_Img(footer).png" alt="logo" /></a>
+        <NuxtLink to="/"
+          ><img src="~/assets/images/front/Logo_Img(footer).png" alt="logo"
+        /></NuxtLink>
+        <!-- <a href="#"><img src="~/assets/images/front/Logo_Img(footer).png" alt="logo" /></a> -->
       </li>
       <li>
         <ul class="flex flex-col lg:flex-row lg:justify-between">
@@ -13,7 +16,10 @@
           </li>
           <li class="order-1 mb-[30px] lg:order-none lg:mb-0">
             <ul class="flex">
-              <li class="mr-[30px]"><a href="#">關於我們</a></li>
+              <li class="mr-[30px]">
+                <NuxtLink to="/about">關於我們</NuxtLink>
+                <!-- <a href="#">關於我們</a> -->
+              </li>
               <li class="mr-[30px]">
                 <NuxtLink to="/vendorApply">我要開課</NuxtLink>
               </li>

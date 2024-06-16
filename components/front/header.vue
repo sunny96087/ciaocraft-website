@@ -44,6 +44,10 @@ watch(
 onMounted(() => {
   authStore.checkLogin()
 })
+
+const signOut = (): void => {
+  authStore.logout()
+}
 </script>
 
 <template>
@@ -53,11 +57,16 @@ onMounted(() => {
       <ul class="my-3.5 flex items-center justify-between lg:my-[30px]">
         <li>
           <h1>
-            <a
+            <NuxtLink
+              to="/"
+              class="block h-10 w-40 overflow-hidden whitespace-nowrap bg-[url('~/assets/images/front/Logo_Img.png')] indent-[115%]"
+              >Ciao!Craft</NuxtLink
+            >
+            <!-- <a
               href="#"
               class="block h-10 w-40 overflow-hidden whitespace-nowrap bg-[url('~/assets/images/front/Logo_Img.png')] indent-[115%]"
               >Ciao!Craft</a
-            >
+            > -->
           </h1>
         </li>
         <li class="hidden lg:block">
@@ -81,7 +90,7 @@ onMounted(() => {
               </button>
             </li>
             <li class="pr-6">
-              <a href="#">
+              <a href="#" @click="openLoginModal">
                 <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
               /> -->
                 <Icon name="ph:star-bold" class="text-[32px]" />
@@ -90,14 +99,9 @@ onMounted(() => {
               </a>
             </li>
             <li>
-              <a href="#">
-                <!-- <img
-                  src="~/assets/images/front/Button(money).png"
-                  alt="關於我們/如何累積點數icon" /> -->
+              <NuxtLink to="/about">
                 <Icon name="ph:currency-circle-dollar" class="text-[32px]" />
-                <!-- <PhCurrencyCircleDollar :size="32"
-              /> -->
-              </a>
+              </NuxtLink>
             </li>
           </ul>
         </li>
@@ -105,7 +109,7 @@ onMounted(() => {
         <li class="lg:hidden">
           <ul class="flex items-center">
             <li class="pr-6">
-              <a href="#">
+              <a href="#" @click="openLoginModal">
                 <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
               /> -->
                 <Icon name="ph:star-bold" class="text-[32px]" />
@@ -287,7 +291,11 @@ onMounted(() => {
                     >
                   </li>
                   <li>
-                    <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
+                    <a
+                      href="#"
+                      class="flex items-center py-2 pl-5 hover:text-primary-light"
+                      @click="signOut"
+                    >
                       <!-- <img
                         src="~/assets/images/front/sign_out_Icon.png"
                         alt="會員管理icon"
@@ -358,7 +366,12 @@ onMounted(() => {
           >我要開課</NuxtLink
         >
       </li>
-      <li><a href="#" class="block py-2 pl-5 hover:text-primary-light">如何累積點數</a></li>
+      <li>
+        <NuxtLink to="/about" class="block py-2 pl-5 hover:text-primary-light"
+          >如何累積點數</NuxtLink
+        >
+        <!-- <a href="#" class="block py-2 pl-5 hover:text-primary-light">如何累積點數</a> -->
+      </li>
     </ul>
   </div>
   <!-- 漢堡選單(已登入) -->
@@ -382,12 +395,19 @@ onMounted(() => {
           <!-- <PhUser :size="24" class="mr-3" /> -->
           <p>User Name</p>
         </div>
-        <a href="#"
+        <NuxtLink to="/member/profile">
+          <img
+            src="~/assets/images/front/userphoto.png"
+            alt="大頭照"
+            class="h-[60px] w-[60px] rounded-full"
+          />
+        </NuxtLink>
+        <!-- <a href="#"
           ><img
             src="~/assets/images/front/userphoto.png"
             alt="大頭照"
             class="h-[60px] w-[60px] rounded-full"
-        /></a>
+        /></a> -->
       </li>
       <li class="mb-4 flex items-center pl-2">
         <!-- <img src="~/assets/images/front/Button(usermoney).png" alt="點數icon" class="mr-3" /> -->
@@ -396,12 +416,10 @@ onMounted(() => {
         <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">0</p>
       </li>
       <li class="border-b border-[#AAAAAA] pb-3">
-        <a href="#" class="flex items-center text-xs leading-[20px] text-secondary">
-          <!-- <img src="~/assets/images/front/information.png" alt="資訊icon" class="mr-1" /> -->
+        <NuxtLink to="/about" class="flex items-center text-xs leading-[20px] text-secondary">
           <Icon name="ph:info" class="mr-1 text-sm" />
-          <!-- <PhInfo :size="14" class="mr-1" /> -->
           如何累積點數？
-        </a>
+        </NuxtLink>
       </li>
       <li>
         <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
@@ -453,19 +471,13 @@ onMounted(() => {
         >
       </li>
       <li>
-        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-          <!-- <img
-            src="~/assets/images/front/user_keyIcon.png"
-            alt="會員管理icon"
-            class="mr-2.5"
-          /> -->
+        <NuxtLink to="/member" class="flex items-center py-2 pl-5 hover:text-primary-light">
           <Icon name="ph:key" class="mr-2.5 text-2xl" />
-          <!-- <PhKey :size="24" class="mr-2.5" /> -->
-          會員管理</a
-        >
+          會員管理
+        </NuxtLink>
       </li>
       <li class="mb-3 border-b border-[#AAAAAA] pb-3">
-        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
+        <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light" @click="signOut">
           <!-- <img
             src="~/assets/images/front/sign_out_Icon.png"
             alt="會員管理icon"
@@ -473,8 +485,8 @@ onMounted(() => {
           /> -->
           <Icon name="ph:sign-out" class="mr-2.5 text-2xl" />
           <!-- <PhSignOut :size="24" class="mr-2.5" /> -->
-          登出</a
-        >
+          登出
+        </a>
       </li>
       <li>
         <NuxtLink to="/vendorApply" class="block py-2 pl-5 hover:text-primary-light"
