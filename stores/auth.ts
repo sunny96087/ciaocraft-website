@@ -52,15 +52,18 @@ export const useAuthStore = defineStore('auth', {
       console.log(`${this.apiUrl}/auth/google`)
       axios.get(`${this.apiUrl}/auth/google`)
     },
+    unlinkGoogleAccount() {
+      return axios.delete(`${this.apiUrl}/auth/unlinkGoogleAccount`, {
+        headers: {
+          token: this.token
+        }
+      })
+    },
     logout() {
       this.memberId = ''
       this.token = ''
-      this.photo = ''
-      this.name = ''
       localStorage.removeItem('memberId')
       localStorage.removeItem('token')
-      localStorage.removeItem('photo')
-      localStorage.removeItem('name')
       this.isLogin = false
     }
   }
