@@ -1,54 +1,60 @@
-<script lang="ts" setup>
-// 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
-definePageMeta({
-  middleware: ['auth']
-})
-
+<script setup lang="ts">
 const router = useRouter()
-const memberStore = useMemberStore()
-const password = ref('')
-const confirmPassword = ref('')
+const route = useRoute()
+const authStore = useAuthStore()
+
+const token: any = ref('')
+const password: any = ref('')
+const confirmPassword: any = ref('')
+
 const passwordVisible = ref(false)
 const confirmPasswordVisible = ref(false)
-const errorMessage = ref('')
-const hasError = ref(false)
+
+const getResetPasswordToken = () => {
+  if (process.client) {
+    token.value = route.query.token
+    console.log(token.value)
+  } else {
+    showToastError('未攜帶有效權杖，請重新申請密碼重設')
+    router.push('/')
+  }
+}
 
 const resetPassword = async () => {
   if (password.value === '' || confirmPassword.value === '') {
-    hasError.value = true
-    errorMessage.value = '請輸入密碼'
+    showToast('請輸入密碼')
     return
   }
-
   if (password.value !== confirmPassword.value) {
-    hasError.value = true
-    errorMessage.value = '密碼不一致'
+    showToast('密碼不一致')
     return
   }
-
   try {
-    showLoading()
     let postData = {
-      newPassword: password.value,
-      confirmNewPassword: confirmPassword.value
+      token: route.query.token,
+      password: password.value,
+      confirmPassword: confirmPassword.value
     }
-    const res = await memberStore.updatePassword(postData)
+
+    const res = await authStore.resetPassword(postData)
     const result = res.data
+
     if (result.statusCode === 200) {
+      console.log(result)
       showToast('修改成功')
-      router.push('/member')
+      router.push('/')
     } else {
-      showToastError('修改失敗')
+      console.log(result)
+      showToast('修改失敗')
     }
   } catch (e) {
-    showToastError('發生錯誤，請稍後再試')
-  } finally {
-    hideLoading()
+    console.log(e)
   }
-
-  hasError.value = false
-  errorMessage.value = ''
 }
+
+onMounted(() => {
+  getResetPasswordToken()
+})
 </script>
 
 <template>
@@ -100,9 +106,6 @@ const resetPassword = async () => {
                 <Icon name="ph:eye-light" />
               </button>
             </div>
-          </div>
-          <div class="text-danger" v-if="hasError">
-            {{ errorMessage }}
           </div>
         </div>
         <button

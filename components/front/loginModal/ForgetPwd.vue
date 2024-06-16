@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
 const authStore = useAuthStore()
 
 const email = ref('')
