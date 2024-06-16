@@ -162,11 +162,13 @@ onMounted(() => {
     <div class="mx-auto py-14 lg:max-w-screen-xl">
       <div class="mx-auto mb-14 flex space-x-8">
         <!-- 大頭貼 -->
-        <div class="aspect-square w-1/3 max-w-[180px] overflow-hidden">
+        <div
+          class="aspect-square max-h-[120px] max-w-[120px] overflow-hidden md:max-h-[180px] md:max-w-[180px]"
+        >
           <img
             :src="member.photo || defaultImg"
             alt="member-photo"
-            class="w-full rounded-full bg-gray3 object-cover"
+            class="h-full w-full rounded-full bg-gray3 object-cover"
           />
         </div>
         <div class="md:flex md:w-full md:items-center md:justify-between">
