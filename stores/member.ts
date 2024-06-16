@@ -22,7 +22,6 @@ export const useMemberStore = defineStore('member', {
         }
       })
     },
-
     // 取得會員資料
     async getMember() {
       return await axios.get(`${apiUrl}/members/memberOne`, {
@@ -31,7 +30,6 @@ export const useMemberStore = defineStore('member', {
         }
       })
     },
-
     // 更新會員資料
     async updateMember(data: JsonObject) {
       console.log(`${apiUrl}/members/memberOne`)
@@ -41,16 +39,15 @@ export const useMemberStore = defineStore('member', {
         }
       })
     },
-
     // 更新會員密碼
     async updatePassword(data: JsonObject) {
-      return await axios.put(`${apiUrl}/members/memberOne/password`, data, {
+      console.log(`${apiUrl}/members/memberOne/password`)
+      return await axios.patch(`${apiUrl}/members/memberOne/password`, data, {
         headers: {
           token: localStorage.getItem('token')
         }
       })
     },
-
     async getMemberOrders() {
       console.log(`${apiUrl}/members/memberOne/orders`)
       return await axios.get(`${apiUrl}/members/memberOne/orders`, {
