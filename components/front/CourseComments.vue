@@ -70,11 +70,10 @@ const openPhotoModal = (imageUrl: string): void => {
           </select>
         </li>
         <li class="relative">
-          <a href="#" class="flex items-center text-primary" @click="toggleSort">
+          <button class="flex items-center text-primary" @click="toggleSort">
             排序
             <Icon name="ph:arrows-down-up" class="ml-1 text-xl text-primary" />
-            <!-- <PhArrowsDownUp :size="20" color="#EA580C" class="ml-1" /> -->
-          </a>
+          </button>
           <ul
             :class="[
               'sort absolute right-0 z-50 w-[120px] rounded border border-gray5 bg-white text-center',
@@ -82,24 +81,48 @@ const openPhotoModal = (imageUrl: string): void => {
             ]"
           >
             <li>
-              <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
+              <button
+                class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                @click="toggleSort"
+              >
+                最近時間
+              </button>
+              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
                 >最近時間</a
-              >
+              > -->
             </li>
             <li>
-              <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
+              <button
+                class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                @click="toggleSort"
+              >
+                熱門課程
+              </button>
+              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
                 >熱門課程</a
-              >
+              > -->
             </li>
             <li>
-              <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
+              <button
+                class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                @click="toggleSort"
+              >
+                評分最高
+              </button>
+              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
                 >評分最高</a
-              >
+              > -->
             </li>
             <li>
-              <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >評分最低</a
+              <button
+                class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                @click="toggleSort"
               >
+                評分最低
+              </button>
+              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
+                >評分最低</a
+              > -->
             </li>
           </ul>
         </li>
@@ -140,12 +163,19 @@ const openPhotoModal = (imageUrl: string): void => {
                         ]"
                       >
                         <li>
-                          <a
+                          <button
+                            class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                            @click="openReportModal"
+                          >
+                            檢舉
+                          </button>
+
+                          <!-- <a
                             href="#"
                             class="block py-1 hover:bg-secondary hover:text-white"
                             @click="openReportModal"
                             >檢舉</a
-                          >
+                          > -->
                         </li>
                       </ul>
                     </div>

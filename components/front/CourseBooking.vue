@@ -28,11 +28,10 @@ const handleBookingCancel = () => {
     </li>
     <li class="mb-5 flex justify-between">
       <p class="text-lg font-medium leading-[26px]">選擇課程日期、場次、人數</p>
-      <a href="#" class="flex items-center text-primary">
+      <button class="flex items-center text-primary">
         重新填寫
         <Icon name="ph:arrow-clockwise" class="ml-1 text-xl text-primary" />
-        <!-- <PhArrowClockwise :size="20" color="#EA580C" class="ml-1" /> -->
-      </a>
+      </button>
     </li>
     <li>
       <ul class="mb-10 justify-between lg:flex">
