@@ -5,37 +5,77 @@ definePageMeta({
 })
 
 const memberStore = useMemberStore()
-const authStore = useAuthStore()
 const uploadStore = useUploadStore()
+const router = useRouter()
 
-const member: any = ref({})
+const member: any = ref({
+  email: '會員email',
+  nickname: '會員暱稱',
+  name: '會員姓名',
+  photo: '會員大頭貼',
+  gender: 'other',
+  birthday: new Date('2024-06-01'),
+  phone: '會員電話',
+  interests: [],
+  googleId: 'Google Email'
+})
 
+// 取得會員資料
 const fetchMemberData = async () => {
   try {
     const res: any = await memberStore.getMember()
     const result = res.data
-    console.log('fetchMemberData', result.data)
     member.value = result.data
-    console.log('member', member.value)
+    member.value.birthday = result.data.birthday.split('T')[0]
+    console.log(result.data.birthday.split('T')[0])
+    console.log(member.value.birthday)
   } catch (error) {
-    console.log(error)
+    showToastError('取得會員資料失敗')
   }
 }
 
+// 上傳圖片，點擊編輯照片按鈕時觸發隱藏的圖片上傳輸入框
+const fileInput: any = ref(null)
+const clickFileInput = () => {
+  fileInput.value.click()
+}
+
+// 圖片上傳
+const handleFileUpload = async (event: any, type: string) => {
+  const file = event.target.files[0]
+  const formData: any = new FormData()
+  formData.append('file', file)
+  if (!file) {
+    showToastError('圖片上傳失敗')
+    return
+  }
+  showLoading()
+  try {
+    const res = await uploadStore.uploadSingleImage(formData)
+    const result = res.data
+    if (result.status == 'success') {
+      member.value.photo = result.data.imgUrl
+    }
+  } catch (err) {
+    showToastError('圖片上傳失敗')
+  }
+  hideLoading()
+}
+
+// 更新會員資料
 const updateMember = async () => {
   await memberStore
     .updateMember(member.value)
     .then((res) => {
-      console.log(res.data)
-      alert('更新成功')
+      showToast('更新成功')
     })
     .catch((err) => {
-      console.log(err)
-      alert('更新失敗')
+      showToastError('更新失敗')
     })
   fetchMemberData()
 }
 
+// 取消連結Google帳號
 const unlinkGoogleAccount = async () => {
   await useAuthStore()
     .unlinkGoogleAccount()
@@ -45,28 +85,6 @@ const unlinkGoogleAccount = async () => {
     .catch(() => {
       showToast('取消連結失敗')
     })
-}
-
-const handleFileUpload = async (event: any, type: string) => {
-  const file = event.target.file[0]
-  if (!file) {
-    return
-  }
-
-  const formData: any = new FormData()
-  formData.append('file', file)
-
-  try {
-    showLoading()
-    const res = await uploadStore.uploadSingleImage(formData)
-    const result = res.data
-    if (result.statuCode == 200) {
-      member.photo.value = result.data.imgUrl
-    }
-    hideLoading()
-  } catch (err) {
-    console.log(err)
-  }
 }
 
 onMounted(() => {
@@ -94,12 +112,11 @@ onMounted(() => {
           <button
             type="button"
             class="w-full rounded-[4px] border-[1px] border-solid border-primary py-2 text-base tracking-wider transition duration-300 hover:border-primary-light hover:bg-primary hover:text-white"
-            @click=""
+            @click="clickFileInput"
           >
             編輯照片
           </button>
 
-          <!-- * 上傳圖片 -->
           <!-- 隱藏的圖片上傳輸入框 -->
           <input
             class="hidden"
@@ -176,6 +193,7 @@ onMounted(() => {
           <input
             type="date"
             name="birthday"
+            value="2000-01-01"
             placeholder="請選擇"
             class="w-full rounded border-[1px] border-solid border-gray3 px-5 py-2"
             v-model="member.birthday"
