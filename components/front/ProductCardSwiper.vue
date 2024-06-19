@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
@@ -20,6 +20,82 @@ export default {
       modules: [Navigation]
     }
   }
+}
+</script> -->
+
+<script setup lang="ts">
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue'
+
+// Import Swiper styles
+import 'swiper/css'
+
+import 'swiper/css/navigation'
+
+// import required modules
+import { Navigation } from 'swiper/modules'
+
+const modules = [Navigation]
+
+// 串接 API
+import { useCourseStore } from '~/stores/course'
+const courseStore = useCourseStore()
+
+const artCourseInfo: any = ref({})
+const handCourseInfo: any = ref({})
+const allCourseInfo: any = ref({})
+
+onMounted(() => {
+  getCourse()
+})
+
+// 定義接收的 props
+const props = defineProps({
+  courseType: String
+})
+
+let data = {
+  courseType: props.courseType,
+  pageSize: 6
+}
+
+async function getCourse() {
+  try {
+    let res
+    if (props.courseType === '藝術人文' || props.courseType === '工藝手作') {
+      res = await courseStore.apiGetOneCourse(data)
+    } else {
+      res = await courseStore.apiGetAllCourse(data)
+    }
+    const result = res.data
+    // console.log(result)
+
+    request(result)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function request(result: { statusCode: number; data: any }) {
+  if (result.statusCode === 200) {
+    if (props.courseType === '藝術人文') {
+      artCourseInfo.value = result.data
+      // console.log(`artCourseInfo = ${JSON.stringify(artCourseInfo.value)}`)
+    } else if (props.courseType === '工藝手作') {
+      handCourseInfo.value = result.data
+      // console.log(`handCourseInfo = ${JSON.stringify(handCourseInfo.value)}`)
+    } else {
+      allCourseInfo.value = result.data
+      // console.log(`allCourseInfo = ${JSON.stringify(allCourseInfo.value)}`)
+    }
+  } else {
+    console.log('取得課程資料失敗')
+  }
+}
+
+// 格式化價格的計算屬性
+const formattedPrice = (price: number): string => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 </script>
 
@@ -43,122 +119,62 @@ export default {
     :modules="modules"
     class="productCardSwiper"
   >
-    <swiper-slide>
+    <swiper-slide v-for="item in artCourseInfo" :key="item.id">
       <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
+        <img :src="item.courseImage[0]" alt="課程圖片" class="course mb-2 w-full rounded" />
         <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名稱</p>
+            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
+              體驗
+            </p>
+            <p class="w-full">{{ item.courseName }}</p>
           </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
+          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
           <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
+            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
+              formattedPrice(item.coursePrice)
+            }}</span>
           </p>
         </div>
       </a>
     </swiper-slide>
-    <swiper-slide>
+    <swiper-slide v-for="item in handCourseInfo" :key="item.id">
       <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
+        <img :src="item.courseImage[0]" alt="課程圖片" class="course mb-2 w-full rounded" />
         <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
+            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
+              體驗
+            </p>
+            <p class="w-full">{{ item.courseName }}</p>
           </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
+          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
           <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
+            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
+              formattedPrice(item.coursePrice)
+            }}</span>
           </p>
         </div>
       </a>
     </swiper-slide>
-    <swiper-slide>
+    <swiper-slide v-for="item in allCourseInfo" :key="item.id">
       <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
+        <img :src="item.courseImage[0]" alt="課程圖片" class="course mb-2 w-full rounded" />
         <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
         <div>
           <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
+            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
+              體驗
+            </p>
+            <p class="w-full">{{ item.courseName }}</p>
           </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
+          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
           <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </swiper-slide>
-    <swiper-slide>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </swiper-slide>
-    <swiper-slide>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </swiper-slide>
-    <swiper-slide>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
+            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
+              formattedPrice(item.coursePrice)
+            }}</span>
           </p>
         </div>
       </a>

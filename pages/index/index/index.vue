@@ -1,7 +1,4 @@
-<script setup lang="ts">
-// 需要的 icon 再引入即可
-// import { PhCaretRight } from '@phosphor-icons/vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="mb-[30px] pt-5">
@@ -21,27 +18,23 @@
     <div class="mx-auto max-w-screen-xl pb-9">
       <div class="mb-9">
         <div class="mb-[30px] flex items-end">
-          <h2 class="mr-5 text-3xl font-medium leading-[38px]">單堂體驗課程</h2>
+          <h2 class="mr-5 text-3xl font-medium leading-[38px]">藝術人文</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
-            <!-- <PhCaretRight :size="20" class="text-primary" /> -->
-            <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
-        <front-product-card-swiper />
+        <front-product-card-swiper courseType="藝術人文" />
       </div>
       <div class="mb-9">
         <div class="mb-[30px] flex items-end">
-          <h2 class="mr-5 text-3xl font-medium leading-[38px]">系統培訓課程</h2>
+          <h2 class="mr-5 text-3xl font-medium leading-[38px]">工藝手作</h2>
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
-            <!-- <PhCaretRight :size="20" class="text-primary" /> -->
-            <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
-        <front-product-card-swiper />
+        <front-product-card-swiper courseType="工藝手作" />
       </div>
       <div class="mb-9">
         <div class="mb-[30px] flex items-end">
@@ -49,8 +42,6 @@
           <a href="#" class="flex">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
-            <!-- <PhCaretRight :size="20" class="text-primary" /> -->
-            <!-- <img src="~/assets/images/front/Icon_new_more.png" alt="箭頭" /> -->
           </a>
         </div>
         <front-product-card-swiper />

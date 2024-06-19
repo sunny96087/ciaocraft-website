@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// 需要的 icon 再引入即可
-// import { PhArrowsDownUp } from '@phosphor-icons/vue'
-
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
 
@@ -43,9 +40,9 @@ async function getCourseData() {
       keyword: currentKeyword.value,
       courseTerm: currentCourseTerm.value === '-1' ? '' : Number(currentCourseTerm.value)
     }
-    const res = await courseStore.getCourseCollection(data)
-    const result = res.data
-    console.log(result)
+    // const res = await courseStore.getArtOfCourse()
+    // const result = res.data
+    // console.log(result)
   } catch (e) {
     console.log(e)
   } finally {
@@ -92,10 +89,6 @@ async function getCourseData() {
           <p class="mr-0.5 text-primary">排序</p>
           <Icon name="ph:arrows-down-up" class="text-xl text-primary" />
         </button>
-        <!-- <a href="#" class="flex items-center" @click="toggleSort">
-          <p class="mr-0.5 text-primary">排序</p>
-          <Icon name="ph:arrows-down-up" class="text-xl" />
-        </a> -->
         <ul
           :class="[
             'sort absolute right-0 z-50 w-[120px] rounded border border-gray5 bg-white text-center',
@@ -109,9 +102,6 @@ async function getCourseData() {
             >
               最近時間
             </button>
-            <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-              >最近時間</a
-            > -->
           </li>
           <li>
             <button
@@ -120,9 +110,6 @@ async function getCourseData() {
             >
               熱門課程
             </button>
-            <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-              >熱門課程</a
-            > -->
           </li>
           <li>
             <button
@@ -131,9 +118,6 @@ async function getCourseData() {
             >
               評分最高
             </button>
-            <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-              >評分最高</a
-            > -->
           </li>
         </ul>
       </div>
