@@ -14,6 +14,44 @@ const isSortOpen = ref<boolean>(false)
 const toggleSort = (): void => {
   isSortOpen.value = !isSortOpen.value
 }
+
+//
+import { useCourseStore } from '~/stores/course'
+import { showLoading } from '~/stores/eventBus'
+const courseStore = useCourseStore()
+
+// 變數定義
+const currentOrder = ref('') // ORDER_DESC
+const currentCreatedAt = ref('') // CREATED_AT_ASC
+const currentKeyword = ref('') // 搜尋關鍵字, 查詢姓名欄位
+const currentCourseTerm = ref('-1') // 課程時長類型, 0: 單堂
+
+onMounted(() => {
+  getCourseData()
+})
+
+// 取得所有課程
+async function getCourseData() {
+  try {
+    showLoading()
+
+    let data = {
+      // page: 1,
+      // limit: 10,
+      order: currentOrder.value,
+      createdAt: currentCreatedAt.value,
+      keyword: currentKeyword.value,
+      courseTerm: currentCourseTerm.value === '-1' ? '' : Number(currentCourseTerm.value)
+    }
+    const res = await courseStore.getCourseCollection(data)
+    const result = res.data
+    console.log(result)
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
+}
 </script>
 
 <template>
