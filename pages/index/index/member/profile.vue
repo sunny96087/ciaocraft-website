@@ -4,10 +4,13 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const authStore = useAuthStore()
 const memberStore = useMemberStore()
 const uploadStore = useUploadStore()
 const router = useRouter()
 
+const googleUrl = ref(authStore.apiUrl + '/auth/google')
+const memberEmail = ref('')
 const member: any = ref({
   email: '會員email',
   nickname: '會員暱稱',
@@ -27,10 +30,10 @@ const fetchMemberData = async () => {
     const result = res.data
     member.value = result.data
     member.value.birthday = result.data.birthday.split('T')[0]
-    console.log(result.data.birthday.split('T')[0])
-    console.log(member.value.birthday)
+    memberEmail.value = result.data.email ? result.data.email : result.data.googleAccount
+    console.log(result.data)
   } catch (error) {
-    showToastError('取得會員資料失敗')
+    showToast('取得會員資料失敗')
   }
 }
 
@@ -46,7 +49,7 @@ const handleFileUpload = async (event: any, type: string) => {
   const formData: any = new FormData()
   formData.append('file', file)
   if (!file) {
-    showToastError('圖片上傳失敗')
+    showToast('圖片上傳失敗')
     return
   }
   showLoading()
@@ -64,13 +67,23 @@ const handleFileUpload = async (event: any, type: string) => {
 
 // 更新會員資料
 const updateMember = async () => {
+  if (!member.value.name) {
+    showToast('名字不可為空')
+    return
+  }
+
+  if (member.value.interests.length === 0) {
+    showToast('請至少選擇一個有興趣領域')
+    return
+  }
+
   await memberStore
     .updateMember(member.value)
     .then((res) => {
       showToast('更新成功')
     })
     .catch((err) => {
-      showToastError('更新失敗')
+      showToast('更新失敗')
     })
   fetchMemberData()
 }
@@ -85,6 +98,7 @@ const unlinkGoogleAccount = async () => {
     .catch(() => {
       showToast('取消連結失敗')
     })
+  fetchMemberData()
 }
 
 onMounted(() => {
@@ -133,7 +147,7 @@ onMounted(() => {
               name="email"
               placeholder="帳號/電子信箱"
               class="w-full rounded-[4px] border-[1px] border-solid border-gray3 px-5 py-2"
-              v-model="member.email"
+              v-model="memberEmail"
               disabled
             />
           </div>
@@ -193,7 +207,6 @@ onMounted(() => {
           <input
             type="date"
             name="birthday"
-            value="2000-01-01"
             placeholder="請選擇"
             class="w-full rounded border-[1px] border-solid border-gray3 px-5 py-2"
             v-model="member.birthday"
@@ -203,11 +216,12 @@ onMounted(() => {
           <label>聯絡電話</label>
           <div class="w-full rounded-[4px] border-[1px] border-solid border-gray3">
             <input
-              type="email"
-              name="email"
+              type="tel"
+              name="tel"
               placeholder="請輸入"
               class="w-full px-5 py-2"
               v-model="member.phone"
+              oninput="value=value.replace(/[^\d]/g,'')"
             />
           </div>
         </div>
@@ -258,15 +272,15 @@ onMounted(() => {
         </div>
         <div class="space-y-2">
           <label for="google-email">連結帳號</label>
-          <div class="flex justify-between space-x-2">
+          <div class="flex justify-between space-x-2" v-if="member.googleId">
             <div class="flex-1 rounded-[4px] border-[1px] border-solid border-gray3">
               <input
                 type="email"
-                name="google-email"
-                placeholder="googleId"
+                name="gmail"
+                placeholder="link gmail account"
                 class="w-full px-5 py-2"
                 disabled
-                v-model="member.email"
+                v-model="member.googleAccount"
               />
             </div>
             <button
@@ -275,7 +289,22 @@ onMounted(() => {
             >
               取消連結
             </button>
+            <!-- <button
+              v-else
+              class="items-center justify-center rounded-[4px] bg-secondary px-4 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light"
+              @click="linkGoogleAccount()"
+            >
+              連結 Google 帳號
+            </button> -->
           </div>
+          <a
+            v-else
+            :href="googleUrl"
+            class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"
+          >
+            <Icon name="logos:google-icon" class="mr-5" />
+            <span>使用 Google 登入</span>
+          </a>
         </div>
       </div>
       <button
