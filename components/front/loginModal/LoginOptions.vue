@@ -32,7 +32,7 @@ const toCiaoLogin = (): void => {
         :href="googleUrl"
         class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"
       >
-        <Icon name="basil:google-solid" class="mr-5" />
+        <Icon name="logos:google-icon" class="mr-5" />
         <span>使用 Google 登入</span>
       </a>
       <button

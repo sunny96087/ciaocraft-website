@@ -4,38 +4,91 @@ definePageMeta({
   middleware: ['auth']
 })
 
-const memberStore = useMemberStore()
 const authStore = useAuthStore()
+const memberStore = useMemberStore()
 const uploadStore = useUploadStore()
+const router = useRouter()
 
-const member: any = ref({})
+const googleUrl = ref(authStore.apiUrl + '/auth/google')
+const memberEmail = ref('')
+const member: any = ref({
+  email: '會員email',
+  nickname: '會員暱稱',
+  name: '會員姓名',
+  photo: '會員大頭貼',
+  gender: 'other',
+  birthday: new Date('2024-06-01'),
+  phone: '會員電話',
+  interests: [],
+  googleId: 'Google Email'
+})
 
+// 取得會員資料
 const fetchMemberData = async () => {
   try {
     const res: any = await memberStore.getMember()
     const result = res.data
-    console.log('fetchMemberData', result.data)
     member.value = result.data
-    console.log('member', member.value)
+    member.value.birthday = result.data.birthday.split('T')[0]
+    memberEmail.value = result.data.email ? result.data.email : result.data.googleAccount
+    console.log(result.data)
   } catch (error) {
-    console.log(error)
+    showToast('取得會員資料失敗')
   }
 }
 
+// 上傳圖片，點擊編輯照片按鈕時觸發隱藏的圖片上傳輸入框
+const fileInput: any = ref(null)
+const clickFileInput = () => {
+  fileInput.value.click()
+}
+
+// 圖片上傳
+const handleFileUpload = async (event: any, type: string) => {
+  const file = event.target.files[0]
+  const formData: any = new FormData()
+  formData.append('file', file)
+  if (!file) {
+    showToast('圖片上傳失敗')
+    return
+  }
+  showLoading()
+  try {
+    const res = await uploadStore.uploadSingleImage(formData)
+    const result = res.data
+    if (result.status == 'success') {
+      member.value.photo = result.data.imgUrl
+    }
+  } catch (err) {
+    showToastError('圖片上傳失敗')
+  }
+  hideLoading()
+}
+
+// 更新會員資料
 const updateMember = async () => {
+  if (!member.value.name) {
+    showToast('名字不可為空')
+    return
+  }
+
+  if (member.value.interests.length === 0) {
+    showToast('請至少選擇一個有興趣領域')
+    return
+  }
+
   await memberStore
     .updateMember(member.value)
     .then((res) => {
-      console.log(res.data)
-      alert('更新成功')
+      showToast('更新成功')
     })
     .catch((err) => {
-      console.log(err)
-      alert('更新失敗')
+      showToast('更新失敗')
     })
   fetchMemberData()
 }
 
+// 取消連結Google帳號
 const unlinkGoogleAccount = async () => {
   await useAuthStore()
     .unlinkGoogleAccount()
@@ -45,28 +98,7 @@ const unlinkGoogleAccount = async () => {
     .catch(() => {
       showToast('取消連結失敗')
     })
-}
-
-const handleFileUpload = async (event: any, type: string) => {
-  const file = event.target.file[0]
-  if (!file) {
-    return
-  }
-
-  const formData: any = new FormData()
-  formData.append('file', file)
-
-  try {
-    showLoading()
-    const res = await uploadStore.uploadSingleImage(formData)
-    const result = res.data
-    if (result.statuCode == 200) {
-      member.photo.value = result.data.imgUrl
-    }
-    hideLoading()
-  } catch (err) {
-    console.log(err)
-  }
+  fetchMemberData()
 }
 
 onMounted(() => {
@@ -94,12 +126,11 @@ onMounted(() => {
           <button
             type="button"
             class="w-full rounded-[4px] border-[1px] border-solid border-primary py-2 text-base tracking-wider transition duration-300 hover:border-primary-light hover:bg-primary hover:text-white"
-            @click=""
+            @click="clickFileInput"
           >
             編輯照片
           </button>
 
-          <!-- * 上傳圖片 -->
           <!-- 隱藏的圖片上傳輸入框 -->
           <input
             class="hidden"
@@ -116,7 +147,7 @@ onMounted(() => {
               name="email"
               placeholder="帳號/電子信箱"
               class="w-full rounded-[4px] border-[1px] border-solid border-gray3 px-5 py-2"
-              v-model="member.email"
+              v-model="memberEmail"
               disabled
             />
           </div>
@@ -185,11 +216,12 @@ onMounted(() => {
           <label>聯絡電話</label>
           <div class="w-full rounded-[4px] border-[1px] border-solid border-gray3">
             <input
-              type="email"
-              name="email"
+              type="tel"
+              name="tel"
               placeholder="請輸入"
               class="w-full px-5 py-2"
               v-model="member.phone"
+              oninput="value=value.replace(/[^\d]/g,'')"
             />
           </div>
         </div>
@@ -240,15 +272,15 @@ onMounted(() => {
         </div>
         <div class="space-y-2">
           <label for="google-email">連結帳號</label>
-          <div class="flex justify-between space-x-2">
+          <div class="flex justify-between space-x-2" v-if="member.googleId">
             <div class="flex-1 rounded-[4px] border-[1px] border-solid border-gray3">
               <input
                 type="email"
-                name="google-email"
-                placeholder="googleId"
+                name="gmail"
+                placeholder="link gmail account"
                 class="w-full px-5 py-2"
                 disabled
-                v-model="member.email"
+                v-model="member.googleAccount"
               />
             </div>
             <button
@@ -257,7 +289,22 @@ onMounted(() => {
             >
               取消連結
             </button>
+            <!-- <button
+              v-else
+              class="items-center justify-center rounded-[4px] bg-secondary px-4 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light"
+              @click="linkGoogleAccount()"
+            >
+              連結 Google 帳號
+            </button> -->
           </div>
+          <a
+            v-else
+            :href="googleUrl"
+            class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"
+          >
+            <Icon name="logos:google-icon" class="mr-5" />
+            <span>使用 Google 登入</span>
+          </a>
         </div>
       </div>
       <button

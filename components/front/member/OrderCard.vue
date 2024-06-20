@@ -113,7 +113,7 @@ const getPaidStatusTagColor: any = (status: number) => {
         >訂單詳情</NuxtLink
       >
       <NuxtLink
-        to=""
+        :to="{ name: 'index-index-member-comment-id', params: { id: order._id } }"
         class="block rounded border-[1px] border-solid border-primary bg-primary py-2 text-center text-white transition hover:bg-primary-light md:px-10 md:py-2"
         v-if="order.paidStatus === 3 && !order.commentId"
         >分享評價</NuxtLink

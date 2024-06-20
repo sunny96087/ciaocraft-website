@@ -48,10 +48,13 @@ const removeCollection = (collectionId: string) => {
       </div>
       <div class="flex space-x-2">
         <div
-          class="mb-2 self-start whitespace-nowrap rounded-[4px] bg-blue4 px-2 py-0.5 text-sm leading-6 text-secondary"
-          :class="{ 'bg-primary text-white': collection.courseTerm === 0 }"
+          class="mb-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
+          :class="{
+            'bg-secondary text-white': collection.courseTerm === 0,
+            'bg-primary text-white': collection.courseTerm === 1
+          }"
         >
-          {{ collection.courseTerm === 1 ? '體驗' : '培訓' }}
+          {{ collection.courseTerm === 0 ? '體驗' : '培訓' }}
         </div>
         <h2 class="line-clamp-2 group-hover:text-dark3">
           {{ collection.courseName }}
@@ -62,7 +65,9 @@ const removeCollection = (collectionId: string) => {
       <p class="mb-1 truncate text-sm leading-[22px]">{{ collection.brandName }}</p>
       <div class="flex">
         <span class="mr-1 font-normal leading-6 tracking-[0.5px] text-secondary">NT$</span>
-        <span class="font-medium leading-[30px] text-secondary">{{ collection.coursePrice }}</span>
+        <span class="font-medium leading-[30px] text-secondary">{{
+          formatCurrency(collection.coursePrice)
+        }}</span>
       </div>
     </div>
   </NuxtLink>
