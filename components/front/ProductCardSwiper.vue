@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script>
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
@@ -8,6 +8,26 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 
 // import required modules
+import { Navigation } from 'swiper/modules'
+
+export default {
+  components: {
+    Swiper,
+    SwiperSlide
+  },
+  setup() {
+    return {
+      modules: [Navigation]
+    }
+  }
+}
+</script> -->
+
+<script setup lang="ts">
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
+import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 
 const modules = [Navigation]
@@ -58,6 +78,7 @@ function request(result: { statusCode: number; data: any }) {
       // console.log(`artCourseInfo = ${JSON.stringify(artCourseInfo.value)}`)
     } else if (props.courseType === '工藝手作') {
       handCourseInfo.value = result.data
+      console.log(`handCourseInfo `, handCourseInfo.value)
       // console.log(`handCourseInfo = ${JSON.stringify(handCourseInfo.value)}`)
     } else {
       allCourseInfo.value = result.data
@@ -74,7 +95,6 @@ const formattedPrice = (price: number): string => {
 }
 </script>
 
-<!-- 切版缺：卡片點擊時星星變色並留停 -->
 <template>
   <swiper
     :navigation="true"
@@ -92,79 +112,151 @@ const formattedPrice = (price: number): string => {
     }"
     :pagination="false"
     :modules="modules"
-    class="productCardSwiper"
+    class="productCardSwiper grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
   >
-    <swiper-slide v-for="item in artCourseInfo" :key="item.id" class="flex min-h-[300px] flex-col">
-      <a href="#" class="relative block flex h-full flex-col">
-        <img
-          :src="item.courseImage[0]"
-          alt="課程圖片"
-          class="course mb-2 h-[220px] w-full rounded object-cover"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div class="flex flex-col">
-          <div class="mb-2 flex h-[75px] items-start">
-            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
-              體驗
-            </p>
-            <p class="w-full">{{ item.courseName }}</p>
+    <swiper-slide v-for="item in artCourseInfo" :key="item.id">
+      <NuxtLink
+        :to="{ name: 'index-index-course-id', params: { id: item._id } }"
+        class="group flex h-full flex-col justify-between"
+        :id="item._id"
+      >
+        <div>
+          <div class="relative mx-auto mb-2">
+            <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
+              <img
+                :src="item.courseImage[0]"
+                alt="course-img"
+                class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+              />
+            </div>
+            <button class="absolute right-0 top-0 block p-3">
+              <Icon
+                name="ph:star"
+                class="text-xl opacity-0 transition duration-300 hover:text-dark4 group-hover:-translate-y-1 group-hover:opacity-100"
+              />
+            </button>
           </div>
-          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
-              formattedPrice(item.coursePrice)
-            }}</span>
-          </p>
+          <div class="flex space-x-2">
+            <div
+              class="mb-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
+              :class="{
+                'bg-secondary text-white': item.courseTerm === 0,
+                'bg-primary text-white': item.courseTerm === 1
+              }"
+            >
+              {{ item.courseTerm === 0 ? '體驗' : '培訓' }}
+            </div>
+            <h2 class="line-clamp-2 group-hover:text-dark3">
+              {{ item.courseName }}
+            </h2>
+          </div>
         </div>
-      </a>
+        <div>
+          <p class="mb-1 truncate text-sm leading-[22px]">{{ item.brandName }}</p>
+          <div class="flex">
+            <span class="mr-1 font-normal leading-6 tracking-[0.5px] text-secondary">NT$</span>
+            <span class="font-medium leading-[30px] text-secondary">{{
+              formatCurrency(item.coursePrice)
+            }}</span>
+          </div>
+        </div>
+      </NuxtLink>
     </swiper-slide>
-    <swiper-slide v-for="item in handCourseInfo" :key="item.id" class="flex min-h-[300px] flex-col">
-      <a href="#" class="relative block flex h-full flex-col">
-        <img
-          :src="item.courseImage[0]"
-          alt="課程圖片"
-          class="course mb-2 h-[220px] w-full rounded object-cover"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div class="flex flex-col">
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
-              體驗
-            </p>
-            <p class="w-full">{{ item.courseName }}</p>
+    <swiper-slide v-for="item in handCourseInfo" :key="item.id">
+      <NuxtLink
+        :to="{ name: 'index-index-course-id', params: { id: item._id } }"
+        class="group flex h-full flex-col justify-between"
+        :id="item._id"
+      >
+        <div>
+          <div class="relative mx-auto mb-2">
+            <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
+              <img
+                :src="item.courseImage[0]"
+                alt="course-img"
+                class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+              />
+            </div>
+            <button class="absolute right-0 top-0 block p-3">
+              <Icon
+                name="ph:x"
+                class="text-xl opacity-0 transition duration-300 hover:text-dark4 group-hover:-translate-y-1 group-hover:opacity-100"
+              />
+            </button>
           </div>
-          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
-              formattedPrice(item.coursePrice)
-            }}</span>
-          </p>
+          <div class="flex space-x-2">
+            <div
+              class="mb-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
+              :class="{
+                'bg-secondary text-white': item.courseTerm === 0,
+                'bg-primary text-white': item.courseTerm === 1
+              }"
+            >
+              {{ item.courseTerm === 0 ? '體驗' : '培訓' }}
+            </div>
+            <h2 class="line-clamp-2 group-hover:text-dark3">
+              {{ item.courseName }}
+            </h2>
+          </div>
         </div>
-      </a>
+        <div>
+          <p class="mb-1 truncate text-sm leading-[22px]">{{ item.brandName }}</p>
+          <div class="flex">
+            <span class="mr-1 font-normal leading-6 tracking-[0.5px] text-secondary">NT$</span>
+            <span class="font-medium leading-[30px] text-secondary">{{
+              formatCurrency(item.coursePrice)
+            }}</span>
+          </div>
+        </div>
+      </NuxtLink>
     </swiper-slide>
-    <swiper-slide v-for="item in allCourseInfo" :key="item.id" class="flex min-h-[300px] flex-col">
-      <a href="#" class="relative block flex h-full flex-col">
-        <img
-          :src="item.courseImage[0]"
-          alt="課程圖片"
-          class="course mb-2 h-[220px] w-full rounded object-cover"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div class="flex flex-col">
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
-              體驗
-            </p>
-            <p class="w-full">{{ item.courseName }}</p>
+    <swiper-slide v-for="item in allCourseInfo" :key="item.id">
+      <NuxtLink
+        :to="{ name: 'index-index-course-id', params: { id: item._id } }"
+        class="group flex h-full flex-col justify-between"
+        :id="item._id"
+      >
+        <div>
+          <div class="relative mx-auto mb-2">
+            <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
+              <img
+                :src="item.courseImage[0]"
+                alt="course-img"
+                class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+              />
+            </div>
+            <button class="absolute right-0 top-0 block p-3">
+              <Icon
+                name="ph:x"
+                class="text-xl opacity-0 transition duration-300 hover:text-dark4 group-hover:-translate-y-1 group-hover:opacity-100"
+              />
+            </button>
           </div>
-          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
-              formattedPrice(item.coursePrice)
-            }}</span>
-          </p>
+          <div class="flex space-x-2">
+            <div
+              class="mb-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
+              :class="{
+                'bg-secondary text-white': item.courseTerm === 0,
+                'bg-primary text-white': item.courseTerm === 1
+              }"
+            >
+              {{ item.courseTerm === 0 ? '體驗' : '培訓' }}
+            </div>
+            <h2 class="line-clamp-2 group-hover:text-dark3">
+              {{ item.courseName }}
+            </h2>
+          </div>
         </div>
-      </a>
+        <div>
+          <p class="mb-1 truncate text-sm leading-[22px]">{{ item.brandName }}</p>
+          <div class="flex">
+            <span class="mr-1 font-normal leading-6 tracking-[0.5px] text-secondary">NT$</span>
+            <span class="font-medium leading-[30px] text-secondary">{{
+              formatCurrency(item.coursePrice)
+            }}</span>
+          </div>
+        </div>
+      </NuxtLink>
     </swiper-slide>
   </swiper>
 </template>
@@ -202,7 +294,6 @@ const formattedPrice = (price: number): string => {
   background-size: contain;
 }
 
-/* 切缺：點擊星星收藏後要停留在卡片上>>測不出來，當時寫的樣式 */
 /* .productCardSwiper :deep(.swiper-slide) .course:active + .course-star:hover {
   display: block;
   background-image: url('~/assets/images/front/Button(star_hover).png');

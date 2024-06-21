@@ -71,7 +71,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="mx-auto py-[10px] lg:max-w-[1440px] lg:px-[80px]">
+  <header class="mx-auto py-[10px] lg:max-w-screen-xl">
     <div class="flex items-center justify-between px-5">
       <!-- header 左側 logo -->
       <h1 class="px-4 py-1 lg:py-5">
@@ -138,7 +138,7 @@ onMounted(() => {
             </NuxtLink>
           </li>
           <li>
-            <button @click="toggleMenu">
+            <button @click="toggleMenu" class="flex items-center">
               <img
                 :src="member.photo"
                 alt="大頭照"
@@ -225,7 +225,7 @@ onMounted(() => {
 
         <!-- START 右側選單 - 手機板 -->
         <div class="mr-4 flex items-center space-x-6 lg:hidden">
-          <button @click="openLoginModal" class="block">
+          <button @click="toMemberAndClickTab('collections')" class="block">
             <Icon name="ph:star" class="text-2xl" />
           </button>
           <button class="relative bg-center" @click="toggleMenu">

@@ -24,31 +24,34 @@ const modules = [Pagination, Navigation]
       clickable: true
     }"
     :modules="modules"
-    class="bannerSwiper relative h-[400px] w-full overflow-hidden"
+    class="bannerSwiper relative h-[200px] w-full overflow-hidden md:h-[300px] lg:h-[400px]"
   >
-    <swiper-slide
-      ><a href="#"
+    <swiper-slide class="overflow-hidden rounded-r-xl">
+      <a href="#"
         ><img
           src="~/assets/images/front/Banner_2.png"
           alt="banner圖片2"
-          class="h-[400px] w-[800px] rounded-xl object-cover object-top"
-      /></a>
+          class="h-full w-full rounded-xl object-cover object-top"
+        />
+      </a>
       <div class="absolute left-0 top-0 h-full w-full bg-black opacity-40"></div>
     </swiper-slide>
-    <swiper-slide
-      ><a href="#"
+    <swiper-slide class="overflow-hidden rounded-xl">
+      <a href="#"
         ><img
           src="~/assets/images/front/Banner_1.png"
           alt="banner圖片1"
-          class="h-[400px] w-[800px] rounded-xl object-cover object-top" /></a
+          class="h-full w-full rounded-xl object-cover object-top"
+        /> </a
     ></swiper-slide>
-    <swiper-slide
-      ><a href="#"
-        ><img
+    <swiper-slide class="overflow-hidden rounded-l-xl">
+      <a href="#">
+        <img
           src="~/assets/images/front/Banner_3.png"
           alt="banner圖片3"
-          class="h-[400px] w-[800px] rounded-xl object-cover object-top"
-      /></a>
+          class="h-full w-full rounded-xl object-cover object-top"
+        />
+      </a>
       <div class="absolute left-0 top-0 h-full w-full bg-black opacity-40"></div>
     </swiper-slide>
   </swiper>
