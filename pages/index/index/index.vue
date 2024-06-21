@@ -6,7 +6,7 @@ const clickToSearchKeyword = () => {
   router.push({ path: '/search', query: { keyword: keyword.value } })
 }
 
-const clickToSearch = (courseTerm: number, courseType: string) => {
+const clickToSearch = (courseTerm: string, courseType: string) => {
   router.push({ path: '/search', query: { courseTerm: courseTerm, courseType: courseType } })
 }
 </script>
@@ -38,31 +38,35 @@ const clickToSearch = (courseTerm: number, courseType: string) => {
       <div class="py-9">
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">單堂體驗課</h2>
-          <button href="#" class="flex items-center" @click="clickToSearch(0, '')">
+          <button href="#" class="flex items-center" @click="clickToSearch('0', '')">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
         </div>
         <div class="px-8">
-          <front-product-card-swiper courseType="單堂體驗課" />
+          <front-product-card-swiper courseTerm="0" />
         </div>
       </div>
       <div class="py-9">
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">系統培訓課</h2>
-          <button href="#" class="flex items-center" @click="clickToSearch(1, '')">
+          <button href="#" class="flex items-center" @click="clickToSearch('0', '')">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
         </div>
         <div class="px-8">
-          <front-product-card-swiper courseType="系統培訓課" />
+          <front-product-card-swiper courseTerm="1" />
         </div>
       </div>
       <div class="py-9">
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">你可能適合</h2>
-          <button href="#" class="flex items-center" @click="clickToSearch(0, 'member interests')">
+          <button
+            href="#"
+            class="flex items-center"
+            @click="clickToSearch('0', 'member interests')"
+          >
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
@@ -71,7 +75,7 @@ const clickToSearch = (courseTerm: number, courseType: string) => {
           <front-product-card-swiper />
         </div>
       </div>
-      <div class="text-dark1">
+      <div class="mb-8 text-dark1">
         <front-about />
       </div>
     </div>

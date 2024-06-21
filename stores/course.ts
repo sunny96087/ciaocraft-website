@@ -6,8 +6,8 @@ const apiUrl = 'https://ciaocraft-api.onrender.com'
 // const apiUrl = 'http://127.0.0.1:3666'
 
 // 定義資料類型
-type courseType = {
-  courseType: String | null | undefined
+type Query = {
+  courseTerm: string
   pageSize: number
 }
 
@@ -16,14 +16,14 @@ export const useCourseStore = defineStore('course', {
   getters: {},
   actions: {
     // 取得特定課程
-    async apiGetOneCourse(data: courseType) {
+    async apiGetOneCourse(data: Query) {
       return await axios.get(
-        `${apiUrl}/courses?courseType=${data.courseType}&pageSize=${data.pageSize}`
+        `${apiUrl}/courses?courseTerm=${data.courseTerm}&pageSize=${data.pageSize}`
       )
     },
     // 取得所有課程
-    async apiGetAllCourse(data: courseType) {
-      return await axios.get(`${apiUrl}/courses?courseType=&pageSize=${data.pageSize}`)
+    async apiGetAllCourse(data: Query) {
+      return await axios.get(`${apiUrl}/courses?pageSize=${data.pageSize}`)
     },
 
     async getCourseCollection(data: JsonObject) {

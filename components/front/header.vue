@@ -59,14 +59,17 @@ const fetchMember = async () => {
   try {
     const res = await memberStore.getMember()
     member.value = res.data.data
+    console.log(res.data.data)
   } catch (err) {
-    router.push('/error')
+    router.push('/')
   }
 }
 
 onMounted(() => {
-  fetchMember()
   authStore.checkLogin()
+  if (isLogin) {
+    fetchMember()
+  }
 })
 </script>
 

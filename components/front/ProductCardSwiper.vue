@@ -35,10 +35,12 @@ const modules = [Navigation]
 // 串接 API
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
+const memberStore = useMemberStore()
 
-const artCourseInfo: any = ref({})
-const handCourseInfo: any = ref({})
+const experienceCourses: any = ref({})
+const trainingCourses: any = ref({})
 const allCourseInfo: any = ref({})
+const memberCollections = ref([])
 
 onMounted(() => {
   getCourse()
@@ -46,18 +48,18 @@ onMounted(() => {
 
 // 定義接收的 props
 const props = defineProps({
-  courseType: String
+  courseTerm: String
 })
 
-let data = {
-  courseType: props.courseType,
+let data: any = {
+  courseTerm: props.courseTerm,
   pageSize: 6
 }
 
 async function getCourse() {
   try {
     let res
-    if (props.courseType === '藝術人文' || props.courseType === '工藝手作') {
+    if (props.courseTerm === '0' || props.courseTerm === '1') {
       res = await courseStore.apiGetOneCourse(data)
     } else {
       res = await courseStore.apiGetAllCourse(data)
@@ -73,12 +75,11 @@ async function getCourse() {
 
 function request(result: { statusCode: number; data: any }) {
   if (result.statusCode === 200) {
-    if (props.courseType === '藝術人文') {
-      artCourseInfo.value = result.data
+    if (props.courseTerm === '0') {
+      experienceCourses.value = result.data
       // console.log(`artCourseInfo = ${JSON.stringify(artCourseInfo.value)}`)
-    } else if (props.courseType === '工藝手作') {
-      handCourseInfo.value = result.data
-      console.log(`handCourseInfo `, handCourseInfo.value)
+    } else if (props.courseTerm === '1') {
+      trainingCourses.value = result.data
       // console.log(`handCourseInfo = ${JSON.stringify(handCourseInfo.value)}`)
     } else {
       allCourseInfo.value = result.data
@@ -87,6 +88,23 @@ function request(result: { statusCode: number; data: any }) {
   } else {
     console.log('取得課程資料失敗')
   }
+}
+
+// 取得收藏資料
+const fetchCollectionData = async () => {
+  try {
+    const res = await memberStore.getMemberCollection()
+    const result = res.data
+    memberCollections.value = result.data
+    console.log(result)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const isCollected = (id: string): boolean => {
+  const isCollected = memberCollections.value.some((item: any) => item.courseId === id)
+  return isCollected
 }
 
 // 格式化價格的計算屬性
@@ -114,7 +132,7 @@ const formattedPrice = (price: number): string => {
     :modules="modules"
     class="productCardSwiper grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
   >
-    <swiper-slide v-for="item in artCourseInfo" :key="item.id">
+    <swiper-slide v-for="item in experienceCourses" :key="item.id">
       <NuxtLink
         :to="{ name: 'index-index-course-id', params: { id: item._id } }"
         class="group flex h-full flex-col justify-between"
@@ -132,7 +150,13 @@ const formattedPrice = (price: number): string => {
             <button class="absolute right-0 top-0 block p-3">
               <Icon
                 name="ph:star"
-                class="text-xl opacity-0 transition duration-300 hover:text-dark4 group-hover:-translate-y-1 group-hover:opacity-100"
+                class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+                v-if="isCollected(item._id) == false"
+              />
+              <Icon
+                name="ph:star-fill"
+                class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+                v-else
               />
             </button>
           </div>
@@ -162,7 +186,7 @@ const formattedPrice = (price: number): string => {
         </div>
       </NuxtLink>
     </swiper-slide>
-    <swiper-slide v-for="item in handCourseInfo" :key="item.id">
+    <swiper-slide v-for="item in trainingCourses" :key="item.id">
       <NuxtLink
         :to="{ name: 'index-index-course-id', params: { id: item._id } }"
         class="group flex h-full flex-col justify-between"
@@ -179,8 +203,14 @@ const formattedPrice = (price: number): string => {
             </div>
             <button class="absolute right-0 top-0 block p-3">
               <Icon
-                name="ph:x"
-                class="text-xl opacity-0 transition duration-300 hover:text-dark4 group-hover:-translate-y-1 group-hover:opacity-100"
+                name="ph:star"
+                class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+                v-if="isCollected(item._id) == false"
+              />
+              <Icon
+                name="ph:star-fill"
+                class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+                v-else
               />
             </button>
           </div>
@@ -227,8 +257,14 @@ const formattedPrice = (price: number): string => {
             </div>
             <button class="absolute right-0 top-0 block p-3">
               <Icon
-                name="ph:x"
-                class="text-xl opacity-0 transition duration-300 hover:text-dark4 group-hover:-translate-y-1 group-hover:opacity-100"
+                name="ph:star"
+                class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+                v-if="isCollected(item._id) == false"
+              />
+              <Icon
+                name="ph:star-fill"
+                class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+                v-else
               />
             </button>
           </div>
