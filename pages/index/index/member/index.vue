@@ -81,10 +81,10 @@ const setFilter: any = (filterName: string) => {
 
 const handleCollectionFilter = (filterName: string) => {
   if (filterName === 'experience') {
-    data.value = rawData.value.filter((item: any) => item.courseTerm === 1)
+    data.value = rawData.value.filter((item: any) => item.courseTerm === 0)
     selectedFilterName.value = '體驗課程'
   } else if (filterName === 'training') {
-    data.value = rawData.value.filter((item: any) => item.courseTerm === 0)
+    data.value = rawData.value.filter((item: any) => item.courseTerm === 1)
     selectedFilterName.value = '培訓課程'
   } else {
     data.value = rawData.value
@@ -376,14 +376,14 @@ onMounted(() => {
             :class="{ 'bg-orange3 ': filter === 'experience', 'bg-white': filter !== 'experience' }"
             @click="setFilter('experience')"
           >
-            體驗課程({{ rawData.filter((item: any) => item.courseTerm === 1).length || 0 }})
+            體驗課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
           </button>
           <button
             class="rounded border-[1px] border-solid border-primary px-5 py-2"
             :class="{ 'bg-orange3 ': filter === 'training', 'bg-white': filter !== 'training' }"
             @click="setFilter('training')"
           >
-            培訓課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
+            培訓課程({{ rawData.filter((item: any) => item.courseTerm === 1).length || 0 }})
           </button>
         </div>
 
@@ -415,14 +415,14 @@ onMounted(() => {
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('experience')"
             >
-              體驗課程({{ rawData.filter((item: any) => item.courseTerm === 1).length || 0 }})
+              體驗課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
             </div>
             <div
               value="unpaid"
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('training')"
             >
-              培訓課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
+              培訓課程({{ rawData.filter((item: any) => item.courseTerm === 1).length || 0 }})
             </div>
           </div>
         </div>

@@ -4,28 +4,94 @@ definePageMeta({
   middleware: ['auth']
 })
 
-const order = {
-  _id: '20240430001C',
-  courseId: '20240430001C',
+const orderStore = useOrderStore()
+const route = useRoute()
+const orderId: any = route.params.id
+
+const order = ref({
+  _id: '[id]',
+  courseId: '[id]',
   brandName: '品牌名稱',
-  courseName: '課程名稱課程名稱課程名稱課程名稱',
-  coureTime: '2024-11-11T16:00:00.000Z',
-  courseImage: 'https://img.noob.tw/2018/09/js.png',
-  coursePrice: 6000,
-  count: 1,
-  totalPrice: 6000,
-  paidStatus: 3,
-  representativeName: '負責人名稱',
-  location: '教室地點',
-  // commentId: '6650bce2ac0aafbd660e472a',
+  courseName: '課程名稱',
+  courseItemName: '1900-01-01 00:00:00',
+  coureTime: '1900-01-01 00:00:00',
+  courseImage: '圖片連結',
+  price: 0,
+  count: 0,
+  totalPrice: 0,
+  paidStatus: 0,
+  courseLocation: '教室地點',
   commentId: '',
-  createAt: '2024-05-24T16:14:26.612+00:00',
-  bankName: '台新',
-  bankAccountName: '品牌11',
-  bankAccount: '123333344555',
-  bankCode: '812',
-  bankBranch: '台北分行'
+  createdAt: '1900-01-01 00:00:00'
+})
+
+const course = ref({
+  _id: '[id]',
+  courseAddress: '',
+  courseImage: ['']
+})
+
+const vendor = ref({
+  representative: '負責人名稱',
+  bankName: '銀行名稱',
+  bankAccountName: '帳戶名稱',
+  bankAccount: '銀行帳號',
+  bankCode: '銀號代碼',
+  bankBranch: '分行名稱'
+})
+
+const comment = ref({
+  _id: 'id',
+  content: '評論內容',
+  rating: 0,
+  createAt: '1900-01-01 00:00:00',
+  images: [],
+  tags: [],
+  likes: []
+})
+
+const rating: any = ref(0)
+
+const fetchOrder = async () => {
+  try {
+    const res = await orderStore.getMemberOrderByOrderId(orderId)
+    const result = res.data
+    order.value = result.data
+    vendor.value = result.data.vendorId
+    comment.value = result.data.commentId
+    course.value = result.data.courseId
+    rating.value = result.data.commentId.rating
+    console.log('order', order.value)
+    console.log('vendor', vendor.value)
+    console.log('comment', comment.value)
+    console.log('course', course.value)
+  } catch (err) {
+    console.log(err)
+  }
 }
+
+// const order = {
+//   _id: '20240430001C',
+//   courseId: '20240430001C',
+//   brandName: '品牌名稱',
+//   courseName: '課程名稱課程名稱課程名稱課程名稱',
+//   coureTime: '2024-11-11T16:00:00.000Z',
+//   courseImage: 'https://img.noob.tw/2018/09/js.png',
+//   coursePrice: 6000,
+//   count: 1,
+//   totalPrice: 6000,
+//   paidStatus: 3,
+//   representativeName: '負責人名稱',
+//   location: '教室地點',
+//   // commentId: '6650bce2ac0aafbd660e472a',
+//   commentId: '',
+//   createAt: '2024-05-24T16:14:26.612+00:00',
+//   bankName: '台新',
+//   bankAccountName: '品牌11',
+//   bankAccount: '123333344555',
+//   bankCode: '812',
+//   bankBranch: '台北分行'
+// }
 
 // 依照付款狀態 付款方式文字內容
 const getOrderStatusName = (status: number) => {
@@ -55,13 +121,13 @@ const getOrderStatusName = (status: number) => {
 const getPaidStatusTagColor: any = (status: number) => {
   switch (status) {
     case 0:
-      return 'bg-primary'
+      return 'bg-primary text-white'
     case 1:
-      return 'bg-success'
+      return 'bg-success text-white'
     case 2:
-      return 'bg-success'
+      return 'bg-success text-white'
     case 3:
-      return 'bg-secondary-light'
+      return 'bg-secondary-light text-white'
     case 4:
       return 'bg-gray3 text-black'
     case 5:
@@ -87,17 +153,41 @@ const getBtnTextByPaidStatus = (status: number) => {
     case 3:
       return '繳費已完成'
     case 4:
-      return '繳費已完成'
+      return '已取消'
     case 5:
       return '未付款(已過期)'
     case 6:
       return '訂單取消(待退款)'
     case 7:
-      return '費用已退款'
+      return '訂單取消(已退款)'
     default:
       return '訂單出現錯誤，請聯繫客服人員'
   }
 }
+
+// 顯示取消按鈕
+const canCancel = computed(() => {
+  return [0, 1, 2].includes(order.value.paidStatus)
+})
+
+// 顯示圖片瀏覽
+const isImageClick = ref(false)
+const selectedImage = ref('')
+const viewImage = (imageUrl: string) => {
+  isImageClick.value = true
+  selectedImage.value = imageUrl
+}
+
+// 點擊背景關閉瀏覽圖片
+const clickMaskToCloseViewImage = (e: MouseEvent) => {
+  if (e.target === e.currentTarget) {
+    isImageClick.value = false
+  }
+}
+
+onMounted(() => {
+  fetchOrder()
+})
 </script>
 
 <template>
@@ -113,13 +203,13 @@ const getBtnTextByPaidStatus = (status: number) => {
             </div>
             <div class="mb-1">
               <span>訂單成立: </span>
-              <span>{{ order.createAt }}</span>
+              <span>{{ convertUtcToLocaleDatetime(order.createdAt) }}</span>
             </div>
           </div>
           <div>
             <div class="mb-1">
               <span>付款金額: </span>
-              <span>NT$ {{ order.totalPrice }}</span>
+              <span>NT$ {{ formatCurrency(order.totalPrice) }}</span>
             </div>
             <div class="mb-1">
               <span>付款方式: </span>
@@ -127,7 +217,7 @@ const getBtnTextByPaidStatus = (status: number) => {
             </div>
           </div>
           <span
-            class="mt-2 inline-block self-start rounded-full px-2 py-1 text-center text-sm text-white md:mt-0"
+            class="mt-2 inline-block self-start rounded-full px-2 py-1 text-center text-sm md:mt-0"
             :class="getPaidStatusTagColor(order.paidStatus)"
             >{{ getOrderStatusName(order.paidStatus) }}</span
           >
@@ -144,9 +234,9 @@ const getBtnTextByPaidStatus = (status: number) => {
             <div
               class="group mb-3 mr-5 aspect-square max-w-28 self-start overflow-hidden rounded bg-gray2"
             >
-              <NuxtLink :to="{ name: 'index-index-course-id', params: { id: order.courseId } }">
+              <NuxtLink :to="{ name: 'index-index-course-id', params: { id: course._id } }">
                 <img
-                  :src="order.courseImage"
+                  :src="course.courseImage[0]"
                   alt="course-img"
                   class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
                 />
@@ -154,7 +244,7 @@ const getBtnTextByPaidStatus = (status: number) => {
             </div>
             <div class="flex-1 space-y-5">
               <div>
-                <NuxtLink :to="{ name: 'index-index-course-id', params: { id: order.courseId } }">
+                <NuxtLink :to="{ name: 'index-index-course-id', params: { id: course._id } }">
                   <h2
                     class="mb-2 line-clamp-1 text-lg font-medium leading-6 transition hover:text-gray"
                   >
@@ -162,17 +252,21 @@ const getBtnTextByPaidStatus = (status: number) => {
                   </h2>
                 </NuxtLink>
                 <div class="mb-2 text-sm">{{ order.brandName }}</div>
-                <div class="mb-2 text-sm">NT$ {{ order.coursePrice }} x {{ order.count }}</div>
+                <div class="mb-2 text-sm">
+                  NT$ {{ formatCurrency(order.price) }} x {{ order.count }}
+                </div>
                 <hr class="mb-2 mt-5 w-full" />
                 <div class="flex items-center justify-between leading-6">
                   總金額:
-                  <span class="inline-block font-medium leading-6">NT$ {{ order.totalPrice }}</span>
+                  <span class="inline-block font-medium leading-6"
+                    >NT$ {{ formatCurrency(order.totalPrice) }}</span
+                  >
                 </div>
               </div>
               <div class="space-y-1 text-sm">
                 <div>
                   <span>聯絡人: </span>
-                  <span>{{ order.representativeName }}</span>
+                  <span>{{ vendor.representative }}</span>
                 </div>
                 <div>
                   <span>報名人數: </span>
@@ -180,11 +274,11 @@ const getBtnTextByPaidStatus = (status: number) => {
                 </div>
                 <div>
                   <span>報名日期場次: </span>
-                  <span>{{ order.coureTime }}</span>
+                  <span>{{ order.courseItemName }}</span>
                 </div>
                 <div>
                   <span>教室地點: </span>
-                  <span>{{ order.location }}</span>
+                  <span>{{ order.courseLocation }}</span>
                 </div>
               </div>
               <div class="space-y-5">
@@ -198,33 +292,36 @@ const getBtnTextByPaidStatus = (status: number) => {
                 <div class="space-y-1 font-medium">
                   <div>
                     <span>銀行: </span>
-                    <span>{{ order.bankName }}({{ order.bankCode }})</span>
+                    <span>{{ vendor.bankName }}({{ vendor.bankCode }})</span>
                   </div>
                   <div>
                     <span>帳戶名稱: </span>
-                    <span>{{ order.bankAccountName }}</span>
+                    <span>{{ vendor.bankAccountName }}</span>
                   </div>
                   <div>
                     <span>帳戶號碼: </span>
-                    <span>{{ order.bankAccount }}</span>
+                    <span>{{ vendor.bankAccount }}</span>
                   </div>
                 </div>
                 <button
-                  to=""
-                  class="block w-full rounded py-2 text-center tracking-[0.5px] transition hover:bg-primary-light"
+                  class="block w-full rounded py-2 text-center tracking-[0.5px] transition"
                   :class="{
                     'bg-primary text-white ': order.paidStatus === 0,
-                    'bg-gray3 text-gray': order.paidStatus !== 0
+                    'bg-gray3 text-gray': order.paidStatus !== 0,
+                    'hover:bg-primary-light': order.paidStatus === 0
                   }"
+                  :disabled="order.paidStatus !== 0"
                 >
                   {{ getBtnTextByPaidStatus(order.paidStatus) }}
                 </button>
                 <button
                   class="block rounded border-[1px] border-solid border-primary bg-white px-6 py-2 text-center transition hover:border-primary hover:bg-primary hover:text-white"
+                  v-if="canCancel"
                 >
                   取消預約
                 </button>
 
+                <!-- 課程評論 -->
                 <div v-if="order.paidStatus === 3" class="space-y-5">
                   <div>
                     <h2 class="mb-3 text-lg font-medium leading-6">課後分享</h2>
@@ -248,25 +345,31 @@ const getBtnTextByPaidStatus = (status: number) => {
                     >
                       <div class="items-center md:flex">
                         <div class="mb-2 space-x-1 md:mb-0 md:mr-5">
+                          <Icon
+                            v-for="index in 5"
+                            :key="index"
+                            :name="index <= rating ? 'ph:star-fill' : 'ph:star'"
+                            class="text-2xl text-primary"
+                          />
+                          <!-- <Icon name="ph:star-fill" class="text-2xl text-primary" />
                           <Icon name="ph:star-fill" class="text-2xl text-primary" />
                           <Icon name="ph:star-fill" class="text-2xl text-primary" />
                           <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                          <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                          <Icon name="ph:star" class="text-2xl text-primary" />
+                          <Icon name="ph:star" class="text-2xl text-primary" /> -->
                         </div>
-                        <div class="">2024-05-01 11:00:00</div>
+                        <div class="">{{ convertUtcToLocaleDatetime(comment.createdAt) }}</div>
                       </div>
                       <p>
-                        抱壯已定左進快童快出；上幫親士結肉耍、坡只蝶刀蝴樹書寫京物方道新、媽更記視造北大升背斗封：羽第古瓜乍封姊英几原今；再雞升買美扒金冒要要貝第的安開羽叫了京什。喜身央錯，司現示陽玩麼比鳥內：向卜冒香。
+                        {{ comment.content }}
                       </p>
                       <div class="">
                         <span
+                          v-for="tag in comment.tags"
                           class="mr-2 inline-block self-start rounded bg-orange3 px-2 py-[2px] leading-6 text-primary-dark"
                         >
-                          師生互動
+                          {{ tag }}
                         </span>
-
-                        <span
+                        <!-- <span
                           class="mr-2 inline-block self-start rounded bg-orange3 px-2 py-[2px] leading-6 text-primary-dark"
                         >
                           教學環境
@@ -275,50 +378,17 @@ const getBtnTextByPaidStatus = (status: number) => {
                           class="mr-2 inline-block self-start rounded bg-orange3 px-2 py-[2px] leading-6 text-primary-dark"
                         >
                           專業度
-                        </span>
+                        </span> -->
                       </div>
                       <div class="flex flex-wrap gap-2">
                         <div
+                          v-for="(imageUrl, index) in comment.images"
+                          :key="index"
                           class="block aspect-square max-w-20 overflow-hidden rounded bg-gray2 md:max-w-24"
+                          @click="viewImage(imageUrl)"
                         >
                           <img
-                            :src="order.courseImage"
-                            alt="course-img"
-                            class="h-full w-full object-cover transition duration-300 hover:opacity-50 hover:transition-opacity"
-                          />
-                        </div>
-                        <div
-                          class="block aspect-square max-w-20 overflow-hidden rounded bg-gray2 md:max-w-24"
-                        >
-                          <img
-                            :src="order.courseImage"
-                            alt="course-img"
-                            class="h-full w-full object-cover transition duration-300 hover:opacity-50 hover:transition-opacity"
-                          />
-                        </div>
-                        <div
-                          class="block aspect-square max-w-20 overflow-hidden rounded bg-gray2 md:max-w-24"
-                        >
-                          <img
-                            :src="order.courseImage"
-                            alt="course-img"
-                            class="h-full w-full object-cover transition duration-300 hover:opacity-50 hover:transition-opacity"
-                          />
-                        </div>
-                        <div
-                          class="block aspect-square max-w-20 overflow-hidden rounded bg-gray2 md:max-w-24"
-                        >
-                          <img
-                            :src="order.courseImage"
-                            alt="course-img"
-                            class="h-full w-full object-cover transition duration-300 hover:opacity-50 hover:transition-opacity"
-                          />
-                        </div>
-                        <div
-                          class="block aspect-square max-w-20 overflow-hidden rounded bg-gray2 md:max-w-24"
-                        >
-                          <img
-                            :src="order.courseImage"
+                            :src="imageUrl"
                             alt="course-img"
                             class="h-full w-full object-cover transition duration-300 hover:opacity-50 hover:transition-opacity"
                           />
@@ -326,7 +396,9 @@ const getBtnTextByPaidStatus = (status: number) => {
                       </div>
                     </div>
                     <div class="flex items-center">
-                      <Icon name="ph:thumbs-up" class="text-dark mr-1 text-2xl" /> 有幫助(12)
+                      <Icon name="ph:thumbs-up" class="text-dark mr-1 text-2xl" /> 有幫助({{
+                        comment.likes.length
+                      }})
                     </div>
                   </div>
                 </div>
@@ -336,6 +408,9 @@ const getBtnTextByPaidStatus = (status: number) => {
         </div>
       </div>
     </div>
+  </div>
+  <div class="modal-bg" v-if="isImageClick" @click="clickMaskToCloseViewImage">
+    <img :src="selectedImage" alt="" />
   </div>
 </template>
 

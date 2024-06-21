@@ -1,3 +1,4 @@
+import type { JsonObject } from 'type-fest'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
@@ -8,12 +9,18 @@ export const useUploadStore = defineStore({
   id: 'uploadStore',
   state: () => ({}),
   actions: {
-    async uploadSingleImage(file: File) {
-      return await axios.post(`${apiUrl}/upload/singleImage/front`, file, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
+    async uploadSingleImage(data: JsonObject) {
+      try {
+        console.log(`${apiUrl}/upload/singleImage/front`)
+        return await axios.post(`${apiUrl}/upload/singleImage/front`, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            token: localStorage.getItem('token')
+          }
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 })

@@ -59,6 +59,13 @@ export const useAuthStore = defineStore('auth', {
         }
       })
     },
+    checkGoogleAccountExisted() {
+      return axios.get(`${this.apiUrl}/auth/checkGoogleAccountExisted`, {
+        headers: {
+          token: this.token
+        }
+      })
+    },
     logout() {
       this.memberId = ''
       this.token = ''
