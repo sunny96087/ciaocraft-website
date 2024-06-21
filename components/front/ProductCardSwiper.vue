@@ -36,15 +36,13 @@ const modules = [Navigation]
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
 const memberStore = useMemberStore()
+const authStore = useAuthStore()
+const isLogin = ref(authStore.isLogin)
 
 const experienceCourses: any = ref({})
 const trainingCourses: any = ref({})
 const allCourseInfo: any = ref({})
 const memberCollections = ref([])
-
-onMounted(() => {
-  getCourse()
-})
 
 // 定義接收的 props
 const props = defineProps({
@@ -97,9 +95,7 @@ const fetchCollectionData = async () => {
     const result = res.data
     memberCollections.value = result.data
     console.log(result)
-  } catch (err) {
-    console.log(err)
-  }
+  } catch (err) {}
 }
 
 const isCollected = (id: string): boolean => {
@@ -111,6 +107,20 @@ const isCollected = (id: string): boolean => {
 const formattedPrice = (price: number): string => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+// 加入收藏
+const addCollection = (courseId: string) => {
+  console.log('addCollection' + courseId)
+}
+// 刪除
+const removeCollection = (courseId: string) => {
+  console.log('removeCollection' + courseId)
+}
+
+onMounted(() => {
+  getCourse()
+  fetchCollectionData()
+})
 </script>
 
 <template>
@@ -145,18 +155,27 @@ const formattedPrice = (price: number): string => {
                 :src="item.courseImage[0]"
                 alt="course-img"
                 class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+                loading="lazy"
               />
             </div>
-            <button class="absolute right-0 top-0 block p-3">
+            <button
+              class="absolute right-0 top-0 block p-3"
+              @click.stop.prevent="addCollection(item._id)"
+              v-if="isCollected(item._id) == false"
+            >
               <Icon
                 name="ph:star"
                 class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
-                v-if="isCollected(item._id) == false"
               />
+            </button>
+            <button
+              class="absolute right-0 top-0 block p-3"
+              @click.stop.prevent="removeCollection(item._id)"
+              v-else
+            >
               <Icon
                 name="ph:star-fill"
                 class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
-                v-else
               />
             </button>
           </div>
@@ -199,6 +218,7 @@ const formattedPrice = (price: number): string => {
                 :src="item.courseImage[0]"
                 alt="course-img"
                 class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+                loading="lazy"
               />
             </div>
             <button class="absolute right-0 top-0 block p-3">
@@ -253,6 +273,7 @@ const formattedPrice = (price: number): string => {
                 :src="item.courseImage[0]"
                 alt="course-img"
                 class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+                loading="lazy"
               />
             </div>
             <button class="absolute right-0 top-0 block p-3">

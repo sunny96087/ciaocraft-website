@@ -67,11 +67,13 @@ export const useAuthStore = defineStore('auth', {
       })
     },
     logout() {
-      this.memberId = ''
-      this.token = ''
       localStorage.removeItem('memberId')
       localStorage.removeItem('token')
       this.isLogin = false
+      // 刷新頁面，清空資料
+      if (process.client) {
+        window.location.reload()
+      }
     }
   }
 })

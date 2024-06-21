@@ -35,7 +35,8 @@ async function login() {
         if (result.statusCode === 200) {
           authStore.setMember(result.user)
           showToast('登入成功')
-          emit('changeContent', 'close')
+          // emit('changeContent', 'close')
+          window.location.reload()
         }
       })
       .catch((err) => {
