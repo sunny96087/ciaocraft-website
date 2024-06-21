@@ -7,10 +7,10 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      // api: 'http://localhost:3666/',
+      api: 'http://localhost:3666/',
 
       // 線上
-      api: 'https://ciaocraft-api.onrender.com/',
+      // api: 'https://ciaocraft-api.onrender.com/',
 
       vendorInfo: null as any | null, // 用戶資料，初始為 null
       isVendorLoggedIn: false // 登入狀態
@@ -25,6 +25,12 @@ export const APIStore = defineStore({
     // * 新增賣家申請 (Front)
     async apiApplyVendor(data: JsonObject) {
       return await axios.post(`${this.api}vendors`, data)
+    },
+    // * 取得賣家資料 (Front)
+    async apiGetVendor(data: JsonObject) {
+      return await axios.get(
+        `${this.api}vendors/${data.vendorId}?courseTerm=${data.courseTerm}&courseType=${data.courseType}&sortBy=${data.sortBy}`
+      )
     },
     // * 確認賣家帳號是否存在 (Back)
     async apiCheckVenderEmail(data: JsonObject) {

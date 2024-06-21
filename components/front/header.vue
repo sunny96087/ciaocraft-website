@@ -61,7 +61,9 @@ const fetchMember = async () => {
     member.value = res.data.data
     console.log(res.data.data)
   } catch (err) {
-    router.push('/')
+    // 暫時註解，因為會一直跳轉到首頁
+    console.log(err)
+    // router.push('/')
   }
 }
 
