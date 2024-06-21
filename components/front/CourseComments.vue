@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// 需要的 icon 再引入即可
-
 // 使用 ref 選取 dom 元素f
 import { ref } from 'vue'
 
@@ -48,11 +46,6 @@ const openPhotoModal = (imageUrl: string): void => {
           <Icon name="ph:star-fill" class="text-2xl text-primary" />
           <Icon name="ph:star-fill" class="text-2xl text-primary" />
           <Icon name="ph:star-bold" class="text-2xl text-primary" />
-          <!-- <PhStar :size="24" color="#ea580c" weight="fill" />
-          <PhStar :size="24" color="#ea580c" weight="fill" />
-          <PhStar :size="24" color="#ea580c" weight="fill" />
-          <PhStar :size="24" color="#ea580c" weight="fill" />
-          <PhStar :size="24" color="#ea580c" /> -->
         </li>
         <li>(61)</li>
       </ul>
@@ -87,9 +80,6 @@ const openPhotoModal = (imageUrl: string): void => {
               >
                 最近時間
               </button>
-              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >最近時間</a
-              > -->
             </li>
             <li>
               <button
@@ -98,9 +88,6 @@ const openPhotoModal = (imageUrl: string): void => {
               >
                 熱門課程
               </button>
-              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >熱門課程</a
-              > -->
             </li>
             <li>
               <button
@@ -109,9 +96,6 @@ const openPhotoModal = (imageUrl: string): void => {
               >
                 評分最高
               </button>
-              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >評分最高</a
-              > -->
             </li>
             <li>
               <button
@@ -120,9 +104,6 @@ const openPhotoModal = (imageUrl: string): void => {
               >
                 評分最低
               </button>
-              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >評分最低</a
-              > -->
             </li>
           </ul>
         </li>
@@ -137,12 +118,10 @@ const openPhotoModal = (imageUrl: string): void => {
                 <ul class="flex items-center justify-between">
                   <li class="flex items-center">
                     <Icon name="ph:chat-centered-dots" class="mr-3 text-[40px] text-secondary" />
-                    <!-- <PhChatCenteredDots :size="40" color="#255c99" class="mr-3" /> -->
                     <p>U****************E</p>
                   </li>
                   <li class="flex items-center">
                     <Icon name="ph:thumbs-up" class="mr-1 text-[32px] hover:cursor-pointer" />
-                    <!-- <PhThumbsUp :size="32" class="mr-1 hover:cursor-pointer" /> -->
                     <p class="mr-3">有幫助(<span>12</span>)</p>
                     <div class="relative">
                       <Icon
@@ -150,12 +129,6 @@ const openPhotoModal = (imageUrl: string): void => {
                         class="text-2xl hover:cursor-pointer"
                         @click="toggleMore"
                       />
-                      <!-- <PhDotsThreeOutlineVertical
-                        :size="24"
-                        weight="fill"
-                        class="hover:cursor-pointer"
-                        @click="toggleMore"
-                      /> -->
                       <ul
                         :class="[
                           'sort absolute right-0 z-50 w-[120px] rounded border border-gray5 bg-white text-center',
@@ -169,13 +142,6 @@ const openPhotoModal = (imageUrl: string): void => {
                           >
                             檢舉
                           </button>
-
-                          <!-- <a
-                            href="#"
-                            class="block py-1 hover:bg-secondary hover:text-white"
-                            @click="openReportModal"
-                            >檢舉</a
-                          > -->
                         </li>
                       </ul>
                     </div>
@@ -190,11 +156,6 @@ const openPhotoModal = (imageUrl: string): void => {
                     <Icon name="ph:star-fill" class="text-2xl text-primary" />
                     <Icon name="ph:star-fill" class="text-2xl text-primary" />
                     <Icon name="ph:star-bold" class="text-2xl text-primary" />
-                    <!-- <PhStar :size="24" color="#ea580c" weight="fill" />
-                    <PhStar :size="24" color="#ea580c" weight="fill" />
-                    <PhStar :size="24" color="#ea580c" weight="fill" />
-                    <PhStar :size="24" color="#ea580c" weight="fill" />
-                    <PhStar :size="24" color="#ea580c" /> -->
                   </li>
                   <li>1 天前</li>
                 </ul>
@@ -265,12 +226,6 @@ const openPhotoModal = (imageUrl: string): void => {
         </li>
       </ul>
     </li>
-
-    <!-- <li class="flex justify-center">
-      <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
-        查看所有評價
-      </button>
-    </li> -->
   </ul>
   <div class="flex justify-center">
     <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">

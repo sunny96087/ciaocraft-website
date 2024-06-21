@@ -27,12 +27,10 @@ const handleBookingCancel = () => {
         <span class="mr-2.5">所有課程</span>
       </a>
       <Icon name="ph:caret-right" class="mr-2.5 text-2xl" />
-      <!-- <PhCaretRight :size="24" class="mr-2.5" /> -->
       <a href="#" class="py-[3px]">
         <span class="mr-2.5 py-[3px]">體驗課程</span>
       </a>
       <Icon name="ph:caret-right" class="mr-2.5 text-2xl" />
-      <!-- <PhCaretRight :size="24" class="mr-2.5" /> -->
       <!-- 切缺：所在位置字體末端黑色 -->
       <a href="#" class="py-[3px]">
         <span class="py-[3px]">課程名稱</span>

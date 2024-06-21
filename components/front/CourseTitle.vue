@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// 需要的 icon 再引入即可
-
 import { defineEmits } from 'vue'
 
 const emit = defineEmits(['toggleBooking'])
@@ -24,20 +22,13 @@ const handleBookingClick = (): void => {
         <Icon name="ph:star-fill" class="text-2xl text-primary" />
         <Icon name="ph:star-fill" class="text-2xl text-primary" />
         <Icon name="ph:star-bold" class="text-2xl text-primary" />
-        <!-- <PhStar :size="24" color="#ea580c" weight="fill" />
-        <PhStar :size="24" color="#ea580c" weight="fill" />
-        <PhStar :size="24" color="#ea580c" weight="fill" />
-        <PhStar :size="24" color="#ea580c" weight="fill" />
-        <PhStar :size="24" color="#ea580c" /> -->
       </li>
       <li>(61)</li>
     </ul>
     <p class="mb-5 text-secondary">NT$<span class="ml-2 font-medium leading-[30px]">9,999</span></p>
     <ul class="mb-5 flex">
       <li>
-        <!-- <img src="~/assets/images/front/location.png" alt="地標icon" class="mr-2" /> -->
         <Icon name="ph:map-pin-line" class="mr-2 text-2xl" />
-        <!-- <PhMapPinLine :size="24" class="mr-2" /> -->
       </li>
       <li>台北市</li>
     </ul>
@@ -52,21 +43,18 @@ const handleBookingClick = (): void => {
         @click="handleBookingClick"
       >
         <Icon name="ph:calendar-dots" class="mr-2 text-xl" />
-        <!-- <PhCalendarDots :size="20" class="mr-2" /> -->
         預約課程
       </button>
     </div>
     <div class="mb-3 rounded bg-secondary hover:bg-[#2B71BF]">
       <button class="flex w-full items-center justify-center text-lg leading-[3rem] text-white">
         <Icon name="ph:star-bold" class="mr-2 text-xl" />
-        <!-- <PhStar :size="20" class="mr-2" /> -->
         收藏課程
       </button>
     </div>
     <div class="rounded border border-primary bg-white hover:bg-primary-light hover:text-white">
       <button class="flex w-full items-center justify-center text-lg leading-[3rem]">
         <Icon name="ph:chats" class="mr-2 text-xl" />
-        <!-- <PhChats :size="20" class="mr-2" /> -->
         品牌聊聊
       </button>
     </div>

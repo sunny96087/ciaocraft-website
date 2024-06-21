@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// 這個註解是我寫的嗎???(困惑)(非必要可刪)
+
 // // 使用 ref 選取 dom 元素
 // import { ref } from 'vue'
 
@@ -155,6 +157,7 @@ li:hover .course-star:hover {
   background-size: contain;
 }
 
+/* 切缺：點擊星星收藏後要停留在卡片上>>測不出來，當時寫的樣式 */
 /* li .course:active + .course-star:hover {
     display: block;
     background-image: url('~/assets/images/front/Button(star_hover).png');

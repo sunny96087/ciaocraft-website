@@ -1,4 +1,4 @@
-<script>
+<script setup lang="ts">
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
@@ -10,29 +10,15 @@ import 'swiper/css/pagination'
 // import required modules
 import { Pagination } from 'swiper/modules'
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide
-  },
-  setup() {
-    return {
-      modules: [Pagination]
-    }
-  }
-}
+const modules = [Pagination]
 </script>
 
 <template>
   <div class="flex bg-white px-5 py-2.5">
     <swiper
-      :slides-per-view="1"
-      :space-between="20"
-      :pagination="false"
+      :slides-per-view="2"
+      space-between="20"
       :breakpoints="{
-        '200': {
-          slidesPerView: 2
-        },
         '400': {
           slidesPerView: 3
         },
@@ -46,6 +32,7 @@ export default {
           slidesPerView: 6
         }
       }"
+      :autoplay="false"
       :modules="modules"
       class="filterSwiper"
     >
@@ -88,3 +75,9 @@ export default {
     </swiper>
   </div>
 </template>
+
+<style scoped>
+.filterSwiper :deep(.swiper-slide) {
+  width: auto !important;
+}
+</style>

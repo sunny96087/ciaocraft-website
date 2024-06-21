@@ -1,6 +1,4 @@
-<script setup lang="ts">
-// 需要的 icon 再引入即可
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <ul class="justify-between lg:flex">
@@ -11,7 +9,6 @@
       <ul class="mb-3 flex items-center rounded border border-[#DFE4EA] bg-white py-2 pl-4">
         <li class="mr-3">
           <Icon name="ph:clock-user" class="text-6xl text-secondary" />
-          <!-- <PhClockUser :size="60" color="#255c99" /> -->
         </li>
         <li>
           <p class="text-[14px] leading-[22px] text-secondary">課程時長</p>
@@ -21,7 +18,6 @@
       <ul class="mb-3 flex items-center rounded border border-[#DFE4EA] bg-white py-2 pl-4">
         <li class="mr-3">
           <Icon name="ph:building-office" class="text-6xl text-secondary" />
-          <!-- <PhBuildingOffice :size="60" color="#255c99" /> -->
         </li>
         <li>
           <p class="text-[14px] leading-[22px] text-secondary">教室地點</p>
@@ -31,7 +27,6 @@
       <ul class="mb-3 flex items-center rounded border border-[#DFE4EA] bg-white py-2 pl-4">
         <li class="mr-3">
           <Icon name="ph:users-four" class="text-6xl text-secondary" />
-          <!-- <PhUsersFour :size="60" color="#255c99" /> -->
         </li>
         <li>
           <p class="text-[14px] leading-[22px] text-secondary">班級人數</p>
@@ -86,11 +81,6 @@
                   <Icon name="ph:star-fill" class="text-2xl text-primary" />
                   <Icon name="ph:star-fill" class="text-2xl text-primary" />
                   <Icon name="ph:star-bold" class="text-2xl text-primary" />
-                  <!-- <PhStar :size="24" color="#ea580c" weight="fill" />
-                  <PhStar :size="24" color="#ea580c" weight="fill" />
-                  <PhStar :size="24" color="#ea580c" weight="fill" />
-                  <PhStar :size="24" color="#ea580c" weight="fill" />
-                  <PhStar :size="24" color="#ea580c" /> -->
                 </li>
                 <li>(61)</li>
               </ul>

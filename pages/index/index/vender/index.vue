@@ -40,10 +40,6 @@ const toggleSort = (): void => {
             <p class="mr-0.5 text-primary">排序</p>
             <Icon name="ph:arrows-down-up" class="text-xl text-primary" />
           </button>
-          <!-- <a href="#" class="flex items-center" @click="toggleSort">
-            <p class="mr-0.5 text-primary">排序</p>
-            <Icon name="ph:arrows-down-up" class="text-xl text-primary" />
-          </a> -->
           <ul
             :class="[
               'sort absolute right-0 z-50 w-[120px] rounded border border-gray5 bg-white text-center',
@@ -57,9 +53,6 @@ const toggleSort = (): void => {
               >
                 最近時間
               </button>
-              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >最近時間</a
-              > -->
             </li>
             <li>
               <button
@@ -68,9 +61,6 @@ const toggleSort = (): void => {
               >
                 熱門課程
               </button>
-              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >熱門課程</a
-              > -->
             </li>
             <li>
               <button
@@ -79,9 +69,6 @@ const toggleSort = (): void => {
               >
                 評分最高
               </button>
-              <!-- <a href="#" class="block py-1 hover:bg-secondary hover:text-white" @click="toggleSort"
-                >評分最高</a
-              > -->
             </li>
           </ul>
         </div>

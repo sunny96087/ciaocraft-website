@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// 需要的 icon 再引入即可
 import { ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 
@@ -62,11 +61,6 @@ const signOut = (): void => {
               class="block h-10 w-40 overflow-hidden whitespace-nowrap bg-[url('~/assets/images/front/Logo_Img.png')] indent-[115%]"
               >Ciao!Craft</NuxtLink
             >
-            <!-- <a
-              href="#"
-              class="block h-10 w-40 overflow-hidden whitespace-nowrap bg-[url('~/assets/images/front/Logo_Img.png')] indent-[115%]"
-              >Ciao!Craft</a
-            > -->
           </h1>
         </li>
         <li class="hidden lg:block">
@@ -91,11 +85,7 @@ const signOut = (): void => {
             </li>
             <li class="pr-6">
               <a href="#" @click="openLoginModal">
-                <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
-              /> -->
                 <Icon name="ph:star-bold" class="text-[32px]" />
-                <!-- <PhStar :size="32"
-              /> -->
               </a>
             </li>
             <li>
@@ -110,10 +100,7 @@ const signOut = (): void => {
           <ul class="flex items-center">
             <li class="pr-6">
               <a href="#" @click="openLoginModal">
-                <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
-              /> -->
                 <Icon name="ph:star-bold" class="text-[32px]" />
-                <!-- <PhStar :size="32" /> -->
               </a>
             </li>
             <li class="active:cursor-pointer" @click="toggleMenu">
@@ -151,17 +138,12 @@ const signOut = (): void => {
             </li>
             <li class="pr-6">
               <a href="#">
-                <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏icon"
-              /> -->
                 <Icon name="ph:star-bold" class="text-[32px]" />
-                <!-- <PhStar :size="32" /> -->
               </a>
             </li>
             <li class="pr-6">
               <a href="#">
-                <!-- <img src="~/assets/images/front/messages.png" alt="訊息icon" /> -->
                 <Icon name="ph:chats" class="text-[32px]" />
-                <!-- <PhChats :size="32" /> -->
               </a>
             </li>
             <!-- 切缺：有訊息要切換到這icon -->
@@ -198,45 +180,25 @@ const signOut = (): void => {
                 >
                   <li class="mb-4 pl-2">
                     <div class="flex items-center">
-                      <!-- <img src="~/assets/images/front/userIcon.png" alt="人型icon" class="mr-3" /> -->
                       <Icon name="ph:user" class="mr-3 text-[17px]" />
-                      <!-- <PhUser :size="17" class="mr-3" /> -->
                       <p>User Name</p>
                     </div>
                   </li>
                   <li class="mb-4 flex items-center pl-2">
-                    <!-- <img
-                      src="~/assets/images/front/Button(usermoney).png"
-                      alt="點數icon"
-                      class="mr-3"
-                    /> -->
                     <Icon name="ph:currency-circle-dollar" class="mr-3 text-[17px] text-primary" />
-                    <!-- <PhCurrencyCircleDollar :size="17" color="#EA580C" class="mr-3" /> -->
                     <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">
                       0
                     </p>
                   </li>
                   <li class="border-b border-[#AAAAAA] pb-3">
                     <a href="#" class="flex items-center text-xs leading-[20px] text-secondary">
-                      <!-- <img
-                        src="~/assets/images/front/information.png"
-                        alt="資訊icon"
-                        class="mr-1"
-                      /> -->
                       <Icon name="ph:chats" class="mr-1 text-[17px]" />
-                      <!-- <PhChats :size="17" class="mr-1" /> -->
                       如何累積點數？
                     </a>
                   </li>
                   <li>
                     <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-                      <!-- <img
-                        src="~/assets/images/front/user_messages_Icon.png"
-                        alt="訊息icon"
-                        class="mr-2.5"
-                      /> -->
                       <Icon name="ph:chats" class="mr-2.5 text-[17px]" />
-                      <!-- <PhChats :size="17" class="mr-2.5" /> -->
                       我的訊息</a
                     >
                   </li>
@@ -244,49 +206,25 @@ const signOut = (): void => {
                   <li>
                     <a href="#" class="flex items-center py-2 pl-1 hover:text-primary-light">
                       <span class="mr-[7px] h-1.5 w-1.5 rounded-full bg-danger"></span>
-                      <!-- <img
-                        src="~/assets/images/front/user_messages_Icon.png"
-                        alt="訊息icon"
-                        class="mr-2.5"
-                      /> -->
                       <Icon name="ph:chats" class="mr-2.5 text-[17px]" />
-                      <!-- <PhChats :size="17" class="mr-2.5" /> -->
                       我的訊息</a
                     >
                   </li>
                   <li>
                     <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-                      <!-- <img
-                        src="~/assets/images/front/orderIcon.png"
-                        alt="訂單icon"
-                        class="mr-2.5"
-                      /> -->
                       <Icon name="ph:receipt" class="mr-2.5 text-[17px]" />
-                      <!-- <PhReceipt :size="17" class="mr-2.5" /> -->
                       訂單紀錄
                     </a>
                   </li>
                   <li>
                     <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-                      <!-- <img
-                        src="~/assets/images/front/user_starIcon.png"
-                        alt="收藏icon"
-                        class="mr-2.5"
-                      /> -->
                       <Icon name="ph:star-bold" class="mr-2.5 text-[17px]" />
-                      <!-- <PhStar :size="17" class="mr-2.5" /> -->
                       我的收藏</a
                     >
                   </li>
                   <li>
                     <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-                      <!-- <img
-                        src="~/assets/images/front/user_keyIcon.png"
-                        alt="會員管理icon"
-                        class="mr-2.5"
-                      /> -->
                       <Icon name="ph:key" class="mr-2.5 text-[17px]" />
-                      <!-- <PhKey :size="17" class="mr-2.5" /> -->
                       會員管理</a
                     >
                   </li>
@@ -296,13 +234,7 @@ const signOut = (): void => {
                       class="flex items-center py-2 pl-5 hover:text-primary-light"
                       @click="signOut"
                     >
-                      <!-- <img
-                        src="~/assets/images/front/sign_out_Icon.png"
-                        alt="會員管理icon"
-                        class="mr-2.5"
-                      /> -->
                       <Icon name="ph:sign-out" class="mr-2.5 text-[17px]" />
-                      <!-- <PhSignOut :size="17" class="mr-2.5" /> -->
                       登出</a
                     >
                   </li>
@@ -316,9 +248,7 @@ const signOut = (): void => {
           <ul class="flex items-center">
             <li class="pr-6">
               <a href="#">
-                <!-- <img src="~/assets/images/front/Icon_new_star.png" alt="我的收藏" /> -->
                 <Icon name="ph:star-bold" class="text-[32px]" />
-                <!-- <PhStar :size="32" /> -->
               </a>
             </li>
             <li class="active:cursor-pointer" @click="toggleMenu">
@@ -370,7 +300,6 @@ const signOut = (): void => {
         <NuxtLink to="/about" class="block py-2 pl-5 hover:text-primary-light"
           >如何累積點數</NuxtLink
         >
-        <!-- <a href="#" class="block py-2 pl-5 hover:text-primary-light">如何累積點數</a> -->
       </li>
     </ul>
   </div>
@@ -390,9 +319,7 @@ const signOut = (): void => {
     >
       <li class="mb-4 flex justify-between pl-2">
         <div class="flex items-center">
-          <!-- <img src="~/assets/images/front/userIcon.png" alt="人型icon" class="mr-3" /> -->
           <Icon name="ph:user" class="mr-3 text-2xl" />
-          <!-- <PhUser :size="24" class="mr-3" /> -->
           <p>User Name</p>
         </div>
         <NuxtLink to="/member/profile">
@@ -402,17 +329,9 @@ const signOut = (): void => {
             class="h-[60px] w-[60px] rounded-full"
           />
         </NuxtLink>
-        <!-- <a href="#"
-          ><img
-            src="~/assets/images/front/userphoto.png"
-            alt="大頭照"
-            class="h-[60px] w-[60px] rounded-full"
-        /></a> -->
       </li>
       <li class="mb-4 flex items-center pl-2">
-        <!-- <img src="~/assets/images/front/Button(usermoney).png" alt="點數icon" class="mr-3" /> -->
         <Icon name="ph:currency-circle-dollar" class="mr-3 text-2xl text-primary" />
-        <!-- <PhCurrencyCircleDollar :size="24" color="#EA580C" class="mr-3" /> -->
         <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">0</p>
       </li>
       <li class="border-b border-[#AAAAAA] pb-3">
@@ -423,13 +342,7 @@ const signOut = (): void => {
       </li>
       <li>
         <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-          <!-- <img
-            src="~/assets/images/front/user_messages_Icon.png"
-            alt="訊息icon"
-            class="mr-2.5"
-          /> -->
           <Icon name="ph:chats" class="mr-2.5 text-2xl" />
-          <!-- <PhChats :size="24" class="mr-2.5" /> -->
           我的訊息
         </a>
       </li>
@@ -437,36 +350,19 @@ const signOut = (): void => {
       <!-- <li>
         <a href="#" class="flex items-center py-2 pl-1 hover:text-primary-light">
           <span class="mr-[7px] h-1.5 w-1.5 rounded-full bg-danger"></span>
-          <img
-            src="~/assets/images/front/user_messages_Icon.png"
-            alt="訊息icon"
-            class="mr-2.5"
-          />
-          <PhChats :size="24" class="mr-2.5" />
+          <Icon name="ph:chats" class="mr-2.5 text-[17px]" />
           我的訊息</a
         >
       </li> -->
       <li>
         <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-          <!-- <img
-            src="~/assets/images/front/orderIcon.png"
-            alt="訂單icon"
-            class="mr-2.5"
-          /> -->
           <Icon name="ph:receipt" class="mr-2.5 text-2xl" />
-          <!-- <PhReceipt :size="24" class="mr-2.5" /> -->
           訂單紀錄</a
         >
       </li>
       <li>
         <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light">
-          <!-- <img
-            src="~/assets/images/front/user_starIcon.png"
-            alt="收藏icon"
-            class="mr-2.5"
-          /> -->
           <Icon name="ph:star-bold" class="mr-2.5 text-xl" />
-          <!-- <PhStar :size="20" class="mr-2.5" /> -->
           我的收藏</a
         >
       </li>
@@ -478,13 +374,7 @@ const signOut = (): void => {
       </li>
       <li class="mb-3 border-b border-[#AAAAAA] pb-3">
         <a href="#" class="flex items-center py-2 pl-5 hover:text-primary-light" @click="signOut">
-          <!-- <img
-            src="~/assets/images/front/sign_out_Icon.png"
-            alt="會員管理icon"
-            class="mr-2.5"
-          /> -->
           <Icon name="ph:sign-out" class="mr-2.5 text-2xl" />
-          <!-- <PhSignOut :size="24" class="mr-2.5" /> -->
           登出
         </a>
       </li>

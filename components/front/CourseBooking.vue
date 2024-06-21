@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// 需要的 icon 再引入即可
-// import { PhPaperPlaneRight } from '@phosphor-icons/vue'
-
 import { defineEmits } from 'vue'
 
 const emit = defineEmits(['bookingReset'])
@@ -63,10 +60,8 @@ const handleBookingCancel = () => {
                 <p class="mr-5">NT$<span class="mx-2">9,999</span>/ 每人</p>
                 <div class="flex items-center">
                   <Icon name="ph:minus-circle" class="text-[32px] hover:cursor-pointer" />
-                  <!-- <PhMinusCircle :size="32" class="hover:cursor-pointer" /> -->
                   <p class="mx-5">1</p>
                   <Icon name="ph:plus-circle" class="text-[32px] hover:cursor-pointer" />
-                  <!-- <PhPlusCircle :size="32" class="hover:cursor-pointer" /> -->
                 </div>
               </li>
               <li>剩餘<span class="mx-2">8</span>人</li>
@@ -101,7 +96,6 @@ const handleBookingCancel = () => {
           class="flex items-center rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
         >
           <Icon name="ph:paper-plane-right" class="mr-2 text-xl" />
-          <!-- <PhPaperPlaneRight :size="20" class="mr-2" /> -->
           送出訂單
         </button>
       </div>

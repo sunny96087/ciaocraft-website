@@ -7,7 +7,6 @@
         <NuxtLink to="/"
           ><img src="~/assets/images/front/Logo_Img(footer).png" alt="logo"
         /></NuxtLink>
-        <!-- <a href="#"><img src="~/assets/images/front/Logo_Img(footer).png" alt="logo" /></a> -->
       </li>
       <li>
         <ul class="flex flex-col lg:flex-row lg:justify-between">
@@ -18,7 +17,6 @@
             <ul class="flex">
               <li class="mr-[30px]">
                 <NuxtLink to="/about">關於我們</NuxtLink>
-                <!-- <a href="#">關於我們</a> -->
               </li>
               <li class="mr-[30px]">
                 <NuxtLink to="/vendorApply">我要開課</NuxtLink>

@@ -1,28 +1,3 @@
-<!-- <script>
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue'
-
-// Import Swiper styles
-import 'swiper/css'
-
-import 'swiper/css/navigation'
-
-// import required modules
-import { Navigation } from 'swiper/modules'
-
-export default {
-  components: {
-    Swiper,
-    SwiperSlide
-  },
-  setup() {
-    return {
-      modules: [Navigation]
-    }
-  }
-}
-</script> -->
-
 <script setup lang="ts">
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -119,11 +94,39 @@ const formattedPrice = (price: number): string => {
     :modules="modules"
     class="productCardSwiper"
   >
-    <swiper-slide v-for="item in artCourseInfo" :key="item.id">
-      <a href="#" class="relative">
-        <img :src="item.courseImage[0]" alt="課程圖片" class="course mb-2 w-full rounded" />
+    <swiper-slide v-for="item in artCourseInfo" :key="item.id" class="flex min-h-[300px] flex-col">
+      <a href="#" class="relative block flex h-full flex-col">
+        <img
+          :src="item.courseImage[0]"
+          alt="課程圖片"
+          class="course mb-2 h-[220px] w-full rounded object-cover"
+        />
         <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
+        <div class="flex flex-col">
+          <div class="mb-2 flex h-[75px] items-start">
+            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
+              體驗
+            </p>
+            <p class="w-full">{{ item.courseName }}</p>
+          </div>
+          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
+          <p class="text-secondary">
+            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
+              formattedPrice(item.coursePrice)
+            }}</span>
+          </p>
+        </div>
+      </a>
+    </swiper-slide>
+    <swiper-slide v-for="item in handCourseInfo" :key="item.id" class="flex min-h-[300px] flex-col">
+      <a href="#" class="relative block flex h-full flex-col">
+        <img
+          :src="item.courseImage[0]"
+          alt="課程圖片"
+          class="course mb-2 h-[220px] w-full rounded object-cover"
+        />
+        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
+        <div class="flex flex-col">
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
               體驗
@@ -139,31 +142,15 @@ const formattedPrice = (price: number): string => {
         </div>
       </a>
     </swiper-slide>
-    <swiper-slide v-for="item in handCourseInfo" :key="item.id">
-      <a href="#" class="relative">
-        <img :src="item.courseImage[0]" alt="課程圖片" class="course mb-2 w-full rounded" />
+    <swiper-slide v-for="item in allCourseInfo" :key="item.id" class="flex min-h-[300px] flex-col">
+      <a href="#" class="relative block flex h-full flex-col">
+        <img
+          :src="item.courseImage[0]"
+          alt="課程圖片"
+          class="course mb-2 h-[220px] w-full rounded object-cover"
+        />
         <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
-              體驗
-            </p>
-            <p class="w-full">{{ item.courseName }}</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">{{ item.brandName }}</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
-              formattedPrice(item.coursePrice)
-            }}</span>
-          </p>
-        </div>
-      </a>
-    </swiper-slide>
-    <swiper-slide v-for="item in allCourseInfo" :key="item.id">
-      <a href="#" class="relative">
-        <img :src="item.courseImage[0]" alt="課程圖片" class="course mb-2 w-full rounded" />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
+        <div class="flex flex-col">
           <div class="mb-2 flex items-start">
             <p class="mr-[8px] w-1/3 rounded bg-blue4 px-2 py-0.5 text-center text-secondary">
               體驗
@@ -215,6 +202,7 @@ const formattedPrice = (price: number): string => {
   background-size: contain;
 }
 
+/* 切缺：點擊星星收藏後要停留在卡片上>>測不出來，當時寫的樣式 */
 /* .productCardSwiper :deep(.swiper-slide) .course:active + .course-star:hover {
   display: block;
   background-image: url('~/assets/images/front/Button(star_hover).png');

@@ -1,4 +1,4 @@
-<script>
+<script setup lang="ts">
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
@@ -10,17 +10,7 @@ import 'swiper/css/navigation'
 // import required modules
 import { Navigation } from 'swiper/modules'
 
-export default {
-  components: {
-    Swiper,
-    SwiperSlide
-  },
-  setup() {
-    return {
-      modules: [Navigation]
-    }
-  }
-}
+const modules = [Navigation]
 </script>
 
 <template>
