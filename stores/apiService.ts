@@ -7,10 +7,10 @@ export const APIStore = defineStore({
   state: () => {
     return {
       // 開發
-      api: 'http://localhost:3666/',
+      // api: 'http://localhost:3666/',
 
       // 線上
-      // api: 'https://ciaocraft-api.onrender.com/',
+      api: 'https://ciaocraft-api.onrender.com/',
 
       vendorInfo: null as any | null, // 用戶資料，初始為 null
       isVendorLoggedIn: false // 登入狀態
@@ -90,6 +90,10 @@ export const APIStore = defineStore({
     },
 
     // todo 師資 teachers (Back)
+    // * 取得單一老師 (Front)
+    async apiGetTeacher(data: JsonObject) {
+      return await axios.get(`${this.api}teachers/${data.teacherId}`)
+    },
     // * 取得所有老師 (Back)
     async apiGetAdminTeachers(data: JsonObject) {
       const vendorToken = await this.getVendorToken()
@@ -149,6 +153,10 @@ export const APIStore = defineStore({
     },
 
     // todo 課程 courses (Back)
+    // * 新增課程點擊紀錄 (Front)
+    async apiAddCourseClick(data: JsonObject) {
+      return await axios.post(`${this.api}courses/clickLogs`, data)
+    },
     // * 取得全部課程 (Back)
     async apiGetAdminCourses(data: JsonObject) {
       const vendorToken = await this.getVendorToken()

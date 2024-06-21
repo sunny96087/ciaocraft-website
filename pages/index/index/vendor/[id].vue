@@ -153,14 +153,27 @@ function changeSort(sort: string) {
                 </div>
               </li>
               <li class="mb-5 flex items-center justify-end">
-                <a :href="vendorInfo.vendor?.socialMedias[0].url" target="_blank"
-                  ><Icon name="ph:facebook-logo-fill" class="mr-3 text-[40px]" /></a
-                ><a :href="vendorInfo.vendor?.socialMedias[1].url" target="_blank"
-                  ><Icon name="ph:instagram-logo-fill" class="mr-3 text-[40px]"
-                /></a>
-                <a :href="vendorInfo.vendor?.socialMedias[2].url" target="_blank"
-                  ><Icon name="ph:house-fill" class="text-[40px]"
-                /></a>
+                <a
+                  v-if="vendorInfo.vendor?.socialMedias[0]?.url"
+                  :href="vendorInfo.vendor.socialMedias[0].url"
+                  target="_blank"
+                >
+                  <Icon name="ph:facebook-logo-fill" class="mr-3 text-[40px]" />
+                </a>
+                <a
+                  v-if="vendorInfo.vendor?.socialMedias[1]?.url"
+                  :href="vendorInfo.vendor.socialMedias[1].url"
+                  target="_blank"
+                >
+                  <Icon name="ph:instagram-logo-fill" class="mr-3 text-[40px]" />
+                </a>
+                <a
+                  v-if="vendorInfo.vendor?.socialMedias[2]?.url"
+                  :href="vendorInfo.vendor.socialMedias[2].url"
+                  target="_blank"
+                >
+                  <Icon name="ph:house-fill" class="text-[40px]" />
+                </a>
               </li>
             </ul>
           </li>
