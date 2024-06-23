@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
+const router = useRouter()
 
 const keyword = ref('')
 
@@ -20,13 +21,14 @@ const handleKeyUp = (event: KeyboardEvent) => {
   }
 }
 
-function searchKeyWord() {
+const clickToSearch = () => {
+  router.push({ path: '/search', query: { keyword: keyword.value } })
   courseStore.courseData.keyword = keyword.value
 }
 </script>
 
 <template>
-  <div class="flex justify-between bg-white py-[18px] pl-5 pr-4">
+  <div class="flex justify-between bg-white px-5 py-[18px]">
     <input
       id="search"
       class="mr-3 w-full outline-none"
@@ -36,8 +38,8 @@ function searchKeyWord() {
       v-model="keyword"
       @keyup.enter="handleKeyUp"
     />
-    <button class="p-2" @click="searchKeyWord">
-      <Icon name="ph:magnifying-glass" />
+    <button @click="clickToSearch">
+      <Icon name="ph:magnifying-glass" class="text-xl" />
     </button>
   </div>
 </template>

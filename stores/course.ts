@@ -11,6 +11,11 @@ type courseType = {
   pageSize: number
 }
 
+type Query = {
+  courseTerm: string
+  pageSize: number
+}
+
 type CourseQuery = {
   query?: string
   countCourseQuery?: string
@@ -38,10 +43,10 @@ export const useCourseStore = defineStore('course', {
   }),
   getters: {},
   actions: {
-    // 取得特定類型課程
-    async apiGetTypeCourse(data: courseType) {
+    // 取得特定課程
+    async apiGetOneCourse(data: Query) {
       return await axios.get(
-        `${apiUrl}/courses?courseType=${data.courseType}&pageSize=${this.courseData.pageSize}`
+        `${apiUrl}/courses?courseTerm=${data.courseTerm}&pageSize=${data.pageSize}`
       )
     },
     // 取得篩選的課程
@@ -57,8 +62,8 @@ export const useCourseStore = defineStore('course', {
       }
     },
     // 取得所有課程
-    async apiGetAllCourse() {
-      return await axios.get(`${apiUrl}/courses?courseType=&pageSize=${this.courseData.pageSize}`)
+    async apiGetAllCourse(data: Query) {
+      return await axios.get(`${apiUrl}/courses?pageSize=${data.pageSize}`)
     },
 
     async getCourseCollection(data: JsonObject) {
@@ -66,7 +71,7 @@ export const useCourseStore = defineStore('course', {
       return await axios.get(`${apiUrl}/courses`)
     },
 
-    // 每頁面載入時就恢復預設
+    // 頁面載入時就恢復預設
     resetCourseData() {
       this.courseData = {
         courseTerm: '',

@@ -26,6 +26,12 @@ export const APIStore = defineStore({
     async apiApplyVendor(data: JsonObject) {
       return await axios.post(`${this.api}vendors`, data)
     },
+    // * 取得賣家資料 (Front)
+    async apiGetVendor(data: JsonObject) {
+      return await axios.get(
+        `${this.api}vendors/${data.vendorId}?courseTerm=${data.courseTerm}&courseType=${data.courseType}&sortBy=${data.sortBy}`
+      )
+    },
     // * 確認賣家帳號是否存在 (Back)
     async apiCheckVenderEmail(data: JsonObject) {
       return await axios.get(`${this.api}vendors/admin/checkAccount/${data.forgetEmail}`)
@@ -84,6 +90,10 @@ export const APIStore = defineStore({
     },
 
     // todo 師資 teachers (Back)
+    // * 取得單一老師 (Front)
+    async apiGetTeacher(data: JsonObject) {
+      return await axios.get(`${this.api}teachers/${data.teacherId}`)
+    },
     // * 取得所有老師 (Back)
     async apiGetAdminTeachers(data: JsonObject) {
       const vendorToken = await this.getVendorToken()
@@ -143,6 +153,10 @@ export const APIStore = defineStore({
     },
 
     // todo 課程 courses (Back)
+    // * 新增課程點擊紀錄 (Front)
+    async apiAddCourseClick(data: JsonObject) {
+      return await axios.post(`${this.api}courses/clickLogs`, data)
+    },
     // * 取得全部課程 (Back)
     async apiGetAdminCourses(data: JsonObject) {
       const vendorToken = await this.getVendorToken()

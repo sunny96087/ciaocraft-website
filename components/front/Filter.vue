@@ -1,16 +1,16 @@
 <script setup lang="ts">
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
-
-// Import Swiper styles
 import 'swiper/css'
-
 import 'swiper/css/pagination'
-
-// import required modules
 import { Pagination } from 'swiper/modules'
 
 const modules = [Pagination]
+const router = useRouter()
+
+const clickToSearch = (courseTerm: number, courseType: string) => {
+  router.push({ path: '/search', query: { courseTerm: courseTerm, courseType: courseType } })
+}
 </script>
 
 <template>
@@ -37,40 +37,40 @@ const modules = [Pagination]
       class="filterSwiper"
     >
       <swiper-slide>
-        <a href="#" class="hover:text-primary">
+        <button class="hover:text-primary" @click="clickToSearch(0, '')">
           <img src="~/assets/images/front/Category_Img_1.png" alt="單堂體驗icon" class="mb-3" />
           <p class="text-xl font-medium leading-[30px]">單堂體驗</p>
-        </a>
+        </button>
       </swiper-slide>
       <swiper-slide>
-        <a href="#" class="hover:text-primary">
+        <button class="hover:text-primary" @click="clickToSearch(1, '')">
           <img src="~/assets/images/front/Category_Img_2.png" alt="專業培訓icon" class="mb-3" />
           <p class="text-xl font-medium leading-[30px]">專業培訓</p>
-        </a>
+        </button>
       </swiper-slide>
       <swiper-slide>
-        <a href="#" class="hover:text-primary">
+        <button class="hover:text-primary" @click="clickToSearch(0, '工藝手作')">
           <img src="~/assets/images/front/Category_Img_3.png" alt="工藝手作icon" class="mb-3" />
           <p class="text-xl font-medium leading-[30px]">工藝手作</p>
-        </a>
+        </button>
       </swiper-slide>
       <swiper-slide>
-        <a href="#" class="hover:text-primary">
+        <button class="hover:text-primary" @click="clickToSearch(0, '烹飪烘焙')">
           <img src="~/assets/images/front/Category_Img_4.png" alt="烹飪烘焙icon" class="mb-3" />
           <p class="text-xl font-medium leading-[30px]">烹飪烘焙</p>
-        </a>
+        </button>
       </swiper-slide>
       <swiper-slide>
-        <a href="#" class="hover:text-primary">
+        <button class="hover:text-primary" @click="clickToSearch(0, '藝術人文')">
           <img src="~/assets/images/front/Category_Img_5.png" alt="藝術人文icon" class="mb-3" />
           <p class="text-xl font-medium leading-[30px]">藝術人文</p>
-        </a>
+        </button>
       </swiper-slide>
       <swiper-slide>
-        <a href="#" class="hover:text-primary">
+        <button class="hover:text-primary" @click="clickToSearch(0, '生活品味')">
           <img src="~/assets/images/front/Category_Img_6.png" alt="生活品味icon" class="mb-3" />
           <p class="text-xl font-medium leading-[30px]">生活品味</p>
-        </a>
+        </button>
       </swiper-slide>
     </swiper>
   </div>

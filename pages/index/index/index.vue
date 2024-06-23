@@ -1,52 +1,81 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const router = useRouter()
+const keyword = ref('')
+
+const clickToSearchKeyword = () => {
+  router.push({ path: '/search', query: { keyword: keyword.value } })
+}
+
+const clickToSearch = (courseTerm: string, courseType: string) => {
+  router.push({ path: '/search', query: { courseTerm: courseTerm, courseType: courseType } })
+}
+</script>
 
 <template>
-  <div class="mb-[30px] pt-5">
-    <front-banner />
-  </div>
-  <div
-    class="mx-5 mb-[30px] overflow-hidden rounded-[40px] border border-gray md:mx-[84px] lg:mx-[360px]"
-  >
-    <front-search />
-  </div>
-  <div
-    class="mx-5 mb-[66px] overflow-hidden rounded-xl border border-white filter md:mx-10 lg:mx-[350px]"
-  >
-    <front-filter />
-  </div>
-  <div class="mx-5 lg:mx-[100px]">
-    <div class="mx-auto max-w-screen-xl pb-9">
-      <div class="mb-9">
+  <div class="bg-gray1">
+    <div class="mb-[30px] pt-5">
+      <front-banner />
+    </div>
+    <div class="mx-auto mb-8 max-w-[740px] space-y-8 px-5">
+      <div class="mx-[10px] flex overflow-hidden rounded-full border border-gray bg-white p-5">
+        <input
+          id="search"
+          class="mr-3 w-full outline-none"
+          type="text"
+          name="search"
+          placeholder="搜尋適合您的手作體驗、培訓課程"
+          v-model="keyword"
+        />
+        <button @click="clickToSearchKeyword">
+          <Icon name="ph:magnifying-glass" class="text-xl" />
+        </button>
+      </div>
+      <div class="overflow-hidden rounded-xl border border-white filter">
+        <front-filter />
+      </div>
+    </div>
+    <div class="mx-auto p-5 py-[10px] lg:max-w-screen-xl">
+      <div class="py-9">
         <div class="mb-[30px] flex items-end">
-          <h2 class="mr-5 text-3xl font-medium leading-[38px]">藝術人文</h2>
-          <a href="#" class="flex">
+          <h2 class="mr-5 text-3xl font-medium leading-[38px]">單堂體驗課</h2>
+          <button href="#" class="flex items-center" @click="clickToSearch('0', '')">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
-          </a>
+          </button>
         </div>
-        <front-product-card-swiper courseType="藝術人文" />
+        <div class="px-8">
+          <front-product-card-swiper courseTerm="0" />
+        </div>
       </div>
-      <div class="mb-9">
+      <div class="py-9">
         <div class="mb-[30px] flex items-end">
-          <h2 class="mr-5 text-3xl font-medium leading-[38px]">工藝手作</h2>
-          <a href="#" class="flex">
+          <h2 class="mr-5 text-3xl font-medium leading-[38px]">系統培訓課</h2>
+          <button href="#" class="flex items-center" @click="clickToSearch('0', '')">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
-          </a>
+          </button>
         </div>
-        <front-product-card-swiper courseType="工藝手作" />
+        <div class="px-8">
+          <front-product-card-swiper courseTerm="1" />
+        </div>
       </div>
-      <div class="mb-9">
+      <div class="py-9">
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">你可能適合</h2>
-          <a href="#" class="flex">
+          <button
+            href="#"
+            class="flex items-center"
+            @click="clickToSearch('0', 'member interests')"
+          >
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
-          </a>
+          </button>
         </div>
-        <front-product-card-swiper />
+        <div class="px-8">
+          <front-product-card-swiper />
+        </div>
       </div>
-      <div class="text-dark1">
+      <div class="mb-8 text-dark1">
         <front-about />
       </div>
     </div>
