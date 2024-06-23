@@ -76,7 +76,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="mx-auto py-[10px] lg:max-w-screen-xl">
+  <!-- <header class="mx-auto py-[10px] lg:max-w-screen-2xl"> -->
+  <header class="mx-[20px] mx-auto py-[10px] lg:mx-[100px]">
     <div class="flex items-center justify-between px-5">
       <!-- header 左側 logo -->
       <h1 class="px-4 py-1 lg:py-5">
