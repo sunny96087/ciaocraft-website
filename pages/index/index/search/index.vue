@@ -15,48 +15,39 @@ const toggleSort = (): void => {
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
 
-const courseTerm = ref('全部')
-const courseType = ref('全部')
+const courseTerm = ref(
+  courseStore.courseData.courseTerm === '' ? '全部' : courseStore.courseData.courseTerm
+)
+const courseType = ref(
+  courseStore.courseData.courseType === '' ? '全部' : courseStore.courseData.courseType
+)
 const isNoResult = ref<boolean>(false)
-
-// 把下拉選單預設值寫入 courseStore
-onMounted(() => {
-  courseStore.courseData.courseTerm = courseTerm.value
-  courseStore.courseData.courseType = courseType.value
-  console.log(courseStore.courseData)
-})
 
 // 改變下拉選單就把值更新到 courseStore
 function selectedCourseTerm() {
   courseStore.resetPageSize()
-  console.log(courseStore.courseData.pageSize)
   courseStore.courseData.courseTerm = courseTerm.value
 }
 
 function selectedCourseType() {
   courseStore.resetPageSize()
-  console.log(courseStore.courseData.pageSize)
   courseStore.courseData.courseType = courseType.value
 }
 
 // 點選指定排序方式後 call api
 const handleSort = (sortType: string): void => {
   // 根據不同的排序類型調用對應的 API
-  console.log(`Sorting by: ${sortType}`)
   toggleSort()
 
   switch (sortType) {
     case 'newest':
       courseStore.courseData.sortBy = 'newest'
-      console.log('Call API for 最近時間')
       break
     case 'mostPopular':
       courseStore.courseData.sortBy = 'mostPopular'
-      console.log('Call API for 熱門課程')
       break
     case 'highestRate':
       courseStore.courseData.sortBy = 'highestRate'
-      console.log('Call API for 評分最高')
       break
   }
 }
@@ -72,14 +63,11 @@ const isShowloadMore = computed(() => {
 // 監控：當查無搜尋結果，就顯示"..0筆..."
 watch(searchResults, (newVal) => {
   isNoResult.value = newVal === 0
-  console.log(isNoResult.value)
 })
 
 // 每點擊"載入更多"就增加 20 (筆)
 function loadMore() {
   courseStore.courseData.pageSize += 20
-  console.log(`New pageSize: ${courseStore.courseData.pageSize}`)
-  console.log(isShowloadMore.value)
 }
 
 // 監控：當 courseStore keyword 變動，就重新渲染搜尋的關鍵字
@@ -88,11 +76,9 @@ const keyword = computed(() => courseStore.courseData.keyword)
 // 重新搜尋。所有參數恢復預設(含 courseStore)
 function resetFilter() {
   isNoResult.value = false
-  // courseStore.courseData.keyword = ''
   courseStore.resetCourseData()
   courseTerm.value = '全部'
   courseType.value = '全部'
-  console.log('重新')
 }
 </script>
 

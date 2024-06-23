@@ -106,10 +106,10 @@ const formattedPrice = (price: number): string => {
         <div class="flex flex-col">
           <div class="mb-2 flex h-[90px] items-start lg:h-[95px]">
             <p
-              class="mr-[8px] w-1/3 rounded px-2 py-0.5 text-center text-secondary"
+              class="mr-[8px] w-1/3 rounded px-2 py-0.5 text-center"
               :class="{
-                'bg-blue4': item.courseTerm === 0,
-                'bg-orange2': item.courseTerm !== 0
+                'bg-blue4 text-secondary': item.courseTerm === 0,
+                'bg-primary text-white': item.courseTerm !== 0
               }"
             >
               {{ item.courseTerm === 0 ? '體驗' : '培訓' }}

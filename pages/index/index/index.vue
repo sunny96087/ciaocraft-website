@@ -2,11 +2,29 @@
 const router = useRouter()
 const keyword = ref('')
 
+// 使用 courseStore
+import { useCourseStore } from '~/stores/course'
+const courseStore = useCourseStore()
+
+onMounted(() => {
+  courseStore.resetCourseData()
+})
+
+const handleKeyUp = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    courseStore.courseData.keyword = keyword.value
+    router.push({ path: '/search', query: { keyword: keyword.value } })
+  }
+}
+
 const clickToSearchKeyword = () => {
+  courseStore.courseData.keyword = keyword.value
   router.push({ path: '/search', query: { keyword: keyword.value } })
 }
 
 const clickToSearch = (courseTerm: string, courseType: string) => {
+  courseStore.courseData.courseTerm = courseTerm
+  courseStore.courseData.courseType = courseType
   router.push({ path: '/search', query: { courseTerm: courseTerm, courseType: courseType } })
 }
 </script>
@@ -25,6 +43,7 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
           name="search"
           placeholder="搜尋適合您的手作體驗、培訓課程"
           v-model="keyword"
+          @keyup.enter="handleKeyUp"
         />
         <button @click="clickToSearchKeyword">
           <Icon name="ph:magnifying-glass" class="text-xl" />
@@ -38,7 +57,7 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
       <div class="py-9">
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">單堂體驗課</h2>
-          <button href="#" class="flex items-center" @click="clickToSearch('0', '')">
+          <button href="#" class="flex items-center" @click="clickToSearch('0', '全部')">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
@@ -49,8 +68,8 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
       </div>
       <div class="py-9">
         <div class="mb-[30px] flex items-end">
-          <h2 class="mr-5 text-3xl font-medium leading-[38px]">系統培訓課</h2>
-          <button href="#" class="flex items-center" @click="clickToSearch('0', '')">
+          <h2 class="mr-5 text-3xl font-medium leading-[38px]">專業培訓課</h2>
+          <button href="#" class="flex items-center" @click="clickToSearch('1', '全部')">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
@@ -62,11 +81,7 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
       <div class="py-9">
         <div class="mb-[30px] flex items-end">
           <h2 class="mr-5 text-3xl font-medium leading-[38px]">你可能適合</h2>
-          <button
-            href="#"
-            class="flex items-center"
-            @click="clickToSearch('0', 'member interests')"
-          >
+          <button href="#" class="flex items-center" @click="clickToSearch('全部', '全部')">
             <p class="mr-1 text-primary">更多</p>
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>

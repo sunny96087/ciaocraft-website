@@ -83,11 +83,6 @@ const isCollected = (id: string): boolean => {
   return isCollected
 }
 
-// 格式化價格的計算屬性
-const formattedPrice = (price: number): string => {
-  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
 // 加入收藏
 const addCollection = (courseId: string) => {
   console.log('addCollection' + courseId)
@@ -163,7 +158,7 @@ onMounted(() => {
             <div
               class="mb-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
               :class="{
-                'bg-secondary text-white': item.courseTerm === 0,
+                'bg-blue4 text-secondary': item.courseTerm === 0,
                 'bg-primary text-white': item.courseTerm === 1
               }"
             >
@@ -176,7 +171,7 @@ onMounted(() => {
         </div>
         <div>
           <p class="mb-1 truncate text-sm leading-[22px]">{{ item.brandName }}</p>
-          <div class="flex">
+          <div class="flex items-center">
             <span class="mr-1 font-normal leading-6 tracking-[0.5px] text-secondary">NT$</span>
             <span class="font-medium leading-[30px] text-secondary">{{
               formatCurrency(item.coursePrice)
@@ -218,7 +213,7 @@ onMounted(() => {
             <div
               class="mb-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
               :class="{
-                'bg-secondary text-white': item.courseTerm === 0,
+                'bg-blue4 text-secondary': item.courseTerm === 0,
                 'bg-primary text-white': item.courseTerm === 1
               }"
             >
@@ -231,7 +226,7 @@ onMounted(() => {
         </div>
         <div>
           <p class="mb-1 truncate text-sm leading-[22px]">{{ item.brandName }}</p>
-          <div class="flex">
+          <div class="flex items-center">
             <span class="mr-1 font-normal leading-6 tracking-[0.5px] text-secondary">NT$</span>
             <span class="font-medium leading-[30px] text-secondary">{{
               formatCurrency(item.coursePrice)
@@ -273,7 +268,7 @@ onMounted(() => {
             <div
               class="mb-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
               :class="{
-                'bg-secondary text-white': item.courseTerm === 0,
+                'bg-blue4 text-secondary': item.courseTerm === 0,
                 'bg-primary text-white': item.courseTerm === 1
               }"
             >
@@ -286,7 +281,7 @@ onMounted(() => {
         </div>
         <div>
           <p class="mb-1 truncate text-sm leading-[22px]">{{ item.brandName }}</p>
-          <div class="flex">
+          <div class="flex items-center">
             <span class="mr-1 font-normal leading-6 tracking-[0.5px] text-secondary">NT$</span>
             <span class="font-medium leading-[30px] text-secondary">{{
               formatCurrency(item.coursePrice)

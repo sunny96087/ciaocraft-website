@@ -16,14 +16,14 @@ const handleKeyUp = (event: KeyboardEvent) => {
   if (event.key === 'Enter') {
     console.log(keyword.value)
     courseStore.courseData.keyword = keyword.value
-    // updateKeyword(keyword.value)
+    courseStore.resetPageSize()
     console.log(courseStore.courseData.keyword)
   }
 }
 
 const clickToSearch = () => {
-  router.push({ path: '/search', query: { keyword: keyword.value } })
   courseStore.courseData.keyword = keyword.value
+  courseStore.resetPageSize()
 }
 </script>
 
