@@ -90,17 +90,6 @@ function request(result: { statusCode: number; data: any }) {
 const formattedPrice = (price: number): string => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
-
-// courseTerm 中文對照表。秀在畫面用
-const courseTermMap: Record<string, string> = {
-  全部: '全部',
-  '0': '體驗',
-  '1': '培訓'
-}
-
-const getCourseTermLabel = (code: string): string => {
-  return courseTermMap[code] || ''
-}
 </script>
 
 <!-- 切版缺：卡片點擊時星星變色並留停 -->
@@ -119,11 +108,11 @@ const getCourseTermLabel = (code: string): string => {
             <p
               class="mr-[8px] w-1/3 rounded px-2 py-0.5 text-center text-secondary"
               :class="{
-                'bg-blue4': getCourseTermLabel(item.courseTerm) === '體驗',
-                'bg-orange2': getCourseTermLabel(item.courseTerm) !== '體驗'
+                'bg-blue4': item.courseTerm === 0,
+                'bg-orange2': item.courseTerm !== 0
               }"
             >
-              {{ getCourseTermLabel(item.courseTerm) }}
+              {{ item.courseTerm === 0 ? '體驗' : '培訓' }}
             </p>
             <p>{{ item.courseName }}</p>
           </div>

@@ -5,11 +5,11 @@ import type { JsonObject } from 'type-fest'
 const apiUrl = 'https://ciaocraft-api.onrender.com'
 // const apiUrl = 'http://127.0.0.1:3666'
 
-// 定義資料類型
-type courseType = {
-  courseType: string | null | undefined
-  pageSize: number
-}
+// // 定義資料類型
+// type courseType = {
+//   courseType: string | null | undefined
+//   pageSize: number
+// }
 
 type Query = {
   courseTerm: string

@@ -19,14 +19,6 @@ const courseTerm = ref('全部')
 const courseType = ref('全部')
 const isNoResult = ref<boolean>(false)
 
-let CourseTermChinese = '全部'
-// courseTerm 中文對照表。秀在畫面用
-const courseTermMap: Record<string, string> = {
-  全部: '全部',
-  '0': '單堂體驗',
-  '1': '專業培訓'
-}
-
 // 把下拉選單預設值寫入 courseStore
 onMounted(() => {
   courseStore.courseData.courseTerm = courseTerm.value
@@ -39,19 +31,12 @@ function selectedCourseTerm() {
   courseStore.resetPageSize()
   console.log(courseStore.courseData.pageSize)
   courseStore.courseData.courseTerm = courseTerm.value
-  changeCourseTerm()
-  console.log(CourseTermChinese)
 }
 
 function selectedCourseType() {
   courseStore.resetPageSize()
   console.log(courseStore.courseData.pageSize)
   courseStore.courseData.courseType = courseType.value
-}
-
-// 將 courseTerm 進行中文轉換，並賦值 CourseTermChinese
-function changeCourseTerm() {
-  CourseTermChinese = courseTermMap[courseTerm.value]
 }
 
 // 點選指定排序方式後 call api
@@ -107,7 +92,6 @@ function resetFilter() {
   courseStore.resetCourseData()
   courseTerm.value = '全部'
   courseType.value = '全部'
-  CourseTermChinese = '全部'
   console.log('重新')
 }
 </script>
@@ -127,7 +111,10 @@ function resetFilter() {
       <span class="mr-1">{{ searchResults }}</span>
       <span class="mr-1">筆</span>
       <span class="mr-1" v-if="!isNoResult">搜尋：{{ keyword }}</span>
-      <span class="mr-1" v-if="!isNoResult">“{{ CourseTermChinese }} 且 {{ courseType }}”</span>
+      <span class="mr-1" v-if="!isNoResult"
+        >“{{ courseTerm === '0' ? '單堂體驗' : courseTerm === '全部' ? '全部' : '專業培訓' }} 且
+        {{ courseType }}”</span
+      >
       <span>結果</span>
     </div>
     <!-- 有搜尋結果(顯示下拉篩選區塊) -->

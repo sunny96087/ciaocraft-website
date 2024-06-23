@@ -1,28 +1,3 @@
-<!-- <script>
-// Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue'
-
-// Import Swiper styles
-import 'swiper/css'
-
-import 'swiper/css/navigation'
-
-// import required modules
-import { Navigation } from 'swiper/modules'
-
-export default {
-  components: {
-    Swiper,
-    SwiperSlide
-  },
-  setup() {
-    return {
-      modules: [Navigation]
-    }
-  }
-}
-</script> -->
-
 <script setup lang="ts">
 // Import Swiper Vue.js components
 import 'swiper/css'
@@ -56,14 +31,19 @@ let data: any = {
 
 async function getCourse() {
   try {
-    let res
+    let query = ''
+    let res = null
     if (props.courseTerm === '0' || props.courseTerm === '1') {
-      res = await courseStore.apiGetOneCourse(data)
+      query += `courseTerm=${data.courseTerm}&pageSize=${data.pageSize}`
+      // res = await courseStore.apiGetOneCourse(data)
+      res = await courseStore.apiGetCourses({ query })
     } else {
-      res = await courseStore.apiGetAllCourse()
+      query += `pageSize=${data.pageSize}`
+      // res = await courseStore.apiGetAllCourse()
+      res = await courseStore.apiGetCourses({ query })
     }
     const result = res.data
-    // console.log(result)
+    console.log(result)
 
     request(result)
   } catch (e) {
