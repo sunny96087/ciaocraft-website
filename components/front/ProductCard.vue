@@ -13,127 +13,125 @@
 // const toggleStar = (): void => {
 //   isStarShow.value = !isStarShow.value
 // }
+
+// 串接 API
+import { useCourseStore } from '~/stores/course'
+const courseStore = useCourseStore()
+
+const courseInfo: any = ref({})
+
+// 載入時取得 courseStore
+onMounted(() => {
+  const { courseTerm, courseType, keyword, sortBy, pageSize } = courseStore.courseData
+  getCourse(courseTerm, courseType, keyword, sortBy, pageSize)
+})
+
+// 監控 courseStore。有異動就調用函式 getCourse
+watchEffect(() => {
+  const { courseTerm, courseType, keyword, sortBy, pageSize } = courseStore.courseData
+
+  // 調用函式 getCourse
+  getCourse(courseTerm, courseType, keyword, sortBy, pageSize)
+})
+
+async function getCourse(
+  courseTerm: string,
+  courseType: string,
+  keyword: string,
+  sortBy: string,
+  pageSize: number
+) {
+  console.log(courseTerm, courseType, keyword, sortBy, pageSize)
+  console.log('被call了')
+  try {
+    let query = ''
+    let countCourseQuery = ''
+    let res = null
+    let countRes = null
+    // 根據下拉選單決定 api url
+    if (courseTerm !== '全部') {
+      query += `courseTerm=${courseTerm}&`
+      countCourseQuery += `courseTerm=${courseTerm}&`
+    }
+    if (courseType !== '全部') {
+      query += `courseType=${courseType}&`
+      countCourseQuery += `courseType=${courseType}&`
+    }
+    query += `sortBy=${sortBy}&pageSize=${pageSize}&keyword=${keyword}`
+    countCourseQuery += `sortBy=${sortBy}&keyword=${keyword}`
+
+    console.log(query)
+    res = await courseStore.apiGetCourses({ query })
+    countRes = await courseStore.apiGetCourses({ countCourseQuery })
+
+    const result = res.data
+    const countresult = countRes.data
+    courseStore.courseData.searchResultCount = countresult.data.length
+    console.log(result)
+    console.log(countresult.data.length)
+    console.log(courseStore.courseData)
+
+    request(result)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function request(result: { statusCode: number; data: any }) {
+  if (result.statusCode === 200) {
+    courseInfo.value = result.data
+    // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
+  } else {
+    console.log('篩選課程資料失敗')
+  }
+}
+
+// 格式化價格的計算屬性
+const formattedPrice = (price: number): string => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+// courseTerm 中文對照表。秀在畫面用
+const courseTermMap: Record<string, string> = {
+  全部: '全部',
+  '0': '體驗',
+  '1': '培訓'
+}
+
+const getCourseTermLabel = (code: string): string => {
+  return courseTermMap[code] || ''
+}
 </script>
 
 <!-- 切版缺：卡片點擊時星星變色並留停 -->
 <template>
   <ul class="flex grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5">
-    <li>
-      <a href="#" class="relative">
+    <li v-for="item in courseInfo" class="flex min-h-[300px] flex-col">
+      <a href="#" class="relative block flex h-full flex-col">
         <img
-          src="~/assets/images/front/Card_Img.png"
+          :src="item.courseImage[0]"
           alt="課程圖片"
-          class="course mb-2 w-full rounded"
+          class="course mb-2 h-[220px] w-full rounded object-cover"
         />
         <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名稱</p>
+        <div class="flex flex-col">
+          <div class="mb-2 flex h-[90px] items-start lg:h-[95px]">
+            <p
+              class="mr-[8px] w-1/3 rounded px-2 py-0.5 text-center text-secondary"
+              :class="{
+                'bg-blue4': getCourseTermLabel(item.courseTerm) === '體驗',
+                'bg-orange2': getCourseTermLabel(item.courseTerm) !== '體驗'
+              }"
+            >
+              {{ getCourseTermLabel(item.courseTerm) }}
+            </p>
+            <p>{{ item.courseName }}</p>
           </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
+          <p class="mb-1 w-full text-sm leading-[22px]">{{ item.brandName }}</p>
           <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
-          </p>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#" class="relative">
-        <img
-          src="~/assets/images/front/Card_Img.png"
-          alt="課程圖片"
-          class="course mb-2 w-full rounded"
-        />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
-        <div>
-          <div class="mb-2 flex items-start">
-            <p class="mr-[8px] rounded bg-blue4 px-2 py-0.5 text-secondary">體驗</p>
-            <p>課程名稱課程名</p>
-          </div>
-          <p class="mb-1 text-sm leading-[22px]">品牌名稱</p>
-          <p class="text-secondary">
-            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">9,999</span>
+            NT$<span class="ml-2 font-medium leading-[30px] lg:ml-1">{{
+              formattedPrice(item.coursePrice)
+            }}</span>
           </p>
         </div>
       </a>

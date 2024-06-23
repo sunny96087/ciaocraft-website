@@ -30,6 +30,7 @@ const props = defineProps({
 })
 
 let data = {
+  courseTerm: '',
   courseType: props.courseType,
   pageSize: 6
 }
@@ -38,9 +39,9 @@ async function getCourse() {
   try {
     let res
     if (props.courseType === '藝術人文' || props.courseType === '工藝手作') {
-      res = await courseStore.apiGetOneCourse(data)
+      res = await courseStore.apiGetTypeCourse(data)
     } else {
-      res = await courseStore.apiGetAllCourse(data)
+      res = await courseStore.apiGetAllCourse()
     }
     const result = res.data
     // console.log(result)
