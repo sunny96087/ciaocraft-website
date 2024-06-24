@@ -62,13 +62,21 @@ const toggleDropdown = () => {
 // 處理排序
 const handleSort = (orderName: string) => {
   if (orderName === 'newest') {
-    // filterOrders.value = memberOrders.sort(
-    //   (a: any, b: any) => new Date(b.createAt) - new Date(a.createAt)
-    // )
+    filterOrders.value = memberOrders.value.sort(
+      (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
   } else if (orderName === 'experience') {
-    filterOrders.value = memberOrders.sort((a: any, b: any) => a.courseTerm - b.courseTerm)
+    filterOrders.value = memberOrders.value.sort((a: any, b: any) => {
+      if (a.courseTerm === 0 && b.courseTerm !== 0) return -1
+      if (a.courseTerm !== 0 && b.courseTerm === 0) return 1
+      return a.courseTerm - b.courseTerm
+    })
   } else if (orderName === 'training') {
-    filterOrders.value = filterOrders.value.sort((a: any, b: any) => b.courseTerm - a.courseTerm)
+    filterOrders.value = memberOrders.value.sort((a: any, b: any) => {
+      if (a.courseTerm === 1 && b.courseTerm !== 1) return -1
+      if (a.courseTerm !== 1 && b.courseTerm === 1) return 1
+      return b.courseTerm - a.courseTerm
+    })
   }
 }
 
@@ -87,11 +95,11 @@ const handleCollectionFilter = (filterName: string) => {
   if (filterName === 'experience') {
     filterCollection.value = memberCollections.value.filter((item: any) => item.courseTerm === 0)
     selectedFilterName.value = '體驗課程'
-    console.log('體驗課程', filterCollection.value)
+    // console.log('體驗課程', filterCollection.value)
   } else if (filterName === 'training') {
     filterCollection.value = memberCollections.value.filter((item: any) => item.courseTerm === 1)
     selectedFilterName.value = '培訓課程'
-    console.log('培訓課程', filterCollection.value)
+    // console.log('培訓課程', filterCollection.value)
   } else {
     filterCollection.value = memberCollections.value
     selectedFilterName.value = '所有課程'
@@ -136,6 +144,7 @@ const fetchOrdersData = async () => {
     const result = res.data
     const orderData = result.data.map((item: any) => {
       item.courseImage = item.courseId?.courseImage?.[0] || ''
+      item.courseTerm = item.courseId.courseTerm || ''
       item.courseId = item.courseId?._id || ''
       return item
     })
@@ -174,10 +183,8 @@ const tab = watch(
   () => route.query.tab,
   (tab) => {
     if (tab === 'collections') {
-      console.log('collections')
       renderCurrentView('collections')
     } else {
-      console.log('orders')
       renderCurrentView('orders')
     }
   }
@@ -385,9 +392,9 @@ onMounted(() => {
               最近時間
             </li>
             <li
-              value="expirence"
+              value="experience"
               class="py-1 text-center hover:bg-secondary hover:text-white"
-              @click="handleSort('expirence')"
+              @click="handleSort('experience')"
             >
               體驗課程優先
             </li>
