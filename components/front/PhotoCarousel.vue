@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 import { ref } from 'vue'
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -31,7 +31,32 @@ export default {
       modules: [FreeMode, Navigation, Thumbs]
     }
   }
+} -->
+<script setup lang="ts">
+import { ref } from 'vue'
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue'
+
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/free-mode'
+import 'swiper/css/navigation'
+import 'swiper/css/thumbs'
+
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
+
+import type { Swiper as SwiperInstance } from 'swiper'
+
+const thumbsSwiper: Ref<SwiperInstance | null> = ref(null)
+
+const setThumbsSwiper = (swiper: SwiperInstance) => {
+  thumbsSwiper.value = swiper
 }
+
+const modules = [FreeMode, Navigation, Thumbs]
+
+import { useCourseStore } from '~/stores/course'
+const courseStore = useCourseStore()
 </script>
 
 <template>
@@ -49,11 +74,9 @@ export default {
       :modules="modules"
       class="crouseSwiper2"
     >
-      <swiper-slide><img src="https://swiperjs.com/demos/images/nature-1.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-2.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-3.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-4.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-5.jpg" /></swiper-slide>
+      <swiper-slide v-for="(item, index) in courseStore.oneCourseData[0].courseImage" :key="index"
+        ><img :src="item" />
+      </swiper-slide>
     </swiper>
     <swiper
       @swiper="setThumbsSwiper"
@@ -65,11 +88,9 @@ export default {
       :modules="modules"
       class="crouseSwiper"
     >
-      <swiper-slide><img src="https://swiperjs.com/demos/images/nature-1.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-2.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-3.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-4.jpg" /></swiper-slide
-      ><swiper-slide><img src="https://swiperjs.com/demos/images/nature-5.jpg" /></swiper-slide>
+      <swiper-slide v-for="(item, index) in courseStore.oneCourseData[0].courseImage" :key="index"
+        ><img :src="item" />
+      </swiper-slide>
     </swiper>
   </div>
 </template>

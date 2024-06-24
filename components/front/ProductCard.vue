@@ -82,7 +82,7 @@ function request(result: { statusCode: number; data: any }) {
     courseInfo.value = result.data
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
   } else {
-    console.log('篩選課程資料失敗')
+    console.log('篩選課程失敗')
   }
 }
 
@@ -96,7 +96,11 @@ const formattedPrice = (price: number): string => {
 <template>
   <ul class="flex grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5">
     <li v-for="item in courseInfo" class="flex min-h-[300px] flex-col">
-      <a href="#" class="relative block flex h-full flex-col">
+      <NuxtLink
+        :to="{ name: 'index-index-course-id', params: { id: item._id } }"
+        class="relative block flex h-full flex-col"
+        :id="item._id"
+      >
         <img
           :src="item.courseImage[0]"
           alt="課程圖片"
@@ -123,7 +127,7 @@ const formattedPrice = (price: number): string => {
             }}</span>
           </p>
         </div>
-      </a>
+      </NuxtLink>
     </li>
   </ul>
 </template>

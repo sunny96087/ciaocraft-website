@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
-const router = useRouter()
+// const router = useRouter()
 
 const keyword = ref('')
 

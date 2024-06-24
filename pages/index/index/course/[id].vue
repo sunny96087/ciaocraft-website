@@ -1,5 +1,7 @@
 <script setup lang="ts">
-// 需要的 icon 再引入即可
+import { useCourseStore } from '~/stores/course'
+const courseStore = useCourseStore()
+const route = useRoute()
 
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
@@ -17,6 +19,68 @@ const toggleBookingVisible = (): void => {
 // 子層按了"取消預定"，要將 isBookingVisible 恢復預設
 const handleBookingCancel = () => {
   isBookingVisible.value = false
+}
+
+// 單一課程
+const courseId = ref()
+const courseInfo: any = ref({})
+
+onMounted(async () => {
+  // 恢復 courseStore 單一課程資料內容預設
+  courseStore.resetoneCourseData()
+
+  // 從網址取得參數
+  courseId.value = route.params.id
+  console.log(courseId)
+  getOneCourse()
+})
+
+// 取得單筆課程資料
+async function getOneCourse() {
+  try {
+    showLoading()
+
+    let data = {
+      courseId: courseId.value
+    }
+    const res = await courseStore.apiGetOneCourse(data)
+    const result = res.data
+    console.log(result)
+    // 將資料寫入 courseStore
+    courseStore.oneCourseData[0].courseTerm = result.data.courseTerm
+    courseStore.oneCourseData[0].courseImage = result.data.courseImage
+    courseStore.oneCourseData[0].courseName = result.data.courseName
+    courseStore.oneCourseData[0].courseAvgRating = result.data.courseAvgRating
+    courseStore.oneCourseData[0].courseCommentsCount = result.data.courseCommentsCount
+    courseStore.oneCourseData[0].coursePrice = result.data.coursePrice
+    courseStore.oneCourseData[0].courseSummary = result.data.courseSummary
+    courseStore.oneCourseData[0].courseTotalHours = result.data.courseTotalHours
+    courseStore.oneCourseData[0].courseAddress = result.data.courseAddress
+    courseStore.oneCourseData[0].courseCapacity = result.data.courseCapacity
+    courseStore.oneCourseData[0].teacherId = result.data.teacherId
+    courseStore.oneCourseData[0].vendorId = result.data.vendorId
+    courseStore.oneCourseData[0].courseSuitableFor = result.data.courseSuitableFor
+    courseStore.oneCourseData[0].courseSkillsLearned = result.data.courseSkillsLearned
+    courseStore.oneCourseData[0].courseContent = result.data.courseContent
+    courseStore.oneCourseData[0].courseNotice = result.data.courseNotice
+
+    console.log(courseStore.oneCourseData)
+
+    request(result)
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
+}
+
+function request(result: { statusCode: number; data: any }) {
+  if (result.statusCode === 200) {
+    courseInfo.value = result.data
+    // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
+  } else {
+    console.log('取得單一課程失敗')
+  }
 }
 </script>
 
