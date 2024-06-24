@@ -62,17 +62,17 @@ const toggleDropdown = () => {
 // 處理排序
 const handleSort = (orderName: string) => {
   if (orderName === 'newest') {
-    filterOrders.value = memberOrders.value.sort(
+    filterOrders.value = filterOrders.value.sort(
       (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
   } else if (orderName === 'experience') {
-    filterOrders.value = memberOrders.value.sort((a: any, b: any) => {
+    filterOrders.value = filterOrders.value.sort((a: any, b: any) => {
       if (a.courseTerm === 0 && b.courseTerm !== 0) return -1
       if (a.courseTerm !== 0 && b.courseTerm === 0) return 1
       return a.courseTerm - b.courseTerm
     })
   } else if (orderName === 'training') {
-    filterOrders.value = memberOrders.value.sort((a: any, b: any) => {
+    filterOrders.value = filterOrders.value.sort((a: any, b: any) => {
       if (a.courseTerm === 1 && b.courseTerm !== 1) return -1
       if (a.courseTerm !== 1 && b.courseTerm === 1) return 1
       return b.courseTerm - a.courseTerm
