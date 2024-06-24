@@ -4,12 +4,13 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const defaultAvatar: any = ref('~assets/images/front/member/default-avatar.jpg')
+
 const authStore = useAuthStore()
 const memberStore = useMemberStore()
 const uploadStore = useUploadStore()
-const router = useRouter()
 
-const googleUrl = ref(authStore.apiUrl + '/auth/google')
+// const googleUrl = ref(authStore.apiUrl + '/auth/google')
 const memberEmail = ref('')
 const member: any = ref({
   email: '會員email',
@@ -31,7 +32,6 @@ const fetchMemberData = async () => {
     member.value = result.data
     member.value.birthday = result.data.birthday.split('T')[0]
     memberEmail.value = result.data.email ? result.data.email : result.data.googleAccount
-    console.log(result.data)
   } catch (error) {
     showToast('取得會員資料失敗')
   }
@@ -54,7 +54,7 @@ const handleFileUpload = async (event: any, type: string) => {
   }
   showLoading()
   try {
-    const res = await uploadStore.uploadSingleImage(formData)
+    const res: any = await uploadStore.uploadSingleImage(formData)
     const result = res.data
     if (result.status == 'success') {
       member.value.photo = result.data.imgUrl
@@ -118,7 +118,7 @@ onMounted(() => {
           <!-- 大頭貼 -->
           <div class="mb-3 aspect-square max-h-[160px] max-w-[160px] overflow-hidden">
             <img
-              :src="member.photo"
+              :src="member.photo || defaultAvatar"
               alt="ciao-craft-logo"
               class="h-full w-full rounded-full bg-gray3 object-cover"
             />
@@ -271,24 +271,24 @@ onMounted(() => {
           </div>
         </div>
         <div class="space-y-2">
-          <label for="google-email">連結帳號</label>
-          <div class="flex justify-between space-x-2" v-if="member.googleId">
+          <label for="google-email">連結 google 帳號</label>
+          <div class="flex justify-between space-x-2">
             <div class="flex-1 rounded-[4px] border-[1px] border-solid border-gray3">
               <input
                 type="email"
                 name="gmail"
-                placeholder="link gmail account"
+                placeholder="No gmail account linked"
                 class="w-full px-5 py-2"
                 disabled
                 v-model="member.googleAccount"
               />
             </div>
-            <button
+            <!-- <button
               class="items-center justify-center rounded-[4px] bg-secondary px-4 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light"
               @click="unlinkGoogleAccount()"
             >
               取消連結
-            </button>
+            </button> -->
             <!-- <button
               v-else
               class="items-center justify-center rounded-[4px] bg-secondary px-4 py-2 text-center tracking-wider text-white transition duration-300 hover:bg-secondary-light"
@@ -297,14 +297,14 @@ onMounted(() => {
               連結 Google 帳號
             </button> -->
           </div>
-          <a
+          <!-- <a
             v-else
             :href="googleUrl"
             class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"
           >
             <Icon name="logos:google-icon" class="mr-5" />
             <span>使用 Google 登入</span>
-          </a>
+          </a> -->
         </div>
       </div>
       <button

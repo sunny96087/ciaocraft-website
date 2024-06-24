@@ -5,17 +5,19 @@ import { useMemberStore } from '~/stores/member'
 definePageMeta({
   middleware: ['auth']
 })
-const defaultImg: any = ref('https://dummyimage.com/300x300/#F8F8F8')
+const defaultImg: any = ref('~/assets/images/front/member/default-image.jpg')
 
 const memberStore = useMemberStore()
 const router = useRouter()
+const route = useRoute()
 
 // 會員資料區
 const member: any = ref({})
 const fetchMember = async () => {
   try {
     const res = await memberStore.getMember()
-    member.value = res.data.data
+    const result = res.data
+    member.value = result.data
   } catch (err) {
     router.push('/error')
   }
@@ -26,8 +28,11 @@ const currentView = ref('orders') // 當前畫面
 const filter = ref('all') // 篩選條件
 const selectedFilterName = ref('所有課程') // 篩選條件名稱
 const selectedFilterCount = ref(0) // 選中的條件數量 (下拉選單用)
-const rawData: any = ref([])
-const data: any = ref([])
+
+let memberCollections: any = computed(() => memberStore.collections)
+let memberOrders: any = computed(() => memberStore.orders)
+let filterCollection = ref([])
+let filterOrders = ref([])
 const hasData = ref(true)
 
 // 動態切換渲染元件
@@ -36,19 +41,15 @@ const content: any = {
   orders: resolveComponent('FrontMemberOrderCard')
 }
 
-const setCurrentView = async (viewName: string) => {
+const renderCurrentView = async (viewName: string) => {
   showLoading()
-  rawData.value = [] // 清空原始資料
-  data.value = [] // 清空filter用資料
-  currentView.value = viewName // 根據 頁面名稱 取得資料
-  // 根據畫面取得資料
   if (viewName === 'orders') {
     await fetchOrdersData()
   } else {
     await fetchCollectionData()
   }
-  // 重置篩選條件 (預設為點選 all 標籤)
-  setFilter('all')
+  currentView.value = viewName
+  setFilter(filter.value)
   hideLoading()
 }
 
@@ -61,10 +62,13 @@ const toggleDropdown = () => {
 // 處理排序
 const handleSort = (orderName: string) => {
   if (orderName === 'newest') {
+    // filterOrders.value = memberOrders.sort(
+    //   (a: any, b: any) => new Date(b.createAt) - new Date(a.createAt)
+    // )
   } else if (orderName === 'experience') {
-    data.value = rawData.sort((a: any, b: any) => a.courseTerm - b.courseTerm)
+    filterOrders.value = memberOrders.sort((a: any, b: any) => a.courseTerm - b.courseTerm)
   } else if (orderName === 'training') {
-    data.value = data.value.sort((a: any, b: any) => b.courseTerm - a.courseTerm)
+    filterOrders.value = filterOrders.value.sort((a: any, b: any) => b.courseTerm - a.courseTerm)
   }
 }
 
@@ -81,50 +85,63 @@ const setFilter: any = (filterName: string) => {
 
 const handleCollectionFilter = (filterName: string) => {
   if (filterName === 'experience') {
-    data.value = rawData.value.filter((item: any) => item.courseTerm === 0)
+    filterCollection.value = memberCollections.value.filter((item: any) => item.courseTerm === 0)
     selectedFilterName.value = '體驗課程'
+    console.log('體驗課程', filterCollection.value)
   } else if (filterName === 'training') {
-    data.value = rawData.value.filter((item: any) => item.courseTerm === 1)
+    filterCollection.value = memberCollections.value.filter((item: any) => item.courseTerm === 1)
     selectedFilterName.value = '培訓課程'
+    console.log('培訓課程', filterCollection.value)
   } else {
-    data.value = rawData.value
+    filterCollection.value = memberCollections.value
     selectedFilterName.value = '所有課程'
   }
-  selectedFilterCount.value = data.value.length
+  // 選中的條件數量 (下拉選單用)
+  selectedFilterCount.value = filterCollection.value.length
 }
 
 const handleOrderFilter = (filterName: string) => {
   if (filterName === 'paid') {
-    data.value = rawData.value.filter((item: any) => [1, 2].includes(item.paidStatus))
+    filterOrders.value = memberOrders.value.filter((item: any) => [1, 2].includes(item.paidStatus))
     selectedFilterName.value = '報名成功'
   } else if (filterName === 'unpaid') {
-    data.value = rawData.value.filter((item: any) => item.paidStatus === 0)
+    filterOrders.value = memberOrders.value.filter((item: any) => item.paidStatus === 0)
     selectedFilterName.value = '待付款'
   } else if (filterName === 'completed') {
-    data.value = rawData.value.filter((item: any) => item.paidStatus === 3)
+    filterOrders.value = memberOrders.value.filter((item: any) => item.paidStatus === 3)
     selectedFilterName.value = '已完課'
   } else if (filterName === 'cancel') {
-    data.value = rawData.value.filter((item: any) => [4, 5, 6, 7].includes(item.paidStatus))
+    filterOrders.value = memberOrders.value.filter((item: any) =>
+      [4, 5, 6, 7].includes(item.paidStatus)
+    )
     selectedFilterName.value = '課程取消'
   } else {
-    data.value = rawData.value
+    filterOrders.value = memberOrders.value
     selectedFilterName.value = '所有課程'
   }
-  selectedFilterCount.value = data.value.length
+  // 選中的條件數量 (下拉選單用)
+  selectedFilterCount.value = filterOrders.value.length
+}
+
+const handleRefreshCollections = () => {
+  fetchMember()
+  renderCurrentView('collections')
+  setFilter(filter.value)
 }
 
 // 取得訂單資料
 const fetchOrdersData = async () => {
   try {
     const res = await memberStore.getMemberOrders()
-    const data = res.data.data.map((item: any) => {
+    const result = res.data
+    const orderData = result.data.map((item: any) => {
       item.courseImage = item.courseId?.courseImage?.[0] || ''
       item.courseId = item.courseId?._id || ''
       return item
     })
-    console.log(data)
-    rawData.value = data
-    data.value = rawData.value
+    memberStore.orders = orderData
+    memberOrders.value = memberStore.orders
+    filterOrders.value = memberStore.orders
     if (res.data.data.length > 0) {
       hasData.value = true
     } else {
@@ -139,9 +156,11 @@ const fetchOrdersData = async () => {
 const fetchCollectionData = async () => {
   try {
     const res = await memberStore.getMemberCollection()
-    rawData.value = res.data.data
-    data.value = rawData.value
-    if (res.data.data.length > 0) {
+    const result = res.data
+    memberStore.collections = result.data
+    memberCollections.value = memberStore.collections
+    filterCollection.value = memberStore.collections
+    if (result.data.length > 0) {
       hasData.value = true
     } else {
       hasData.value = false
@@ -151,9 +170,27 @@ const fetchCollectionData = async () => {
   }
 }
 
+const tab = watch(
+  () => route.query.tab,
+  (tab) => {
+    if (tab === 'collections') {
+      console.log('collections')
+      renderCurrentView('collections')
+    } else {
+      console.log('orders')
+      renderCurrentView('orders')
+    }
+  }
+)
+
 onMounted(() => {
   fetchMember()
-  setCurrentView('orders')
+  if (route.query.tab === 'collections') {
+    renderCurrentView('collections')
+  } else {
+    renderCurrentView('orders')
+  }
+  setFilter('all')
 })
 </script>
 
@@ -210,7 +247,7 @@ onMounted(() => {
         <button
           class="flex items-center rounded-t-lg px-5 py-2 text-base md:text-xl"
           :class="{ 'bg-secondary text-white': currentView === 'orders' }"
-          @click="setCurrentView('orders')"
+          @click="renderCurrentView('orders')"
         >
           <Icon name="ph:receipt" class="mr-1 text-xl" />
           訂單紀錄
@@ -218,7 +255,7 @@ onMounted(() => {
         <button
           class="flex items-center rounded-t-lg px-5 py-2 text-base md:text-xl"
           :class="{ 'bg-secondary text-white': currentView === 'collections' }"
-          @click="setCurrentView('collections')"
+          @click="renderCurrentView('collections')"
         >
           <Icon name="ph:star" class="mr-1 text-xl" />
           我的收藏
@@ -235,14 +272,14 @@ onMounted(() => {
             :class="{ 'bg-orange3 ': filter === 'all', 'bg-white': filter !== 'all' }"
             @click="setFilter('all')"
           >
-            所有課程({{ rawData.length || 0 }})
+            所有課程({{ memberOrders.length || 0 }})
           </button>
           <button
             class="rounded border-[1px] border-solid border-primary px-5 py-2"
             :class="{ 'bg-orange3 ': filter === 'unpaid', 'bg-white': filter !== 'unpaid' }"
             @click="setFilter('unpaid')"
           >
-            待付款({{ rawData.filter((item: any) => item.paidStatus === 0).length || 0 }})
+            待付款({{ memberOrders.filter((item: any) => item.paidStatus === 0).length || 0 }})
           </button>
           <button
             class="rounded border-[1px] border-solid border-primary px-5 py-2"
@@ -250,7 +287,7 @@ onMounted(() => {
             @click="setFilter('paid')"
           >
             報名成功({{
-              rawData.filter((item: any) => [1, 2].includes(item.paidStatus)).length || 0
+              memberOrders.filter((item: any) => [1, 2].includes(item.paidStatus)).length || 0
             }})
           </button>
           <button
@@ -258,7 +295,7 @@ onMounted(() => {
             :class="{ 'bg-orange3 ': filter === 'completed', 'bg-white': filter !== 'completed' }"
             @click="setFilter('completed')"
           >
-            已完課({{ rawData.filter((item: any) => item.paidStatus === 3).length || 0 }})
+            已完課({{ memberOrders.filter((item: any) => item.paidStatus === 3).length || 0 }})
           </button>
           <button
             class="rounded border-[1px] border-solid border-primary px-5 py-2"
@@ -266,7 +303,8 @@ onMounted(() => {
             @click="setFilter('cancel')"
           >
             課程取消({{
-              rawData.filter((item: any) => [4, 5, 6, 7].includes(item.paidStatus)).length || 0
+              memberOrders.filter((item: any) => [4, 5, 6, 7].includes(item.paidStatus)).length ||
+              0
             }})
           </button>
         </div>
@@ -292,14 +330,14 @@ onMounted(() => {
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('all')"
             >
-              所有課程({{ rawData.length || 0 }})
+              所有課程({{ memberOrders.length || 0 }})
             </div>
             <div
               value="unpaid"
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('unpaid')"
             >
-              待付款({{ rawData.filter((item: any) => item.paidStatus === 0).length || 0 }})
+              待付款({{ memberOrders.filter((item: any) => item.paidStatus === 0).length || 0 }})
             </div>
             <div
               value="paid"
@@ -307,7 +345,7 @@ onMounted(() => {
               @click="setFilter('paid')"
             >
               報名成功({{
-                rawData.filter((item: any) => [1, 2].includes(item.paidStatus)).length || 0
+                memberOrders.filter((item: any) => [1, 2].includes(item.paidStatus)).length || 0
               }})
             </div>
             <div
@@ -315,7 +353,7 @@ onMounted(() => {
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('completed')"
             >
-              已完課({{ rawData.filter((item: any) => item.paidStatus === 3).length || 0 }})
+              已完課({{ memberOrders.filter((item: any) => item.paidStatus === 3).length || 0 }})
             </div>
             <div
               value="cancel"
@@ -323,7 +361,8 @@ onMounted(() => {
               @click="setFilter('cancel')"
             >
               課程取消({{
-                rawData.filter((item: any) => [4, 5, 6, 7].includes(item.paidStatus)).length || 0
+                memberOrders.filter((item: any) => [4, 5, 6, 7].includes(item.paidStatus)).length ||
+                0
               }})
             </div>
           </div>
@@ -369,21 +408,25 @@ onMounted(() => {
             :class="{ 'bg-orange3 ': filter === 'all', 'bg-white': filter !== 'all' }"
             @click="setFilter('all')"
           >
-            {{ selectedFilterName }}({{ rawData.length || 0 }})
+            所有課程({{ memberCollections.length || 0 }})
           </button>
           <button
             class="rounded border-[1px] border-solid border-primary px-5 py-2"
             :class="{ 'bg-orange3 ': filter === 'experience', 'bg-white': filter !== 'experience' }"
             @click="setFilter('experience')"
           >
-            體驗課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
+            體驗課程({{
+              memberCollections.filter((item: any) => item.courseTerm === 0).length || 0
+            }})
           </button>
           <button
             class="rounded border-[1px] border-solid border-primary px-5 py-2"
             :class="{ 'bg-orange3 ': filter === 'training', 'bg-white': filter !== 'training' }"
             @click="setFilter('training')"
           >
-            培訓課程({{ rawData.filter((item: any) => item.courseTerm === 1).length || 0 }})
+            培訓課程({{
+              memberCollections.filter((item: any) => item.courseTerm === 1).length || 0
+            }})
           </button>
         </div>
 
@@ -408,21 +451,25 @@ onMounted(() => {
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('all')"
             >
-              所有課程({{ rawData.length || 0 }})
+              所有課程({{ memberCollections.length || 0 }})
             </div>
             <div
               value="unpaid"
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('experience')"
             >
-              體驗課程({{ rawData.filter((item: any) => item.courseTerm === 0).length || 0 }})
+              體驗課程({{
+                memberCollections.filter((item: any) => item.courseTerm === 0).length || 0
+              }})
             </div>
             <div
               value="unpaid"
               class="px-2 py-1 leading-6 tracking-[0.5px] hover:bg-secondary hover:text-white"
               @click="setFilter('training')"
             >
-              培訓課程({{ rawData.filter((item: any) => item.courseTerm === 1).length || 0 }})
+              培訓課程({{
+                memberCollections.filter((item: any) => item.courseTerm === 1).length || 0
+              }})
             </div>
           </div>
         </div>
@@ -432,16 +479,22 @@ onMounted(() => {
         class="grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
         v-if="hasData && currentView === 'collections'"
       >
-        <li v-for="item in data" :key="item._id">
-          <component :is="content[currentView]" :key="currentView" :collection="item"></component>
+        <li v-for="item in filterCollection" :key="item._id">
+          <component
+            :is="content[currentView]"
+            :key="currentView"
+            :collection="item"
+            @refecthCollections="handleRefreshCollections"
+          ></component>
         </li>
       </ul>
 
       <ul class="space-y-3" v-if="hasData && currentView === 'orders'">
-        <li v-for="item in data" :key="item._id">
+        <li v-for="item in filterOrders" :key="item._id">
           <component :is="content[currentView]" :key="currentView" :order="item"></component>
         </li>
       </ul>
+
       <!-- No Data -->
       <div class="" v-if="!hasData">
         <div class="mx-auto max-w-[600px] p-8 md:p-14">
@@ -457,22 +510,12 @@ onMounted(() => {
 </template>
 
 <style>
-/* .custom-select {
-  position: relative;
-  background-color: white;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
 }
-
-.custom-select-input {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 16 16'%3E%3Cpath fill='%23AAAAAA' d='m4.427 7.427l3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427'/%3E%3C/svg%3E")
-    no-repeat right center;
-  background-size: 1em;
-  background-origin: content-box;
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
-
-.custom-select-input::-ms-expand {
-  display: none;
-} */
 </style>

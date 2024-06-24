@@ -16,6 +16,11 @@ export const useCourseStore = defineStore('course', {
   getters: {},
   actions: {
     // 取得特定課程
+    async apiGetCourse(courseId: string) {
+      return await axios.get(`${apiUrl}/courses/${courseId}`)
+    },
+
+    // 取得特定課程
     async apiGetOneCourse(data: Query) {
       return await axios.get(
         `${apiUrl}/courses?courseTerm=${data.courseTerm}&pageSize=${data.pageSize}`
