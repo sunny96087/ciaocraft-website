@@ -20,14 +20,6 @@ const toCiaoLogin = (): void => {
     </div>
     <span class="self-center">Enjoy Your Learning !</span>
     <div class="mt-6 flex flex-col items-center space-y-3">
-      <!-- <button
-        type="button"
-        class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"
-        @click="googleLogin()"
-      >
-        <Icon name="basil:google-solid" class="mr-5" />
-        <span>使用 Google 登入</span>
-      </button> -->
       <a
         :href="googleUrl"
         class="btn transition duration-300 hover:border-dark6 hover:bg-dark6 hover:text-white"

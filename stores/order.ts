@@ -12,7 +12,6 @@ export const useOrderStore = defineStore({
   actions: {
     // 取得會員單筆訂單
     async getMemberOrderByOrderId(orderId: string) {
-      console.log(`${apiUrl}/orders/${orderId}`)
       return await axios.get(`${apiUrl}/orders/${orderId}`, {
         headers: {
           token: localStorage.getItem('token')
@@ -21,8 +20,16 @@ export const useOrderStore = defineStore({
     },
 
     async createOrder(data: JsonObject) {
-      console.log(`${apiUrl}/orders`)
       return await axios.post(`${apiUrl}/orders`, data, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+
+    // 更新付費後五碼
+    async updateLastFiveDigit(orderId: string, data: JsonObject) {
+      return await axios.patch(`${apiUrl}/orders/${orderId}`, data, {
         headers: {
           token: localStorage.getItem('token')
         }

@@ -16,7 +16,7 @@ const toggleMenu = (): void => {
 }
 
 // 控制訊息 icon 是否有新訊息
-const hasNewMessage = ref<boolean>(true)
+const hasNewMessage = ref<boolean>(false)
 
 // 登入/註冊 modal 控制
 const isLoginModalOpen = ref<boolean>(false)
@@ -36,17 +36,7 @@ const toMemberAndClickTab = (tab: string): void => {
   }
 }
 
-// 監控使用者登入狀態
-const loginState = authStore.isLogin
-const isLogin = ref<boolean>(loginState)
-
-watch(
-  () => authStore.isLogin,
-  (v) => {
-    isLogin.value = v
-    console.log('header isLogin', isLogin.value)
-  }
-)
+const isLogin = ref<boolean>()
 
 const signOut = (): void => {
   authStore.logout()
@@ -58,19 +48,26 @@ const member: any = ref({})
 const fetchMember = async () => {
   try {
     const res = await memberStore.getMember()
-    member.value = res.data.data
-    console.log(res.data.data)
+    const result = res.data
+    memberStore.member = result.data
+    member.value = memberStore.member
+    // member.value = result.data
+    // console.log('取得登入會員資料', res.data.data)
   } catch (err) {
-    // 暫時註解，因為會一直跳轉到首頁
-    console.log(err)
-    // router.push('/')
+    console.log('取得登入會員資料失敗', err)
+    router.push('/')
   }
 }
 
-onMounted(() => {
-  authStore.checkLogin()
-  if (isLogin) {
-    fetchMember()
+onMounted(async () => {
+  try {
+    await authStore.checkLogin()
+    isLogin.value = authStore.isLogin
+    if (authStore.isLogin) {
+      fetchMember()
+    }
+  } catch (err) {
+    console.log('header checkLogin err', err)
   }
 })
 </script>
@@ -153,80 +150,86 @@ onMounted(() => {
             </button>
           </li>
 
-          <!-- 桌面板。漢堡選單 (點擊頭像) -->
-          <div
-            class="absolute right-0 top-24 z-50 hidden rounded-lg bg-white p-3 shadow-2xl lg:block"
-            v-if="isMenuOpen"
-          >
-            <div class="space-y-2 border-b border-solid border-black pb-3">
-              <div class="sapce-x-3 flex items-center p-2">
-                <Icon name="ph:user" class="mr-3 text-lg" />
-                <p>{{ member.nickname }}</p>
+          <transition name="hamburger">
+            <!-- 桌面板。漢堡選單 (點擊頭像) -->
+            <div
+              class="absolute right-0 top-24 z-50 hidden rounded-lg bg-white p-3 shadow-2xl lg:block"
+              v-if="isMenuOpen"
+            >
+              <div class="space-y-2 border-b border-solid border-black pb-3">
+                <div class="sapce-x-3 flex items-center p-2">
+                  <Icon name="ph:user" class="mr-3 text-lg" />
+                  <p>{{ member.nickname }}</p>
+                </div>
+                <div class="sapce-x-3 flex items-center p-2">
+                  <Icon name="ph:currency-circle-dollar" class="mr-3 text-lg text-primary" />
+                  <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">
+                    0
+                  </p>
+                </div>
+                <div class="flex items-center">
+                  <Icon name="ph:info" class="mr-1 text-lg" />
+                  <a href="#" class="block text-xs leading-[20px] text-secondary">
+                    如何累積點數？
+                  </a>
+                </div>
               </div>
-              <div class="sapce-x-3 flex items-center p-2">
-                <Icon name="ph:currency-circle-dollar" class="mr-3 text-lg text-primary" />
-                <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">0</p>
-              </div>
-              <div class="flex items-center">
-                <Icon name="ph:info" class="mr-1 text-lg" />
-                <a href="#" class="block text-xs leading-[20px] text-secondary"> 如何累積點數？ </a>
-              </div>
+              <ul class="w-[216px] py-3">
+                <li class="relative flex items-center space-x-2 py-2 pl-5">
+                  <NuxtLink
+                    to="/message"
+                    class="flex items-center hover:text-primary-light"
+                    @click="isMenuOpen = false"
+                  >
+                    <Icon name="ph:chats" class="mr-2.5 text-lg" />我的訊息
+                  </NuxtLink>
+                  <span
+                    class="absolute left-0 h-1.5 w-1.5 rounded-full bg-danger"
+                    v-if="hasNewMessage"
+                  ></span>
+                </li>
+                <li>
+                  <NuxtLink
+                    :to="{ name: 'index-index-member', query: { tab: 'orders' } }"
+                    class="flex items-center py-2 pl-5 hover:text-primary-light"
+                    @click="isMenuOpen = false"
+                  >
+                    <Icon name="ph:receipt" class="mr-2.5 text-lg" />
+                    訂單紀錄
+                  </NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink
+                    :to="{ name: 'index-index-member', query: { tab: 'collections' } }"
+                    class="flex items-center py-2 pl-5 hover:text-primary-light"
+                    @click="isMenuOpen = false"
+                  >
+                    <Icon name="ph:star" class="mr-2.5 text-lg" />
+                    我的收藏
+                  </NuxtLink>
+                </li>
+                <li>
+                  <NuxtLink
+                    to="/member"
+                    class="flex items-center py-2 pl-5 hover:text-primary-light"
+                    @click="isMenuOpen = false"
+                  >
+                    <Icon name="ph:key" class="mr-2.5 text-lg" />
+                    會員管理
+                  </NuxtLink>
+                </li>
+                <li>
+                  <button
+                    class="flex items-center py-2 pl-5 hover:text-primary-light"
+                    @click="signOut"
+                  >
+                    <Icon name="ph:sign-out" class="mr-2.5 text-lg" />
+                    登出
+                  </button>
+                </li>
+              </ul>
             </div>
-            <ul class="w-[216px] py-3">
-              <li class="relative flex items-center space-x-2 py-2 pl-5">
-                <NuxtLink
-                  to="/message"
-                  class="flex items-center hover:text-primary-light"
-                  @click="isMenuOpen = false"
-                >
-                  <Icon name="ph:chats" class="mr-2.5 text-lg" />我的訊息
-                </NuxtLink>
-                <span
-                  class="absolute left-0 h-1.5 w-1.5 rounded-full bg-danger"
-                  v-if="hasNewMessage"
-                ></span>
-              </li>
-              <li>
-                <NuxtLink
-                  :to="{ name: 'index-index-member', query: { tab: 'orders' } }"
-                  class="flex items-center py-2 pl-5 hover:text-primary-light"
-                  @click="isMenuOpen = false"
-                >
-                  <Icon name="ph:receipt" class="mr-2.5 text-lg" />
-                  訂單紀錄
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink
-                  :to="{ name: 'index-index-member', query: { tab: 'collections' } }"
-                  class="flex items-center py-2 pl-5 hover:text-primary-light"
-                  @click="isMenuOpen = false"
-                >
-                  <Icon name="ph:star-bold" class="mr-2.5 text-lg" />
-                  我的收藏
-                </NuxtLink>
-              </li>
-              <li>
-                <NuxtLink
-                  to="/member"
-                  class="flex items-center py-2 pl-5 hover:text-primary-light"
-                  @click="isMenuOpen = false"
-                >
-                  <Icon name="ph:key" class="mr-2.5 text-lg" />
-                  會員管理
-                </NuxtLink>
-              </li>
-              <li>
-                <button
-                  class="flex items-center py-2 pl-5 hover:text-primary-light"
-                  @click="signOut"
-                >
-                  <Icon name="ph:sign-out" class="mr-2.5 text-lg" />
-                  登出
-                </button>
-              </li>
-            </ul>
-          </div>
+          </transition>
         </ul>
 
         <!-- START 右側選單 - 手機板 -->
@@ -334,7 +337,7 @@ onMounted(() => {
               class="flex items-center hover:text-primary-light"
               @click="isMenuOpen = false"
             >
-              <Icon name="ph:star-bold" class="mr-2.5 text-lg" />
+              <Icon name="ph:star" class="mr-2.5 text-lg" />
               我的收藏
             </NuxtLink>
           </li>
@@ -392,6 +395,31 @@ onMounted(() => {
 }
 
 .modal-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* modal transition 動畫設置  */
+.hamburger-enter-active,
+.hamburger-leave-active {
+  transition: all 0.5s ease;
+}
+.hamburger-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.hamburger-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hamburger-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hamburger-leave-to {
   opacity: 0;
   transform: translateY(-20px);
 }

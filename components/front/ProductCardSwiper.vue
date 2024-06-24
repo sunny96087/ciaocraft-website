@@ -8,16 +8,13 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 const modules = [Navigation]
 
 // 串接 API
-import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
 const memberStore = useMemberStore()
 const authStore = useAuthStore()
-const isLogin = ref(authStore.isLogin)
 
 const experienceCourses: any = ref({})
 const trainingCourses: any = ref({})
 const allCourseInfo: any = ref({})
-const memberCollections = ref([])
 
 // 定義接收的 props
 const props = defineProps({
@@ -43,11 +40,9 @@ async function getCourse() {
       res = await courseStore.apiGetCourses({ query })
     }
     const result = res.data
-    console.log(result)
-
     request(result)
   } catch (e) {
-    console.log(e)
+    showToast('發生錯誤，請聯繫客服人員')
   }
 }
 
@@ -55,46 +50,80 @@ function request(result: { statusCode: number; data: any }) {
   if (result.statusCode === 200) {
     if (props.courseTerm === '0') {
       experienceCourses.value = result.data
-      // console.log(`artCourseInfo = ${JSON.stringify(artCourseInfo.value)}`)
     } else if (props.courseTerm === '1') {
       trainingCourses.value = result.data
-      // console.log(`handCourseInfo = ${JSON.stringify(handCourseInfo.value)}`)
     } else {
       allCourseInfo.value = result.data
-      // console.log(`allCourseInfo = ${JSON.stringify(allCourseInfo.value)}`)
     }
   } else {
+    showToast('發生錯誤，請聯繫客服人員')
     console.log('取得課程資料失敗')
   }
 }
 
 // 取得收藏資料
-const fetchCollectionData = async () => {
+let memberCollection: any = computed(() => memberStore.collections)
+const fetchMemberCollection = async () => {
   try {
     const res = await memberStore.getMemberCollection()
     const result = res.data
-    memberCollections.value = result.data
-    console.log(result)
-  } catch (err) {}
+    memberStore.collections = result.data
+    memberCollection.value = memberStore.collections
+  } catch (err) {
+    showToast('發生錯誤，請聯繫客服人員')
+  }
 }
 
 const isCollected = (id: string): boolean => {
-  const isCollected = memberCollections.value.some((item: any) => item.courseId === id)
+  const isCollected = memberCollection.value.some((item: any) => item.courseId === id)
   return isCollected
 }
 
 // 加入收藏
-const addCollection = (courseId: string) => {
-  console.log('addCollection' + courseId)
-}
-// 刪除
-const removeCollection = (courseId: string) => {
-  console.log('removeCollection' + courseId)
+const addCollection = async (courseId: string) => {
+  try {
+    if (authStore.isLogin) {
+      let postData = {
+        courseId: courseId
+      }
+      const res: any = await memberStore.addCollection(postData)
+      const result = res.data
+      if (result.statusCode === 200) {
+        memberStore.collections.push(result.data)
+        showToast('課程已收藏')
+      } else {
+        showToast('收藏失敗，請聯繫客服人員')
+      }
+    }
+  } catch (e) {
+    showToast('收藏失敗，請聯繫客服人員')
+  }
 }
 
-onMounted(() => {
+// 刪除收藏
+const removeCollection = async (courseId: string) => {
+  try {
+    let postData = {
+      courseId: courseId
+    }
+    const res = await memberStore.removeCollection(postData)
+    const result = res.data
+    if (result.statusCode === 200) {
+      memberStore.collections = memberStore.collections.filter(
+        (item: any) => item.courseId !== courseId
+      )
+      showToast('取消收藏')
+    } else {
+      showToast('取消收藏失敗，請聯繫客服人員')
+    }
+  } catch (e) {
+    showToast('取消收藏失敗，請聯繫客服人員')
+  }
+}
+
+onMounted(async () => {
   getCourse()
-  fetchCollectionData()
+  await fetchMemberCollection()
 })
 </script>
 
@@ -133,26 +162,28 @@ onMounted(() => {
                 loading="lazy"
               />
             </div>
-            <button
-              class="absolute right-0 top-0 block p-3"
-              @click.stop.prevent="addCollection(item._id)"
-              v-if="isCollected(item._id) == false"
-            >
-              <Icon
-                name="ph:star"
-                class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
-              />
-            </button>
-            <button
-              class="absolute right-0 top-0 block p-3"
-              @click.stop.prevent="removeCollection(item._id)"
-              v-else
-            >
-              <Icon
-                name="ph:star-fill"
-                class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
-              />
-            </button>
+            <transition name="fade">
+              <button
+                class="absolute right-0 top-0 block p-3"
+                @click.stop.prevent="addCollection(item._id)"
+                v-if="isCollected(item._id) == false"
+              >
+                <Icon
+                  name="ph:star"
+                  class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+                />
+              </button>
+              <button
+                class="absolute right-0 top-0 block p-3"
+                @click.stop.prevent="removeCollection(item._id)"
+                v-else
+              >
+                <Icon
+                  name="ph:star-fill"
+                  class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+                />
+              </button>
+            </transition>
           </div>
           <div class="flex space-x-2">
             <div
@@ -196,18 +227,28 @@ onMounted(() => {
                 loading="lazy"
               />
             </div>
-            <button class="absolute right-0 top-0 block p-3">
-              <Icon
-                name="ph:star"
-                class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+            <transition name="fade">
+              <button
+                class="absolute right-0 top-0 block p-3"
+                @click.stop.prevent="addCollection(item._id)"
                 v-if="isCollected(item._id) == false"
-              />
-              <Icon
-                name="ph:star-fill"
-                class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+              >
+                <Icon
+                  name="ph:star"
+                  class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+                />
+              </button>
+              <button
+                class="absolute right-0 top-0 block p-3"
+                @click.stop.prevent="removeCollection(item._id)"
                 v-else
-              />
-            </button>
+              >
+                <Icon
+                  name="ph:star-fill"
+                  class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+                />
+              </button>
+            </transition>
           </div>
           <div class="flex space-x-2">
             <div
@@ -251,18 +292,28 @@ onMounted(() => {
                 loading="lazy"
               />
             </div>
-            <button class="absolute right-0 top-0 block p-3">
-              <Icon
-                name="ph:star"
-                class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+            <transition name="fade">
+              <button
+                class="absolute right-0 top-0 block p-3"
+                @click.stop.prevent="addCollection(item._id)"
                 v-if="isCollected(item._id) == false"
-              />
-              <Icon
-                name="ph:star-fill"
-                class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+              >
+                <Icon
+                  name="ph:star"
+                  class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+                />
+              </button>
+              <button
+                class="absolute right-0 top-0 block p-3"
+                @click.stop.prevent="removeCollection(item._id)"
                 v-else
-              />
-            </button>
+              >
+                <Icon
+                  name="ph:star-fill"
+                  class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+                />
+              </button>
+            </transition>
           </div>
           <div class="flex space-x-2">
             <div
@@ -332,4 +383,13 @@ onMounted(() => {
   width: 32px;
   height: 32px;
 } */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>
