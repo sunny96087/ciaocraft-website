@@ -132,6 +132,9 @@ onMounted(async () => {
     :navigation="true"
     :space-between="30"
     :breakpoints="{
+      '375': {
+        slidesPerView: 2
+      },
       '576': {
         slidesPerView: 2
       },
