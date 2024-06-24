@@ -16,6 +16,8 @@ const props = defineProps<{
 
 const order = props.order
 
+const defaultImage: any = ref('~assets/images/default-avatar.png')
+
 const getOrderStatusName = (status: number) => {
   switch (status) {
     case 0:
@@ -88,7 +90,7 @@ const getPaidStatusTagColor: any = (status: number) => {
         <div class="line-clamp-1 text-sm font-medium">{{ order.brandName }}</div>
         <div class="space-x-3 text-sm leading-[22px]">
           <span class="font-medium">總計</span>
-          <span>NT$ {{ order.totalPrice }}</span>
+          <span>NT$ {{ formatCurrency(order.totalPrice) }}</span>
         </div>
         <div class="space-x-3 text-sm leading-[22px]">
           <span class="font-medium">訂單編號 </span>

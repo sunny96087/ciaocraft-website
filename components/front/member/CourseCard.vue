@@ -14,11 +14,26 @@ const props = defineProps<{
   }
 }>()
 
+const defaultImage: any = ref('assets/images/front/member/default-image.jpg')
+
+const emit = defineEmits(['refecthCollections'])
+const memberStore = useMemberStore()
 const collection = props.collection
 
-// 刪除
-const removeCollection = (collectionId: string) => {
-  console.log('removeCollection' + collectionId)
+// 刪除收藏
+const removeCollection = (courseId: string) => {
+  let postData = {
+    courseId: courseId
+  }
+  memberStore
+    .removeCollection(postData)
+    .then(() => {
+      showToast('取消收藏')
+      emit('refecthCollections')
+    })
+    .catch((e) => {
+      showToast('取消收藏失敗，請聯繫客服人員')
+    })
 }
 </script>
 <template>
@@ -31,14 +46,14 @@ const removeCollection = (collectionId: string) => {
       <div class="relative mx-auto mb-2">
         <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
           <img
-            :src="collection.courseImage[0]"
+            :src="collection.courseImage[0] || defaultImage"
             alt="course-img"
             class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
           />
         </div>
         <button
           class="absolute right-0 top-0 block p-3"
-          @click.stop.prevent="removeCollection(collection._id)"
+          @click.stop.prevent="removeCollection(collection.courseId)"
         >
           <Icon
             name="ph:x"

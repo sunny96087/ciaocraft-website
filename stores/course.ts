@@ -53,6 +53,11 @@ export const useCourseStore = defineStore('course', {
   }),
   getters: {},
   actions: {
+    // 取得特定課程
+    async apiGetCourse(courseId: string) {
+      return await axios.get(`${apiUrl}/courses/${courseId}`)
+    },
+
     // 取得所有課程
     async apiGetCourses(data: CourseQuery) {
       // console.log(data.countCourseQuery)

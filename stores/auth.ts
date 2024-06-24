@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
     name: null as any,
     token: null as any,
     photo: null as any,
-    isLogin: false as any
+    isLogin: null as any
   }),
   getters: {},
   actions: {
@@ -19,8 +19,8 @@ export const useAuthStore = defineStore('auth', {
     },
     checkLogin() {
       if (process.client) {
-        this.memberId = localStorage.getItem('memberId')
         this.token = localStorage.getItem('token')
+        this.memberId = localStorage.getItem('memberId')
         this.photo = localStorage.getItem('photo')
         if (this.token) {
           this.isLogin = true
@@ -31,7 +31,6 @@ export const useAuthStore = defineStore('auth', {
       this.token = user.token
       this.memberId = user.id
       this.photo = user.photo
-      this.isLogin = true
       localStorage.setItem('token', this.token)
       localStorage.setItem('memberId', this.memberId)
       localStorage.setItem('photo', this.photo)
