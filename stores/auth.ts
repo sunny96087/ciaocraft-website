@@ -4,8 +4,8 @@ import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    // apiUrl: 'https://ciaocraft-api.onrender.com',
-    apiUrl: 'http://127.0.0.1:3666',
+    apiUrl: 'https://ciaocraft-api.onrender.com',
+    // apiUrl: 'http://127.0.0.1:3666',
     memberId: null as any,
     name: null as any,
     token: null as any,
