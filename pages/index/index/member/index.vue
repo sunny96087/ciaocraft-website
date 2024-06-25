@@ -31,8 +31,8 @@ const selectedFilterCount = ref(0) // 選中的條件數量 (下拉選單用)
 
 let memberCollections: any = computed(() => memberStore.collections)
 let memberOrders: any = computed(() => memberStore.orders)
-let filterCollection = ref([])
-let filterOrders = ref([])
+let filterCollection: any = ref([])
+let filterOrders: any = ref([])
 const hasData = ref(true)
 
 // 動態切換渲染元件
@@ -41,16 +41,19 @@ const content: any = {
   orders: resolveComponent('FrontMemberOrderCard')
 }
 
+const isCardLoading = ref(false)
 const renderCurrentView = async (viewName: string) => {
-  showLoading()
+  // showLoading()
+  currentView.value = viewName
+  isCardLoading.value = true
   if (viewName === 'orders') {
     await fetchOrdersData()
   } else {
     await fetchCollectionData()
   }
-  currentView.value = viewName
   setFilter(filter.value)
-  hideLoading()
+  isCardLoading.value = false
+  // hideLoading()
 }
 
 // 排序下拉選單
@@ -95,11 +98,9 @@ const handleCollectionFilter = (filterName: string) => {
   if (filterName === 'experience') {
     filterCollection.value = memberCollections.value.filter((item: any) => item.courseTerm === 0)
     selectedFilterName.value = '體驗課程'
-    // console.log('體驗課程', filterCollection.value)
   } else if (filterName === 'training') {
     filterCollection.value = memberCollections.value.filter((item: any) => item.courseTerm === 1)
     selectedFilterName.value = '培訓課程'
-    // console.log('培訓課程', filterCollection.value)
   } else {
     filterCollection.value = memberCollections.value
     selectedFilterName.value = '所有課程'
@@ -316,10 +317,6 @@ onMounted(() => {
           </button>
         </div>
         <div class="relative w-40 cursor-pointer lg:hidden" v-if="currentView === 'orders'">
-          <!-- <div
-            name="paidStatus"
-            class="rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
-          ></div> -->
           <div
             value="all"
             class="flex items-center justify-between rounded border-[1px] border-solid border-primary bg-white px-4 py-2"
@@ -329,7 +326,7 @@ onMounted(() => {
             <Icon name="ph:caret-down-fill" class="text-lg text-dark1" />
           </div>
           <div
-            class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center"
+            class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center shadow-lg"
             v-if="showDropdown"
           >
             <div
@@ -382,7 +379,7 @@ onMounted(() => {
             <Icon name="ph:arrows-down-up" class="mr-1 text-2xl text-dark1" />
           </button>
           <ul
-            class="absolute left-0 right-0 z-10 hidden max-h-48 cursor-pointer rounded border-[1px] border-solid border-black bg-white group-hover:block"
+            class="absolute left-0 right-0 z-10 hidden max-h-48 cursor-pointer rounded border-[1px] border-solid border-gray3 bg-white shadow-lg group-hover:block"
           >
             <li
               value="newest"
@@ -450,7 +447,7 @@ onMounted(() => {
             <Icon name="ph:caret-down-fill" class="text-lg text-dark1" />
           </div>
           <div
-            class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center"
+            class="absolute w-full overflow-hidden rounded border-[1px] border-solid border-gray3 bg-white text-center shadow-lg"
             v-if="showDropdown"
           >
             <div
@@ -481,10 +478,55 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <!-- Card -->
+      <!-- 訂單元件 -->
+      <ul class="space-y-3" v-if="hasData && currentView === 'orders'">
+        <li v-for="item in filterOrders" :key="item._id">
+          <component :is="content[currentView]" :key="currentView" :order="item"></component>
+        </li>
+      </ul>
+      <!-- 訂單元件 Skeleton loader -->
+      <div class="space-y-3" v-if="currentView === 'orders' && isCardLoading">
+        <div v-for="n in 5" :key="n">
+          <div class="w-full items-center rounded-lg bg-slate-100 p-4 md:flex md:justify-between">
+            <div class="mb-8 flex items-center md:m-0">
+              <div class="mr-6 h-[120px] w-[120px] animate-pulse rounded-lg bg-slate-200"></div>
+              <div class="space-y-1">
+                <div class="rounded-lg bg-slate-200 text-sm text-transparent">課程名稱</div>
+                <div class="rounded-lg bg-slate-200 text-sm text-transparent">品牌名稱</div>
+                <div class="animate-pulse space-x-1 text-sm text-transparent">
+                  <span class="rounded-lg bg-slate-200">總計</span>
+                  <span class="rounded-lg bg-slate-200">NT$ 1,000</span>
+                </div>
+                <div class="animate-pulse space-x-1 text-sm text-transparent">
+                  <span class="rounded-lg bg-slate-200">訂單編號 </span>
+                  <span class="break-all rounded-lg bg-slate-200">000000000000000000</span>
+                </div>
+                <span
+                  class="inline-block rounded-full bg-slate-200 px-2 py-1 text-sm text-transparent"
+                  >付款狀態</span
+                >
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div
+                class="block rounded bg-slate-200 py-2 text-center text-transparent transition md:px-10"
+              >
+                訂單詳情
+              </div>
+              <div
+                class="block rounded bg-slate-200 py-2 text-center text-transparent transition md:px-10"
+              >
+                訂單詳情
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 收藏元件 -->
       <ul
         class="grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
-        v-if="hasData && currentView === 'collections'"
+        v-if="hasData && currentView === 'collections' && !isCardLoading"
       >
         <li v-for="item in filterCollection" :key="item._id">
           <component
@@ -496,11 +538,37 @@ onMounted(() => {
         </li>
       </ul>
 
-      <ul class="space-y-3" v-if="hasData && currentView === 'orders'">
-        <li v-for="item in filterOrders" :key="item._id">
-          <component :is="content[currentView]" :key="currentView" :order="item"></component>
-        </li>
-      </ul>
+      <!-- 收藏元件 Skeleton loader -->
+      <div
+        class="grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
+        v-if="currentView === 'collections' && isCardLoading"
+      >
+        <div v-for="n in 5" :key="n">
+          <div class="space-y-2">
+            <div class="aspect-square animate-pulse rounded-lg">
+              <div class="h-full w-full bg-slate-200"></div>
+            </div>
+            <div class="flex space-x-2">
+              <div
+                class="animate-pulse self-start whitespace-nowrap rounded-[4px] bg-slate-200 px-2 py-0.5 text-transparent"
+              >
+                體驗
+              </div>
+              <div
+                class="w-full animate-pulse rounded-[4px] bg-slate-200 px-2 py-0.5 text-transparent"
+              >
+                課程名稱 placeholder
+              </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+              <span class="animate-pulse self-start bg-slate-200 text-transparent"
+                >品牌名稱 placeholder</span
+              >
+              <span class="animate-pulse self-start bg-slate-200 text-transparent">NT$ 0,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- No Data -->
       <div class="" v-if="!hasData">

@@ -56,14 +56,12 @@ const fetchOrder = async (orderId: string) => {
   try {
     const res = await orderStore.getMemberOrderByOrderId(orderId)
     const result = res.data
-    console.log(result)
     order.value = result.data
     vendor.value = result.data.vendorId
     course.value = result.data.courseId
     comment.value = result.data.commentId ? result.data.commentId : {}
     rating.value = result.data.commentId ? result.data.commentId.rating : 0
   } catch (err) {
-    console.log(err)
     showToast('訂單資料載入失敗，請重新整理頁面')
   }
 }

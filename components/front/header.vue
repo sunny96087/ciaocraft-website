@@ -19,9 +19,17 @@ const toggleMenu = (): void => {
 const hasNewMessage = ref<boolean>(false)
 
 // 登入/註冊 modal 控制
-const isLoginModalOpen = ref<boolean>(false)
+const isLoginModalOpen = ref(authStore.isLoginModalOpen)
+watch(
+  () => authStore.isLoginModalOpen,
+  (newValue) => {
+    isLoginModalOpen.value = newValue
+  },
+  { immediate: true } // 立即執行一次回調，以確保初始值的同步
+)
+
 const openLoginModal = (): void => {
-  isLoginModalOpen.value = !isLoginModalOpen.value
+  authStore.openLoginModal()
   isMenuOpen.value = false
 }
 
@@ -34,13 +42,6 @@ const toMemberAndClickTab = (tab: string): void => {
   } else {
     openLoginModal()
   }
-}
-
-const isLogin = ref<boolean>()
-
-const signOut = (): void => {
-  authStore.logout()
-  router.push('/')
 }
 
 // 會員資料區
@@ -57,6 +58,13 @@ const fetchMember = async () => {
     console.log('取得登入會員資料失敗', err)
     router.push('/')
   }
+}
+
+const isLogin = ref<boolean>()
+
+const signOut = (): void => {
+  authStore.logout()
+  router.push('/')
 }
 
 onMounted(async () => {
@@ -289,8 +297,8 @@ onMounted(async () => {
               <NuxtLink to="/member/profile">
                 <img
                   :src="member.photo"
-                  alt="大頭照"
-                  class="h-[60px] w-[60px] rounded-full bg-gray"
+                  alt="ciao-craft-logo"
+                  class="h-[60px] w-[60px] rounded-full bg-gray3 object-cover"
                   @click="isMenuOpen = false"
                 />
               </NuxtLink>
@@ -368,7 +376,7 @@ onMounted(async () => {
 
   <!-- 登入/註冊彈窗 -->
   <transition name="modal">
-    <FrontLoginModal v-if="isLoginModalOpen" @close="isLoginModalOpen = false"></FrontLoginModal>
+    <FrontLoginModal v-if="isLoginModalOpen" @close="openLoginModal"></FrontLoginModal>
   </transition>
 </template>
 

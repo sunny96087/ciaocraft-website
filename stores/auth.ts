@@ -10,7 +10,8 @@ export const useAuthStore = defineStore('auth', {
     name: null as any,
     token: null as any,
     photo: null as any,
-    isLogin: null as any
+    isLogin: null as any,
+    isLoginModalOpen: false as boolean
   }),
   getters: {},
   actions: {
@@ -73,6 +74,11 @@ export const useAuthStore = defineStore('auth', {
       if (process.client) {
         window.location.reload()
       }
+    },
+
+    // 開啟登入彈窗
+    openLoginModal() {
+      this.isLoginModalOpen = !this.isLoginModalOpen
     }
   }
 })

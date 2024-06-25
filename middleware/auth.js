@@ -2,15 +2,25 @@
 export default defineNuxtRouteMiddleware((to, from) => {
     const authStore = useAuthStore()
     const nuxtApp = useNuxtApp()
+    const router = useRouter()
 
-    if (process.client && nuxtApp.isHydrating && nuxtApp.payload.serverRendered) {
-        authStore.checkLogin()
-        console.log('middleware', authStore.isLogin)
-        if (authStore.isLogin) {
-            return
-        } else {
-            alert('請先登入')
-            return navigateTo('/')
-        }
+    // 在客戶端檢查是否正在 Hydrating
+    if (process.client && nuxtApp.isHydrating) {
+        return
     }
+
+    authStore.checkLogin()
+
+    if (!authStore.isLogin) {
+        return navigateTo('/')
+    }
+    // if (process.client && nuxtApp.isHydrating && nuxtApp.payload.serverRendered) {
+    //     authStore.checkLogin()
+    //     if (authStore.isLogin) {
+    //         return
+    //     } else {
+    //         return router.push('/')
+    //         // return navigateTo('/')
+    //     }
+    // }
 })

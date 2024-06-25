@@ -24,10 +24,9 @@ const fetchOrder = async () => {
     order.value = result.data
     courseId.value = result.data.courseId._id
     courseImage.value = result.data.courseId.courseImage[0]
-    console.log(courseImage.value)
     vendorId.value = result.data.vendorId._id
   } catch (err) {
-    console.log(err)
+    showToast('取得訂單失敗，請聯繫客服人員')
   }
 }
 
@@ -88,12 +87,10 @@ const handleFileUpload = async (event: any, type: string) => {
       const uploadPromise = uploadStore
         .uploadSingleImage(formData)
         .then((res: any) => {
-          console.log('res', res)
           commentImages.value.push(res.data.data.imgUrl)
         })
         .catch((err: any) => {
-          console.log(err)
-          showToastError(files[i].name + ' 上傳失敗')
+          showToast(files[i].name + ' 上傳失敗')
         })
 
       uploadPromises.push(uploadPromise)
@@ -102,7 +99,7 @@ const handleFileUpload = async (event: any, type: string) => {
     await Promise.all(uploadPromises)
     showToast('圖片上傳成功')
   } catch (err) {
-    console.log(err)
+    showToast('圖片上傳失敗')
   }
   hideLoading()
 }
@@ -110,13 +107,11 @@ const handleFileUpload = async (event: any, type: string) => {
 // 新增評論
 const createComment = async () => {
   if (rating.value === 0) {
-    console.log(rating.value)
     showToast('請選擇評分')
     return
   }
 
   if (tags.value.length === 0) {
-    console.log(tags.value)
     showToast('請選擇分享類型')
     return
   }
@@ -132,7 +127,6 @@ const createComment = async () => {
       images: commentImages.value,
       rating: rating.value
     }
-    console.log(postData)
     const res = await courseStore.addComment(postData)
     const result = res.data
     if (result.statusCode === 200) {
@@ -143,7 +137,6 @@ const createComment = async () => {
       }, 1000)
     }
   } catch (err) {
-    console.log(err)
     showToast('心得分享失敗')
     hideLoading()
   }

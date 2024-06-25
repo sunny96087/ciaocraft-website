@@ -16,6 +16,8 @@ const experienceCourses: any = ref({})
 const trainingCourses: any = ref({})
 const allCourseInfo: any = ref({})
 
+// const isLogin = ref<boolean>()
+
 // 定義接收的 props
 const props = defineProps({
   courseTerm: String
@@ -61,8 +63,17 @@ function request(result: { statusCode: number; data: any }) {
   }
 }
 
+// 監控收藏資料
+const memberCollection = ref(memberStore.collections)
+watch(
+  () => memberStore.collections,
+  (newCollections) => {
+    memberCollection.value = newCollections
+  },
+  { immediate: true }
+)
+
 // 取得收藏資料
-let memberCollection: any = computed(() => memberStore.collections)
 const fetchMemberCollection = async () => {
   try {
     const res = await memberStore.getMemberCollection()
@@ -81,6 +92,12 @@ const isCollected = (id: string): boolean => {
 
 // 加入收藏
 const addCollection = async (courseId: string) => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  }
+
+  showToast('收藏課程')
   try {
     if (authStore.isLogin) {
       let postData = {
@@ -90,7 +107,6 @@ const addCollection = async (courseId: string) => {
       const result = res.data
       if (result.statusCode === 200) {
         memberStore.collections.push(result.data)
-        showToast('課程已收藏')
       } else {
         showToast('收藏失敗，請聯繫客服人員')
       }
@@ -102,6 +118,7 @@ const addCollection = async (courseId: string) => {
 
 // 刪除收藏
 const removeCollection = async (courseId: string) => {
+  showToast('取消收藏')
   try {
     let postData = {
       courseId: courseId
@@ -112,7 +129,6 @@ const removeCollection = async (courseId: string) => {
       memberStore.collections = memberStore.collections.filter(
         (item: any) => item.courseId !== courseId
       )
-      showToast('取消收藏')
     } else {
       showToast('取消收藏失敗，請聯繫客服人員')
     }
@@ -122,8 +138,15 @@ const removeCollection = async (courseId: string) => {
 }
 
 onMounted(async () => {
-  getCourse()
-  await fetchMemberCollection()
+  try {
+    getCourse()
+    authStore.checkLogin()
+    if (authStore.isLogin) {
+      fetchMemberCollection()
+    }
+  } catch (err) {
+    console.log('header checkLogin err', err)
+  }
 })
 </script>
 
