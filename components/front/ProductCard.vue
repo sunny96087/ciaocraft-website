@@ -73,6 +73,7 @@ async function getCourse(
 
     request(result)
   } catch (e) {
+    showToast('發生錯誤，請聯繫客服人員')
     console.log(e)
   }
 }
@@ -82,6 +83,7 @@ function request(result: { statusCode: number; data: any }) {
     courseInfo.value = result.data
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
   } else {
+    showToast('發生錯誤，請聯繫客服人員')
     console.log('篩選課程失敗')
   }
 }

@@ -14,11 +14,62 @@ const courseStore = useCourseStore()
 const formattedPrice = (price: number): string => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+onMounted(async () => {
+  await fetchMemberCollection()
+  checkIfCollected(courseStore.oneCourseData[0].id)
+  console.log(isCollected.value)
+})
+
+const memberStore = useMemberStore()
+const authStore = useAuthStore()
+const isCollected = ref(false)
+
+// 取得收藏資料
+let memberCollection: any = computed(() => memberStore.collections)
+
+const fetchMemberCollection = async () => {
+  try {
+    const res = await memberStore.getMemberCollection()
+    const result = res.data
+    memberStore.collections = result.data
+    memberCollection.value = memberStore.collections
+  } catch (err) {
+    showToast('發生錯誤，請聯繫客服人員')
+  }
+}
+
+const checkIfCollected = (courseId: string) => {
+  isCollected.value = memberCollection.value.some((item: any) => item.courseId === courseId)
+}
+
+// 加入收藏
+const addCollection = async (courseId: string) => {
+  try {
+    if (authStore.isLogin) {
+      let postData = {
+        courseId: courseId
+      }
+      if (isCollected.value) {
+        const res: any = await memberStore.addCollection(postData)
+        const result = res.data
+
+        if (result.statusCode === 200) {
+          memberStore.collections.push(result.data)
+          showToast('課程已收藏')
+        } else {
+          showToast('收藏失敗，請聯繫客服人員')
+        }
+      }
+    }
+  } catch (e) {
+    showToast('收藏失敗，請聯繫客服人員')
+  }
+}
 </script>
 
 <template>
   <div class="lg:w-[45%]" v-for="(item, index) in courseStore.oneCourseData" :key="index">
-    <!-- <p class="mb-3 inline-block rounded bg-[#2B71BF] px-2 py-0.5 text-secondary text-white"> -->
     <p
       class="mb-3 inline-block rounded bg-[#2B71BF] px-2 py-0.5 text-center"
       :class="{
@@ -62,8 +113,16 @@ const formattedPrice = (price: number): string => {
         預約課程
       </button>
     </div>
-    <div class="mb-3 rounded bg-secondary hover:bg-[#2B71BF]">
-      <button class="flex w-full items-center justify-center text-lg leading-[3rem] text-white">
+    <div class="mb-3 rounded">
+      <button
+        class="flex w-full items-center justify-center text-lg leading-[3rem]"
+        @click="addCollection(courseStore.oneCourseData[0].id)"
+        :disabled="!isCollected"
+        :class="{
+          'bg-secondary text-white hover:bg-[#2B71BF]': isCollected,
+          'cursor-not-allowed bg-gray5': !isCollected
+        }"
+      >
         <Icon name="ph:star-bold" class="mr-2 text-xl" />
         收藏課程
       </button>

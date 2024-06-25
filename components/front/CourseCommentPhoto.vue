@@ -22,7 +22,7 @@ const clickMaskToCloseModal = (e: MouseEvent) => {
 <template>
   <div class="modal-bg z-40" @click.capture="clickMaskToCloseModal">
     <div class="z-50 mx-auto w-9/12 flex-col items-center justify-center rounded-lg bg-white p-2">
-      <img :src="imageUrl" alt="評論照片" class="h-auto max-w-full" />
+      <img :src="imageUrl" alt="評論照片" class="mx-auto h-auto max-w-full" />
     </div>
   </div>
 </template>

@@ -48,6 +48,7 @@ async function getOneCourse() {
     const result = res.data
     console.log(result)
     // 將資料寫入 courseStore
+    courseStore.oneCourseData[0].id = result.data._id
     courseStore.oneCourseData[0].courseTerm = result.data.courseTerm
     courseStore.oneCourseData[0].courseImage = result.data.courseImage
     courseStore.oneCourseData[0].courseName = result.data.courseName
@@ -60,6 +61,8 @@ async function getOneCourse() {
     courseStore.oneCourseData[0].courseCapacity = result.data.courseCapacity
     courseStore.oneCourseData[0].teacherId = result.data.teacherId
     courseStore.oneCourseData[0].vendorId = result.data.vendorId
+    courseStore.oneCourseData[0].vendorAvgRating = result.data.vendorAvgRating
+    courseStore.oneCourseData[0].vendorCommentsCount = result.data.vendorCommentsCount
     courseStore.oneCourseData[0].courseSuitableFor = result.data.courseSuitableFor
     courseStore.oneCourseData[0].courseSkillsLearned = result.data.courseSkillsLearned
     courseStore.oneCourseData[0].courseContent = result.data.courseContent
@@ -69,6 +72,7 @@ async function getOneCourse() {
 
     request(result)
   } catch (e) {
+    showToast('發生錯誤，請聯繫客服人員')
     console.log(e)
   } finally {
     hideLoading()
@@ -80,6 +84,7 @@ function request(result: { statusCode: number; data: any }) {
     courseInfo.value = result.data
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
   } else {
+    showToast('發生錯誤，請聯繫客服人員')
     console.log('取得單一課程失敗')
   }
 }
