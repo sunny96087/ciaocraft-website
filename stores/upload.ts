@@ -11,7 +11,6 @@ export const useUploadStore = defineStore({
   actions: {
     async uploadSingleImage(data: JsonObject) {
       try {
-        console.log(`${apiUrl}/upload/singleImage/front`)
         return await axios.post(`${apiUrl}/upload/singleImage/front`, data, {
           headers: {
             'Content-Type': 'multipart/form-data',

@@ -23,13 +23,11 @@ const updateProfile = async () => {
     .updateMember(postData)
     .then((res) => {
       hideLoading()
-      console.log(res.data)
       showToast('更新成功')
       isUpdateSuccess.value = true
     })
     .catch((err) => {
       hideLoading()
-      console.log(err)
       showToast('儲存失敗，請再試一次')
       isUpdateSuccess.value = false
     })

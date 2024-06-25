@@ -52,11 +52,9 @@ const fetchMember = async () => {
     const result = res.data
     memberStore.member = result.data
     member.value = memberStore.member
-    // member.value = result.data
-    // console.log('取得登入會員資料', res.data.data)
   } catch (err) {
+    showToast('取得登入會員資料失敗')
     console.log('取得登入會員資料失敗', err)
-    // router.push('/')
   }
 }
 
@@ -75,13 +73,13 @@ onMounted(async () => {
       fetchMember()
     }
   } catch (err) {
-    console.log('header checkLogin err', err)
+    showToast('發生錯誤')
   }
 })
 </script>
 
 <template>
-  <header class="mx-auto py-[10px] lg:max-w-screen-2xl">
+  <header class="mx-auto py-[10px] lg:max-w-screen-xl">
     <div class="flex items-center justify-between px-5">
       <!-- header 左側 logo -->
       <h1 class="px-4 py-1 lg:py-5">

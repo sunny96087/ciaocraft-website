@@ -4,7 +4,6 @@ const emit = defineEmits(['changeContent'])
 const authStore = useAuthStore()
 const googleUrl = ref(authStore.apiUrl + '/auth/google')
 const toCiaoLogin = (): void => {
-  console.log('toCiaoLogin')
   emit('changeContent', 'ciaoLogin')
 }
 </script>

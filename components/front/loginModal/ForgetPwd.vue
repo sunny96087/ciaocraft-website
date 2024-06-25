@@ -9,7 +9,6 @@ const alert = ref('')
 const emit = defineEmits(['changeContent'])
 
 const sendForgetPwdEmail = async () => {
-  console.log('sendForgetPwdEmail')
   if (email.value === '') {
     hasError.value = true
     alert.value = '電子信箱為必填'
