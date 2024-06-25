@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import defaultImage from '~/assets/images/front/member/default-image.jpg'
 const props = defineProps<{
   order: {
     _id: string
@@ -15,8 +16,6 @@ const props = defineProps<{
 }>()
 
 const order = props.order
-
-const defaultImage: any = ref('~assets/images/default-avatar.png')
 
 const getOrderStatusName = (status: number) => {
   switch (status) {
@@ -76,7 +75,7 @@ const getPaidStatusTagColor: any = (status: number) => {
         class="group mr-6 block aspect-square max-w-[120px] overflow-hidden rounded bg-gray2"
       >
         <img
-          :src="order.courseImage"
+          :src="order.courseImage || defaultImage"
           alt="course-img"
           class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
         />

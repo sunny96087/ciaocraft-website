@@ -5,7 +5,7 @@ import { useMemberStore } from '~/stores/member'
 definePageMeta({
   middleware: ['auth']
 })
-const defaultImg: any = ref('~/assets/images/front/member/default-image.jpg')
+import defaultAvatar from '~/assets/images/front/member/default-avatar.jpg'
 
 const memberStore = useMemberStore()
 const router = useRouter()
@@ -19,7 +19,7 @@ const fetchMember = async () => {
     const result = res.data
     member.value = result.data
   } catch (err) {
-    router.push('/error')
+    showToastError('取得會員資料失敗，請重新登入')
   }
 }
 
@@ -29,10 +29,34 @@ const filter = ref('all') // 篩選條件
 const selectedFilterName = ref('所有課程') // 篩選條件名稱
 const selectedFilterCount = ref(0) // 選中的條件數量 (下拉選單用)
 
-let memberCollections: any = computed(() => memberStore.collections)
-let memberOrders: any = computed(() => memberStore.orders)
+let memberCollections: any = ref([])
+let memberOrders: any = ref([])
 let filterCollection: any = ref([])
 let filterOrders: any = ref([])
+
+// 監聽 memberStore.orders 的變化
+watch(
+  () => memberStore.orders,
+  (newOrders, oldOrders) => {
+    memberOrders.value = newOrders
+    filterOrders.value = newOrders
+  }
+)
+
+watch(
+  () => memberStore.collections,
+  (newCollections, oldCollections) => {
+    memberCollections.value = newCollections
+  }
+)
+
+watch(
+  () => filterCollection.value,
+  (newValues, oldValues) => {
+    filterCollection.value = newValues
+  }
+)
+
 const hasData = ref(true)
 
 // 動態切換渲染元件
@@ -137,13 +161,10 @@ const handleOrderFilter = (filterName: string) => {
 
 const handleRefreshCollections = (courseId: string) => {
   fetchMember()
-  console.log('courseId', courseId)
-  // setFilter(filter.value)
   filterCollection.value = filterCollection.value.filter((item: any) => item.courseId !== courseId)
   memberStore.collections = memberStore.collections.filter(
     (item: any) => item.courseId !== courseId
   )
-  // renderCurrentView('collections')
 }
 
 // 取得訂單資料
@@ -166,7 +187,8 @@ const fetchOrdersData = async () => {
       hasData.value = false
     }
   } catch (err) {
-    router.push('/error')
+    showToastError('取得訂單資料失敗，請聯繫客服人員')
+    // router.push('/error')
   }
 }
 
@@ -184,7 +206,8 @@ const fetchCollectionData = async () => {
       hasData.value = false
     }
   } catch (err) {
-    router.push('/error')
+    showToastError('取得收藏資料失敗，請聯繫客服人員')
+    // router.push('/error')
   }
 }
 
@@ -219,7 +242,7 @@ onMounted(() => {
           class="aspect-square max-h-[120px] w-1/3 max-w-[120px] overflow-hidden md:max-h-[180px] md:max-w-[180px]"
         >
           <img
-            :src="member.photo || defaultImg"
+            :src="member.photo || defaultAvatar"
             alt="member-photo"
             class="h-full w-full rounded-full bg-gray3 object-cover"
           />
