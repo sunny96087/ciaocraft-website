@@ -42,7 +42,8 @@ export const useCourseStore = defineStore('course', {
         vendorId: {
           brandName: '',
           courseId: [],
-          intro: ''
+          intro: '',
+          _id: ''
         },
         courseSuitableFor: '',
         courseContent: '',
@@ -71,13 +72,18 @@ export const useCourseStore = defineStore('course', {
       }
     },
 
-    // 取得單筆課程
+    // 取得單一課程
     async apiGetOneCourse(data: CourseQuery) {
       console.log(data.courseId)
-      // if (data.courseId) {
       console.log(`${apiUrl}/courses/${data.courseId}`)
       return await axios.get(`${apiUrl}/courses/${data.courseId}`)
-      // }
+    },
+
+    // 取得單一課程評論
+    async apiGetOneCourseComments(data: CourseQuery) {
+      console.log(data.courseId)
+      console.log(`${apiUrl}/courses/${data.courseId}/comments`)
+      return await axios.get(`${apiUrl}/courses/${data.courseId}/comments`)
     },
 
     async getCourseCollection(data: JsonObject) {
@@ -118,7 +124,8 @@ export const useCourseStore = defineStore('course', {
           vendorId: {
             brandName: '',
             courseId: [],
-            intro: ''
+            intro: '',
+            _id: ''
           },
           courseSuitableFor: '',
           courseContent: '',

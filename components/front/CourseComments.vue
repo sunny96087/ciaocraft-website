@@ -32,6 +32,50 @@ const openPhotoModal = (imageUrl: string): void => {
   selectedImageUrl.value = imageUrl
   isPhotoModalOpen.value = !isPhotoModalOpen.value
 }
+
+import { useCourseStore } from '~/stores/course'
+const courseStore = useCourseStore()
+const route = useRoute()
+
+// 單一課程評論
+const courseId = ref()
+const courseInfo: any = ref({})
+
+onMounted(async () => {
+  // 從網址取得參數
+  courseId.value = route.params.id
+  console.log(courseId)
+  getOneCourseComments()
+})
+
+// 取得單一課程評論
+async function getOneCourseComments() {
+  try {
+    showLoading()
+
+    let data = {
+      courseId: courseId.value
+    }
+    const res = await courseStore.apiGetOneCourseComments(data)
+    const result = res.data
+    console.log(result)
+
+    request(result)
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
+  }
+}
+
+function request(result: { statusCode: number; data: any }) {
+  if (result.statusCode === 200) {
+    courseInfo.value = result.data
+    // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
+  } else {
+    console.log('取得單一課程失敗')
+  }
+}
 </script>
 
 <template>
@@ -39,7 +83,9 @@ const openPhotoModal = (imageUrl: string): void => {
     <li class="mb-5 flex items-center border-b border-dark1 pb-3">
       <h4 class="mr-5 text-[30px] font-medium leading-[38px]">學員評價</h4>
       <ul class="flex items-center">
-        <li class="mr-2 text-[18px] font-medium leading-[26px]">4.0</li>
+        <li class="mr-2 text-[18px] font-medium leading-[26px]">
+          {{ courseStore.oneCourseData[0].courseAvgRating }}
+        </li>
         <li class="mr-2 flex">
           <Icon name="ph:star-fill" class="text-2xl text-primary" />
           <Icon name="ph:star-fill" class="text-2xl text-primary" />
@@ -47,7 +93,7 @@ const openPhotoModal = (imageUrl: string): void => {
           <Icon name="ph:star-fill" class="text-2xl text-primary" />
           <Icon name="ph:star-bold" class="text-2xl text-primary" />
         </li>
-        <li>(61)</li>
+        <li>({{ courseStore.oneCourseData[0].courseCommentsCount }})</li>
       </ul>
     </li>
     <li>
@@ -111,18 +157,25 @@ const openPhotoModal = (imageUrl: string): void => {
     </li>
     <li>
       <ul>
-        <li class="mb-3 rounded-lg border border-[#DFE4EA] bg-white p-5">
+        <li
+          class="mb-3 rounded-lg border border-[#DFE4EA] bg-white p-5"
+          v-for="(item, index) in courseInfo"
+          :key="item.id"
+        >
           <ul>
             <li>
               <div class="mb-3">
                 <ul class="flex items-center justify-between">
                   <li class="flex items-center">
                     <Icon name="ph:chat-centered-dots" class="mr-3 text-[40px] text-secondary" />
-                    <p>U****************E</p>
+                    <p>{{ item.id }}</p>
                   </li>
                   <li class="flex items-center">
                     <Icon name="ph:thumbs-up" class="mr-1 text-[32px] hover:cursor-pointer" />
-                    <p class="mr-3">有幫助(<span>12</span>)</p>
+                    <p class="mr-3">
+                      有幫助(<span>{{ item.likes.length }}</span
+                      >)
+                    </p>
                     <div class="relative">
                       <Icon
                         name="ph:dots-three-outline-vertical-fill"
@@ -161,64 +214,20 @@ const openPhotoModal = (imageUrl: string): void => {
                 </ul>
               </div>
               <div class="mb-5">
-                抱壯已定左進快童快出；上幫親士結肉耍、坡只蝶刀蝴樹書寫京物方道新、媽更記視造北大升背斗封：羽第古瓜乍封姊英几原今；再雞升買美扒金冒要要貝第的安開羽叫了京什。喜身央錯，司現示陽玩麼比鳥內：向卜冒香。
+                {{ item.content }}
               </div>
-              <div class="mb-5">
+              <div class="mb-5" v-for="tags in item.tags" :key="tags">
                 <p class="mr-2 inline-block rounded bg-orange3 px-2 py-0.5 text-[#C54C0D]">
-                  師生互動
+                  {{ tags }}
                 </p>
-                <p class="inline-block rounded bg-orange3 px-2 py-0.5 text-[#C54C0D]">專業度</p>
               </div>
               <div class="grid grid-cols-4 gap-3 md:grid-cols-6 lg:grid-cols-10">
                 <img
-                  src="https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  v-for="img in item.images"
+                  :src="img"
                   alt="評論照片"
                   class="h-[100px] w-[100px] object-cover hover:cursor-pointer"
-                  @click="
-                    openPhotoModal(
-                      'https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    )
-                  "
-                />
-                <img
-                  src="https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="評論照片"
-                  class="h-[100px] w-[100px] object-cover hover:cursor-pointer"
-                  @click="
-                    openPhotoModal(
-                      'https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    )
-                  "
-                />
-                <img
-                  src="https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="評論照片"
-                  class="h-[100px] w-[100px] object-cover hover:cursor-pointer"
-                  @click="
-                    openPhotoModal(
-                      'https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    )
-                  "
-                />
-                <img
-                  src="https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="評論照片"
-                  class="h-[100px] w-[100px] object-cover hover:cursor-pointer"
-                  @click="
-                    openPhotoModal(
-                      'https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    )
-                  "
-                />
-                <img
-                  src="https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt="評論照片"
-                  class="h-[100px] w-[100px] object-cover hover:cursor-pointer"
-                  @click="
-                    openPhotoModal(
-                      'https://plus.unsplash.com/premium_photo-1714675222115-0a2c88f618a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-                    )
-                  "
+                  @click="openPhotoModal(img)"
                 />
               </div>
             </li>

@@ -69,10 +69,12 @@ const formattedPrice = (price: number): string => {
       </button>
     </div>
     <div class="rounded border border-primary bg-white hover:bg-primary-light hover:text-white">
-      <button class="flex w-full items-center justify-center text-lg leading-[3rem]">
-        <Icon name="ph:chats" class="mr-2 text-xl" />
-        品牌聊聊
-      </button>
+      <NuxtLink to="/message">
+        <button class="flex w-full items-center justify-center text-lg leading-[3rem]">
+          <Icon name="ph:chats" class="mr-2 text-xl" />
+          品牌聊聊
+        </button>
+      </NuxtLink>
     </div>
   </div>
 </template>

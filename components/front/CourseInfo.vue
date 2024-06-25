@@ -56,11 +56,23 @@ const courseStore = useCourseStore()
             <p class="text-[14px] leading-[22px]">師資</p>
             <p>{{ item.teacherId.name }}</p>
           </div>
-          <button
-            class="rounded border border-primary px-6 py-2 hover:bg-primary-light hover:text-white"
+          <NuxtLink
+            v-if="
+              courseStore.oneCourseData.length > 0 &&
+              courseStore.oneCourseData[0].teacherId &&
+              courseStore.oneCourseData[0].teacherId._id
+            "
+            :to="{
+              name: 'index-index-teacher-id',
+              params: { id: courseStore.oneCourseData[0].teacherId._id }
+            }"
           >
-            了解更多
-          </button>
+            <button
+              class="rounded border border-primary px-6 py-2 hover:bg-primary-light hover:text-white"
+            >
+              了解更多
+            </button>
+          </NuxtLink>
         </li>
       </ul>
     </li>
@@ -102,7 +114,19 @@ const courseStore = useCourseStore()
         <li
           class="rounded border border-primary text-center hover:bg-primary-light hover:text-white"
         >
-          <button class="w-full py-2">逛逛賣場</button>
+          <NuxtLink
+            v-if="
+              courseStore.oneCourseData.length > 0 &&
+              courseStore.oneCourseData[0].vendorId &&
+              courseStore.oneCourseData[0].vendorId._id
+            "
+            :to="{
+              name: 'index-index-vendor-id',
+              params: { id: courseStore.oneCourseData[0].vendorId._id }
+            }"
+          >
+            <button class="w-full py-2">逛逛賣場</button>
+          </NuxtLink>
         </li>
       </ul>
     </li>

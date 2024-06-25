@@ -2,6 +2,7 @@
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
 const route = useRoute()
+const router = useRouter()
 
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
@@ -35,7 +36,7 @@ onMounted(async () => {
   getOneCourse()
 })
 
-// 取得單筆課程資料
+// 取得單一課程資料
 async function getOneCourse() {
   try {
     showLoading()
@@ -82,23 +83,33 @@ function request(result: { statusCode: number; data: any }) {
     console.log('取得單一課程失敗')
   }
 }
+
+const clickToSearch = (courseTerm: string, courseType: string) => {
+  courseStore.courseData.courseTerm = courseTerm
+  courseStore.courseData.courseType = courseType
+  router.push({ path: '/search', query: { courseTerm: courseTerm, courseType: courseType } })
+}
 </script>
 
 <template>
   <div class="mx-[20px] pt-14 lg:mx-[100px]">
     <nav class="mb-5 flex items-center">
-      <a href="#" class="py-[3px]">
+      <button class="py-[3px] text-gray" @click="clickToSearch('全部', '全部')">
         <span class="mr-2.5">所有課程</span>
-      </a>
+      </button>
       <Icon name="ph:caret-right" class="mr-2.5 text-2xl" />
-      <a href="#" class="py-[3px]">
-        <span class="mr-2.5 py-[3px]">體驗課程</span>
-      </a>
+      <button
+        class="py-[3px] text-gray"
+        @click="clickToSearch(`${courseStore.oneCourseData[0].courseTerm}`, '全部')"
+      >
+        <span class="mr-2.5 py-[3px]">{{
+          courseStore.oneCourseData[0].courseTerm === 0 ? '單堂體驗' : '專業培訓'
+        }}</span>
+      </button>
       <Icon name="ph:caret-right" class="mr-2.5 text-2xl" />
-      <!-- 切缺：所在位置字體末端黑色 -->
-      <a href="#" class="py-[3px]">
-        <span class="py-[3px]">課程名稱</span>
-      </a>
+      <div class="py-[3px]">
+        <span class="py-[3px]">{{ courseStore.oneCourseData[0].courseName }}</span>
+      </div>
     </nav>
     <section class="mb-[60px] justify-between lg:mb-[30px] lg:flex">
       <front-photo-carousel class="mb-[60px] lg:mb-0" />
