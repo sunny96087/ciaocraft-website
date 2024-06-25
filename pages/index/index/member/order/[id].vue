@@ -4,6 +4,8 @@ definePageMeta({
   middleware: ['auth']
 })
 
+import defaultImage from '~/assets/images/front/member/default-image.jpg'
+
 const orderStore = useOrderStore()
 const route = useRoute()
 const orderId: any = route.params.id
@@ -261,7 +263,7 @@ onMounted(() => {
             >
               <NuxtLink :to="{ name: 'index-index-course-id', params: { id: course._id } }">
                 <img
-                  :src="course.courseImage[0]"
+                  :src="course.courseImage[0] || defaultImage"
                   alt="course-img"
                   class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
                 />

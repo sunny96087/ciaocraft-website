@@ -26,6 +26,14 @@ const resetPassword = async () => {
     return
   }
 
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=])[A-Za-z\d@#$%^&+=]{8,}$/
+
+  if (!passwordRegex.test(password.value)) {
+    hasError.value = true
+    errorMessage.value = '密碼需包含英文及數字，且至少 8 碼'
+    return
+  }
+
   try {
     showLoading()
     let postData = {
@@ -35,12 +43,13 @@ const resetPassword = async () => {
     const res = await memberStore.updatePassword(postData)
     const result = res.data
     if (result.statusCode === 200) {
+      hasError.value = false
       showToast('修改成功')
       router.push('/member')
     } else {
       showToastError('修改失敗')
     }
-  } catch (e) {
+  } catch (e: any) {
     showToastError('發生錯誤，請稍後再試')
   } finally {
     hideLoading()

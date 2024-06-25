@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuthStore } from '~/stores/auth'
+import defaultAvatar from '~/assets/images/front/member/default-avatar.jpg'
 const router = useRouter()
 const authStore = useAuthStore()
 const memberStore = useMemberStore()
@@ -56,7 +56,7 @@ const fetchMember = async () => {
     // console.log('取得登入會員資料', res.data.data)
   } catch (err) {
     console.log('取得登入會員資料失敗', err)
-    router.push('/')
+    // router.push('/')
   }
 }
 
@@ -150,7 +150,7 @@ onMounted(async () => {
           <li>
             <button @click="toggleMenu" class="flex items-center">
               <img
-                :src="member.photo"
+                :src="member.photo || defaultAvatar"
                 alt="大頭照"
                 class="h-[60px] w-[60px] rounded-full bg-gray object-cover"
               />
@@ -296,7 +296,7 @@ onMounted(async () => {
             <div>
               <NuxtLink to="/member/profile">
                 <img
-                  :src="member.photo"
+                  :src="member.photo || defaultAvatar"
                   alt="ciao-craft-logo"
                   class="h-[60px] w-[60px] rounded-full bg-gray3 object-cover"
                   @click="isMenuOpen = false"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import defaultImage from '~/assets/images/front/member/default-image.jpg'
 const props = defineProps<{
   collection: {
     _id: string
@@ -13,8 +14,6 @@ const props = defineProps<{
     coursePrice: number
   }
 }>()
-
-const defaultImage: any = ref('assets/images/front/member/default-image.jpg')
 
 const emit = defineEmits(['refecthCollections'])
 const memberStore = useMemberStore()

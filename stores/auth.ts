@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', {
     async login(data: JsonObject) {
       return await axios.post(`${this.apiUrl}/auth/signin`, data)
     },
-    checkLogin() {
+    async checkLogin() {
       if (process.client) {
         this.token = localStorage.getItem('token')
         this.memberId = localStorage.getItem('memberId')

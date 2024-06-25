@@ -4,9 +4,8 @@ definePageMeta({
   middleware: ['auth']
 })
 
-const defaultAvatar: any = ref('~assets/images/front/member/default-avatar.jpg')
+import defaultAvatar from '~/assets/images/front/member/default-avatar.jpg'
 
-const authStore = useAuthStore()
 const memberStore = useMemberStore()
 const uploadStore = useUploadStore()
 
@@ -39,6 +38,7 @@ const fetchMemberData = async () => {
 
 // 上傳圖片，點擊編輯照片按鈕時觸發隱藏的圖片上傳輸入框
 const fileInput: any = ref(null)
+const isUpdating = ref(false)
 const clickFileInput = () => {
   fileInput.value.click()
 }
@@ -52,17 +52,18 @@ const handleFileUpload = async (event: any, type: string) => {
     showToast('圖片上傳失敗')
     return
   }
-  showLoading()
+  isUpdating.value = true
   try {
     const res: any = await uploadStore.uploadSingleImage(formData)
     const result = res.data
     if (result.status == 'success') {
       member.value.photo = result.data.imgUrl
+      showToast('圖片上傳成功')
     }
   } catch (err) {
-    showToastError('圖片上傳失敗')
+    showToast('圖片上傳失敗')
   }
-  hideLoading()
+  isUpdating.value = false
 }
 
 // 更新會員資料
@@ -116,12 +117,23 @@ onMounted(() => {
       <div class="mb-8 max-w-[711px] space-y-3">
         <div class="mb-5 max-w-[160px]">
           <!-- 大頭貼 -->
-          <div class="mb-3 aspect-square max-h-[160px] max-w-[160px] overflow-hidden">
+          <div
+            class="mb-3 aspect-square max-h-[160px] max-w-[160px] overflow-hidden"
+            v-if="!isUpdating"
+          >
             <img
               :src="member.photo || defaultAvatar"
               alt="ciao-craft-logo"
               class="h-full w-full rounded-full bg-gray3 object-cover"
             />
+          </div>
+          <div
+            class="mb-3 aspect-square max-h-[160px] max-w-[160px] animate-pulse overflow-hidden"
+            v-else
+          >
+            <div class="flex h-full w-full items-center justify-center rounded-full bg-gray3">
+              圖片上傳中...
+            </div>
           </div>
           <button
             type="button"

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import defaultImage from '~/assets/images/front/member/default-image.jpg'
 // Import Swiper Vue.js components
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-
 const modules = [Navigation]
 
 // 串接 API
@@ -182,7 +182,7 @@ onMounted(async () => {
           <div class="relative mx-auto mb-2">
             <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
               <img
-                :src="item.courseImage[0]"
+                :src="item.courseImage[0] || defaultImage"
                 alt="course-img"
                 class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
                 loading="lazy"
@@ -247,7 +247,7 @@ onMounted(async () => {
           <div class="relative mx-auto mb-2">
             <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
               <img
-                :src="item.courseImage[0]"
+                :src="item.courseImage[0] || defaultImage"
                 alt="course-img"
                 class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
                 loading="lazy"
@@ -312,7 +312,7 @@ onMounted(async () => {
           <div class="relative mx-auto mb-2">
             <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
               <img
-                :src="item.courseImage[0]"
+                :src="item.courseImage[0] || defaultImage"
                 alt="course-img"
                 class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
                 loading="lazy"
