@@ -13,7 +13,6 @@ const confirmPasswordVisible = ref(false)
 const getResetPasswordToken = () => {
   if (process.client) {
     token.value = route.query.token
-    console.log(token.value)
   } else {
     showToastError('未攜帶有效權杖，請重新申請密碼重設')
     router.push('/')
@@ -42,16 +41,13 @@ const resetPassword = async () => {
     const result = res.data
 
     if (result.statusCode === 200) {
-      console.log(result)
       showToast('修改成功')
       router.push('/')
     } else {
-      console.log(result)
       showToastError('未帶有效權杖，請重新申請忘記密碼')
       router.push('/')
     }
   } catch (e) {
-    console.log(e)
     showToastError('未帶有效權杖，請重新申請忘記密碼')
     router.push('/')
   }

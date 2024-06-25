@@ -29,7 +29,7 @@ const removeCollection = (courseId: string) => {
     .removeCollection(postData)
     .then(() => {
       showToast('取消收藏')
-      emit('refecthCollections')
+      emit('refecthCollections', courseId)
     })
     .catch((e) => {
       showToast('取消收藏失敗，請聯繫客服人員')

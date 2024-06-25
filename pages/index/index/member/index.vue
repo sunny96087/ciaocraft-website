@@ -46,11 +46,14 @@ const renderCurrentView = async (viewName: string) => {
   // showLoading()
   currentView.value = viewName
   isCardLoading.value = true
-  if (viewName === 'orders') {
-    await fetchOrdersData()
-  } else {
-    await fetchCollectionData()
-  }
+  // if (viewName === 'orders') {
+  //   await fetchOrdersData()
+  // } else {
+  //   await fetchCollectionData()
+  // }
+  // 先兩個都跑加速載入速度
+  await fetchOrdersData()
+  await fetchCollectionData()
   setFilter(filter.value)
   isCardLoading.value = false
   // hideLoading()
@@ -132,10 +135,15 @@ const handleOrderFilter = (filterName: string) => {
   selectedFilterCount.value = filterOrders.value.length
 }
 
-const handleRefreshCollections = () => {
+const handleRefreshCollections = (courseId: string) => {
   fetchMember()
-  renderCurrentView('collections')
-  setFilter(filter.value)
+  console.log('courseId', courseId)
+  // setFilter(filter.value)
+  filterCollection.value = filterCollection.value.filter((item: any) => item.courseId !== courseId)
+  memberStore.collections = memberStore.collections.filter(
+    (item: any) => item.courseId !== courseId
+  )
+  // renderCurrentView('collections')
 }
 
 // 取得訂單資料
