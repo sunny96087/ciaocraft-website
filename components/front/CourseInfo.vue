@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCourseStore } from '~/stores/course'
+
 const courseStore = useCourseStore()
 </script>
 
@@ -85,7 +86,7 @@ const courseStore = useCourseStore()
           <ul class="mb-5 flex items-center justify-between">
             <li class="mr-4 basis-32">
               <img
-                src="~/assets/images/front/userphoto.png"
+                :src="item.vendorId.avatar"
                 alt="品牌logo"
                 class="h-[120px] w-[120px] rounded object-cover"
               />
@@ -98,7 +99,9 @@ const courseStore = useCourseStore()
                 {{ item.vendorId.intro }}
               </p>
               <ul class="flex items-center">
-                <li class="mr-2 text-[18px] font-medium leading-[26px]">4.0</li>
+                <li class="mr-2 text-[18px] font-medium leading-[26px]">
+                  {{ item.vendorAvgRating }}
+                </li>
                 <li class="mr-2 flex">
                   <Icon name="ph:star-fill" class="text-2xl text-primary" />
                   <Icon name="ph:star-fill" class="text-2xl text-primary" />
@@ -106,7 +109,7 @@ const courseStore = useCourseStore()
                   <Icon name="ph:star-fill" class="text-2xl text-primary" />
                   <Icon name="ph:star-bold" class="text-2xl text-primary" />
                 </li>
-                <li>(61)</li>
+                <li>({{ item.vendorCommentsCount }})</li>
               </ul>
             </li>
           </ul>

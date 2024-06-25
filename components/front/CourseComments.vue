@@ -5,7 +5,7 @@ import { ref } from 'vue'
 // 定義 isSortOpen 為布林類型的 ref
 // 使用 ref 管理排序選單的顯示狀態
 const isSortOpen = ref<boolean>(false)
-const isMoreOpen = ref<boolean>(false)
+// const isMoreOpen = ref<boolean>(false)
 
 // 定義 toggleSort 函數，其返回類型為 void
 // 切換排序選單顯示狀態
@@ -13,17 +13,17 @@ const toggleSort = (): void => {
   isSortOpen.value = !isSortOpen.value
 }
 
-const toggleMore = (): void => {
-  isMoreOpen.value = !isMoreOpen.value
-}
+// const toggleMore = (): void => {
+//   isMoreOpen.value = !isMoreOpen.value
+// }
 
 // 檢舉 modal 控制
-const isReportModalOpen = ref<boolean>(false)
-const openReportModal = (): void => {
-  isReportModalOpen.value = !isReportModalOpen.value
-  // 關閉檢舉選單
-  isMoreOpen.value = false
-}
+// const isReportModalOpen = ref<boolean>(false)
+// const openReportModal = (): void => {
+//   isReportModalOpen.value = !isReportModalOpen.value
+//   // 關閉檢舉選單
+//   isMoreOpen.value = false
+// }
 
 // 放大評論照片 modal 控制
 const isPhotoModalOpen = ref<boolean>(false)
@@ -62,6 +62,7 @@ async function getOneCourseComments() {
 
     request(result)
   } catch (e) {
+    showToast('發生錯誤，請聯繫客服人員')
     console.log(e)
   } finally {
     hideLoading()
@@ -73,6 +74,7 @@ function request(result: { statusCode: number; data: any }) {
     courseInfo.value = result.data
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
   } else {
+    showToast('發生錯誤，請聯繫客服人員')
     console.log('取得單一課程失敗')
   }
 }
@@ -132,14 +134,6 @@ function request(result: { statusCode: number; data: any }) {
                 class="d-block w-full py-1 hover:bg-secondary hover:text-white"
                 @click="toggleSort"
               >
-                熱門課程
-              </button>
-            </li>
-            <li>
-              <button
-                class="d-block w-full py-1 hover:bg-secondary hover:text-white"
-                @click="toggleSort"
-              >
                 評分最高
               </button>
             </li>
@@ -176,7 +170,7 @@ function request(result: { statusCode: number; data: any }) {
                       有幫助(<span>{{ item.likes.length }}</span
                       >)
                     </p>
-                    <div class="relative">
+                    <!-- <div class="relative">
                       <Icon
                         name="ph:dots-three-outline-vertical-fill"
                         class="text-2xl hover:cursor-pointer"
@@ -197,7 +191,7 @@ function request(result: { statusCode: number; data: any }) {
                           </button>
                         </li>
                       </ul>
-                    </div>
+                    </div> -->
                   </li>
                 </ul>
               </div>
@@ -216,10 +210,14 @@ function request(result: { statusCode: number; data: any }) {
               <div class="mb-5">
                 {{ item.content }}
               </div>
-              <div class="mb-5" v-for="tags in item.tags" :key="tags">
-                <p class="mr-2 inline-block rounded bg-orange3 px-2 py-0.5 text-[#C54C0D]">
-                  {{ tags }}
-                </p>
+              <div class="flex">
+                <div class="mb-5" v-for="tags in item.tags" :key="tags">
+                  <p
+                    class="mr-2 inline-block w-[80px] rounded bg-orange3 px-2 py-0.5 text-center text-[#C54C0D]"
+                  >
+                    {{ tags }}
+                  </p>
+                </div>
               </div>
               <div class="grid grid-cols-4 gap-3 md:grid-cols-6 lg:grid-cols-10">
                 <img
@@ -243,9 +241,9 @@ function request(result: { statusCode: number; data: any }) {
   </div>
 
   <!-- 檢舉彈窗 -->
-  <transition name="modal">
+  <!-- <transition name="modal">
     <front-course-comment-report v-if="isReportModalOpen" @close="isReportModalOpen = false" />
-  </transition>
+  </transition> -->
 
   <!-- 放大評論照片視窗 -->
   <transition name="modal">

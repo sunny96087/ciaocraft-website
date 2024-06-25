@@ -24,6 +24,7 @@ export const useCourseStore = defineStore('course', {
     },
     oneCourseData: [
       {
+        id: '',
         courseTerm: 0,
         courseImage: [],
         courseName: '',
@@ -41,10 +42,13 @@ export const useCourseStore = defineStore('course', {
         },
         vendorId: {
           brandName: '',
+          avatar: '',
           courseId: [],
           intro: '',
           _id: ''
         },
+        vendorAvgRating: 0,
+        vendorCommentsCount: 0,
         courseSuitableFor: '',
         courseContent: '',
         courseSkillsLearned: '',
@@ -106,6 +110,7 @@ export const useCourseStore = defineStore('course', {
     resetoneCourseData() {
       this.oneCourseData = [
         {
+          id: '',
           courseTerm: 0,
           courseImage: [],
           courseName: '',
@@ -123,10 +128,13 @@ export const useCourseStore = defineStore('course', {
           },
           vendorId: {
             brandName: '',
+            avatar: '',
             courseId: [],
             intro: '',
             _id: ''
           },
+          vendorAvgRating: 0,
+          vendorCommentsCount: 0,
           courseSuitableFor: '',
           courseContent: '',
           courseSkillsLearned: '',

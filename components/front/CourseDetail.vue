@@ -25,13 +25,8 @@ const courseStore = useCourseStore()
       <h4 class="mb-5 border-b border-dark1 pb-3 text-[30px] font-medium leading-[38px]">
         課程內容
       </h4>
-      <img
-        src="~/assets/images/front/Banner_2.png"
-        alt=""
-        class="mb-[30px] h-[286px] w-full object-cover"
-      />
       <!-- 收起內容高度480px。文字164px -->
-      <p class="mb-5 h-[164px] overflow-hidden">
+      <p class="mb-5 overflow-hidden">
         {{ item.courseContent }}
       </p>
       <!-- <div class="flex justify-center">
