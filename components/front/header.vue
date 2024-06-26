@@ -35,6 +35,7 @@ const openLoginModal = (): void => {
 
 // 前往會員中心，點擊我的收我的收藏 tab
 const toMemberAndClickTab = (tab: string): void => {
+  isMenuOpen.value = false
   if (isLogin.value && tab === 'collections') {
     router.push({ name: 'index-index-member', query: { tab: 'collections' } })
   } else if (isLogin.value && tab === 'orders') {
@@ -62,7 +63,6 @@ const fetchMember = async () => {
     member.value = memberStore.member
   } catch (err) {
     showToast('取得登入會員資料失敗')
-    console.log('取得登入會員資料失敗', err)
   }
 }
 
@@ -76,6 +76,7 @@ watch(
 
 const signOut = (): void => {
   authStore.logout()
+  isMenuOpen.value = false
 }
 
 onMounted(async () => {
@@ -99,6 +100,7 @@ onMounted(async () => {
         <NuxtLink
           to="/"
           class="block h-10 w-40 overflow-hidden whitespace-nowrap bg-[url('~/assets/images/front/Logo_Img.png')] indent-[115%]"
+          @click="isMenuOpen = false"
           >Ciao!Craft
         </NuxtLink>
       </h1>
@@ -108,7 +110,10 @@ onMounted(async () => {
         <!-- START 右側選單 - 未登入 -->
         <ul class="hidden items-center space-x-6 lg:flex" v-if="!isLogin">
           <li class="text-primary">
-            <NuxtLink to="/vendorApply" class="px-6 py-2 hover:text-primary-light"
+            <NuxtLink
+              to="/vendorApply"
+              class="px-6 py-2 hover:text-primary-light"
+              @click="isMenuOpen = false"
               >我要開課
             </NuxtLink>
           </li>
@@ -140,7 +145,10 @@ onMounted(async () => {
         <!-- START 右側選單 - 已登入 -->
         <ul class="relative hidden items-center space-x-6 lg:flex" v-if="isLogin">
           <li>
-            <NuxtLink to="/vendorApply" class="px-6 py-2 text-primary hover:text-primary-light"
+            <NuxtLink
+              to="/vendorApply"
+              class="px-6 py-2 text-primary hover:text-primary-light"
+              @click="isMenuOpen = false"
               >我要開課
             </NuxtLink>
           </li>
@@ -150,7 +158,7 @@ onMounted(async () => {
             </button>
           </li>
           <li>
-            <NuxtLink to="/message" class="relative block bg-center">
+            <NuxtLink to="/message" class="relative block bg-center" @click="isMenuOpen = false">
               <Icon name="ph:chats" class="text-4xl" />
               <span
                 class="absolute -right-1 top-0 h-[6px] w-[6px] rounded-full bg-danger"
@@ -268,121 +276,133 @@ onMounted(async () => {
     </div>
 
     <!-- 平板、手機版，漢堡選單 -->
-    <div
-      class="x-14 absolute z-50 w-full rounded-b-lg border-t border-solid border-gray5 bg-white px-10 py-5 shadow-2xl lg:hidden"
-      v-if="isMenuOpen"
-    >
-      <!-- 漢堡選單(未登入) -->
-      <ul v-if="!isLogin" class="">
-        <li class="mb-3 border-b border-gray p-2 pb-5 pl-5">
-          <button class="block hover:text-primary-light" @click="openLoginModal">登入/註冊</button>
-        </li>
-        <li class="px-5 py-2">
-          <NuxtLink to="/adminLogin" class="block hover:text-primary-light"> 賣家登入 </NuxtLink>
-        </li>
-        <li class="px-5 py-2">
-          <NuxtLink
-            to="/vendorApply"
-            class="block hover:text-primary-light"
-            @click="isMenuOpen = false"
-          >
-            我要開課
-          </NuxtLink>
-        </li>
-        <li class="px-5 py-2">
-          <NuxtLink to="/about" class="block hover:text-primary-light" @click="isMenuOpen = false">
-            如何累積點數
-          </NuxtLink>
-        </li>
-      </ul>
-
-      <!-- 漢堡選單(已登入) -->
-      <div v-else>
-        <div class="space-y-2 border-b border-solid border-black pb-3">
-          <div class="flex items-center justify-between p-2">
-            <div class="flex">
-              <Icon name="ph:user" class="mr-3 text-2xl" />
-              <p>{{ member.nickname }}</p>
-            </div>
-            <div>
-              <NuxtLink to="/member/profile">
-                <img
-                  :src="member.photo || defaultAvatar"
-                  alt="ciao-craft-logo"
-                  class="h-[60px] w-[60px] rounded-full bg-gray3 object-cover"
-                  @click="isMenuOpen = false"
-                />
-              </NuxtLink>
-            </div>
-          </div>
-          <div class="flex w-full items-center p-2">
-            <Icon name="ph:currency-circle-dollar" class="mr-3 text-2xl text-primary" />
-            <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">0</p>
-          </div>
-          <a href="#" class="block text-xs leading-[20px] text-secondary">
-            <Icon name="ph:info" class="mr-1 text-lg" />
-            如何累積點數？
-          </a>
-        </div>
-        <ul class="border-b border-solid border-black py-3">
-          <li class="relative flex items-center space-x-2 py-2 pl-5">
-            <NuxtLink
-              to="/message"
-              class="flex items-center hover:text-primary-light"
-              @click="isMenuOpen = false"
-            >
-              <Icon name="ph:chats" class="mr-2.5 text-lg" />我的訊息
-            </NuxtLink>
-            <span
-              class="absolute left-0 h-1.5 w-1.5 rounded-full bg-danger"
-              v-if="hasNewMessage"
-            ></span>
-          </li>
-          <li class="py-2 pl-5">
-            <NuxtLink
-              :to="{ name: 'index-index-member', query: { tab: 'orders' } }"
-              class="flex items-center hover:text-primary-light"
-              @click="isMenuOpen = false"
-            >
-              <Icon name="ph:receipt" class="mr-2.5 text-lg" />
-              訂單紀錄
-            </NuxtLink>
-            <!-- </a> -->
-          </li>
-          <li class="py-2 pl-5">
-            <NuxtLink
-              :to="{ name: 'index-index-member', query: { tab: 'collections' } }"
-              class="flex items-center hover:text-primary-light"
-              @click="isMenuOpen = false"
-            >
-              <Icon name="ph:star" class="mr-2.5 text-lg" />
-              我的收藏
-            </NuxtLink>
-          </li>
-          <li class="py-2 pl-5">
-            <NuxtLink
-              to="/member"
-              class="flex items-center hover:text-primary-light"
-              @click="isMenuOpen = false"
-            >
-              <Icon name="ph:key" class="mr-2.5 text-lg" />
-              會員管理
-            </NuxtLink>
-          </li>
-          <li class="py-2 pl-5">
-            <button class="flex items-center hover:text-primary-light" @click="signOut">
-              <Icon name="ph:sign-out" class="mr-2.5 text-lg" />
-              登出
+    <transition name="hamburgerM">
+      <div
+        class="absolute top-[68px] z-50 w-full rounded-b-lg border-t border-solid border-gray5 bg-white px-10 py-5 shadow-2xl lg:hidden"
+        v-if="isMenuOpen"
+      >
+        <!-- 漢堡選單(未登入) -->
+        <ul v-if="!isLogin" class="">
+          <li class="mb-3 border-b border-gray p-2 pb-5 pl-5">
+            <button class="block hover:text-primary-light" @click="openLoginModal">
+              登入/註冊
             </button>
           </li>
+          <li class="px-5 py-2">
+            <NuxtLink to="/adminLogin" class="block hover:text-primary-light"> 賣家登入 </NuxtLink>
+          </li>
+          <li class="px-5 py-2">
+            <NuxtLink
+              to="/vendorApply"
+              class="block hover:text-primary-light"
+              @click="isMenuOpen = false"
+            >
+              我要開課
+            </NuxtLink>
+          </li>
+          <li class="px-5 py-2">
+            <NuxtLink
+              to="/about"
+              class="block hover:text-primary-light"
+              @click="isMenuOpen = false"
+            >
+              如何累積點數
+            </NuxtLink>
+          </li>
         </ul>
-        <div class="py-3">
-          <NuxtLink to="/vendorApply" class="block px-5 py-2 hover:text-primary-light">
-            我要開課
-          </NuxtLink>
+
+        <!-- 漢堡選單(已登入) -->
+        <div v-else>
+          <div class="space-y-2 border-b border-solid border-black pb-3">
+            <div class="flex items-center justify-between p-2">
+              <div class="flex">
+                <Icon name="ph:user" class="mr-3 text-2xl" />
+                <p>{{ member.nickname }}</p>
+              </div>
+              <div>
+                <NuxtLink to="/member/profile">
+                  <img
+                    :src="member.photo || defaultAvatar"
+                    alt="ciao-craft-logo"
+                    class="h-[60px] w-[60px] rounded-full bg-gray3 object-cover"
+                    @click="isMenuOpen = false"
+                  />
+                </NuxtLink>
+              </div>
+            </div>
+            <div class="flex w-full items-center p-2">
+              <Icon name="ph:currency-circle-dollar" class="mr-3 text-2xl text-primary" />
+              <p class="flex items-center text-2xl font-medium leading-[30px] text-primary">0</p>
+            </div>
+            <a href="#" class="block text-xs leading-[20px] text-secondary">
+              <Icon name="ph:info" class="mr-1 text-lg" />
+              如何累積點數？
+            </a>
+          </div>
+          <ul class="border-b border-solid border-black py-3">
+            <li class="relative flex items-center space-x-2 py-2 pl-5">
+              <NuxtLink
+                to="/message"
+                class="flex items-center hover:text-primary-light"
+                @click="isMenuOpen = false"
+              >
+                <Icon name="ph:chats" class="mr-2.5 text-lg" />我的訊息
+              </NuxtLink>
+              <span
+                class="absolute left-0 h-1.5 w-1.5 rounded-full bg-danger"
+                v-if="hasNewMessage"
+              ></span>
+            </li>
+            <li class="py-2 pl-5">
+              <NuxtLink
+                :to="{ name: 'index-index-member', query: { tab: 'orders' } }"
+                class="flex items-center hover:text-primary-light"
+                @click="isMenuOpen = false"
+              >
+                <Icon name="ph:receipt" class="mr-2.5 text-lg" />
+                訂單紀錄
+              </NuxtLink>
+              <!-- </a> -->
+            </li>
+            <li class="py-2 pl-5">
+              <NuxtLink
+                :to="{ name: 'index-index-member', query: { tab: 'collections' } }"
+                class="flex items-center hover:text-primary-light"
+                @click="isMenuOpen = false"
+              >
+                <Icon name="ph:star" class="mr-2.5 text-lg" />
+                我的收藏
+              </NuxtLink>
+            </li>
+            <li class="py-2 pl-5">
+              <NuxtLink
+                to="/member"
+                class="flex items-center hover:text-primary-light"
+                @click="isMenuOpen = false"
+              >
+                <Icon name="ph:key" class="mr-2.5 text-lg" />
+                會員管理
+              </NuxtLink>
+            </li>
+            <li class="py-2 pl-5">
+              <button class="flex items-center hover:text-primary-light" @click="signOut">
+                <Icon name="ph:sign-out" class="mr-2.5 text-lg" />
+                登出
+              </button>
+            </li>
+          </ul>
+          <div class="py-3">
+            <NuxtLink
+              to="/vendorApply"
+              class="block px-5 py-2 hover:text-primary-light"
+              @click="isMenuOpen = false"
+            >
+              我要開課
+            </NuxtLink>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </header>
 
   <!-- 登入/註冊彈窗 -->
@@ -417,7 +437,7 @@ onMounted(async () => {
   transform: translateY(-20px);
 }
 
-/* modal transition 動畫設置  */
+/* 桌機漢堡動畫設置  */
 .hamburger-enter-active,
 .hamburger-leave-active {
   transition: all 0.5s ease;
@@ -440,5 +460,30 @@ onMounted(async () => {
 .hamburger-leave-to {
   opacity: 0;
   transform: translateY(-20px);
+}
+
+/* 移動裝置漢堡 動畫設置  */
+.hamburgerM-enter-active,
+.hamburgerM-leave-active {
+  transition: all 0.5s ease;
+}
+.hamburgerM-enter-from {
+  opacity: 0;
+  transform: translateY(0);
+}
+
+.hamburgerM-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hamburgerM-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hamburgerM-leave-to {
+  opacity: 0;
+  transform: translateY(0);
 }
 </style>

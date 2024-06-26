@@ -16,6 +16,8 @@ const experienceCourses: any = ref({})
 const trainingCourses: any = ref({})
 const allCourseInfo: any = ref({})
 
+const isCardLoading = ref(false)
+
 // const isLogin = ref<boolean>()
 
 // 定義接收的 props
@@ -25,10 +27,11 @@ const props = defineProps({
 
 let data: any = {
   courseTerm: props.courseTerm,
-  pageSize: 6
+  pageSize: 10
 }
 
 async function getCourse() {
+  isCardLoading.value = true
   try {
     let query = ''
     let res = null
@@ -46,6 +49,7 @@ async function getCourse() {
   } catch (e) {
     showToast('發生錯誤，請聯繫客服人員')
   }
+  isCardLoading.value = false
 }
 
 function request(result: { statusCode: number; data: any }) {
@@ -171,6 +175,7 @@ onMounted(async () => {
     :pagination="false"
     :modules="modules"
     class="productCardSwiper grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
+    v-if="!isCardLoading"
   >
     <swiper-slide v-for="item in experienceCourses" :key="item.id">
       <NuxtLink
@@ -237,6 +242,7 @@ onMounted(async () => {
         </div>
       </NuxtLink>
     </swiper-slide>
+
     <swiper-slide v-for="item in trainingCourses" :key="item.id">
       <NuxtLink
         :to="{ name: 'index-index-course-id', params: { id: item._id } }"
@@ -307,6 +313,7 @@ onMounted(async () => {
         :to="{ name: 'index-index-course-id', params: { id: item._id } }"
         class="group flex h-full flex-col justify-between"
         :id="item._id"
+        v-if="!isCardLoading"
       >
         <div>
           <div class="relative mx-auto mb-2">
@@ -366,6 +373,57 @@ onMounted(async () => {
           </div>
         </div>
       </NuxtLink>
+    </swiper-slide>
+  </swiper>
+
+  <!-- 收藏元件 Skeleton loader -->
+  <swiper
+    :navigation="true"
+    :space-between="30"
+    :breakpoints="{
+      '375': {
+        slidesPerView: 2
+      },
+      '576': {
+        slidesPerView: 2
+      },
+      '768': {
+        slidesPerView: 3
+      },
+      '1024': {
+        slidesPerView: 5
+      }
+    }"
+    :pagination="false"
+    :modules="modules"
+    class="productCardSwiper grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
+    v-if="isCardLoading"
+  >
+    <swiper-slide v-for="n in 5" :key="n">
+      <div class="flex h-full flex-col justify-between">
+        <div>
+          <div class="mx-auto mb-2">
+            <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
+              <div class="h-full w-full rounded object-cover"></div>
+            </div>
+          </div>
+          <div class="mb-2 flex space-x-2">
+            <div
+              class="mb-2 self-start whitespace-nowrap rounded-[4px] bg-gray2 px-2 py-0.5 text-sm leading-6 text-transparent"
+            >
+              體驗
+            </div>
+            <div class="line-clamp-2 bg-gray2 text-transparent">課程名稱 placeholder</div>
+          </div>
+        </div>
+        <div>
+          <span class="mb-1 block bg-gray2 text-transparent">品牌名稱 placeholder</span>
+          <div class="flex items-center">
+            <div class="mr-1 bg-gray2 text-transparent">NT$</div>
+            <div class="bg-gray2 text-transparent">$1,000</div>
+          </div>
+        </div>
+      </div>
     </swiper-slide>
   </swiper>
 </template>

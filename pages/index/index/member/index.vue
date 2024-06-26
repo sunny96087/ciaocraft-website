@@ -523,28 +523,31 @@ onMounted(async () => {
       <!-- 訂單元件 -->
       <ul class="space-y-3" v-if="hasData && currentView === 'orders'">
         <li v-for="item in filterOrders" :key="item._id">
-          <component :is="content[currentView]" :key="currentView" :order="item"></component>
+          <!-- <component :is="content[currentView]" :key="currentView" :order="item"></component> -->
+          <FrontMemberOrderCard :order="item"></FrontMemberOrderCard>
         </li>
       </ul>
       <!-- 訂單元件 Skeleton loader -->
       <div class="space-y-3" v-if="currentView === 'orders' && isCardLoading">
         <div v-for="n in 5" :key="n">
-          <div class="w-full items-center rounded-lg bg-slate-100 p-4 md:flex md:justify-between">
+          <div
+            class="w-full items-center rounded-[4px] bg-slate-100 p-4 md:flex md:justify-between"
+          >
             <div class="mb-8 flex items-center md:m-0">
               <div class="mr-6 h-[120px] w-[120px] animate-pulse rounded-lg bg-slate-200"></div>
               <div class="space-y-1">
-                <div class="rounded-lg bg-slate-200 text-sm text-transparent">課程名稱</div>
-                <div class="rounded-lg bg-slate-200 text-sm text-transparent">品牌名稱</div>
+                <div class="rounded-[4px] bg-slate-200 text-sm text-transparent">課程名稱</div>
+                <div class="rounded-[4px] bg-slate-200 text-sm text-transparent">品牌名稱</div>
                 <div class="animate-pulse space-x-1 text-sm text-transparent">
-                  <span class="rounded-lg bg-slate-200">總計</span>
-                  <span class="rounded-lg bg-slate-200">NT$ 1,000</span>
+                  <span class="rounded-[4px] bg-slate-200">總計</span>
+                  <span class="rounded-[4px] bg-slate-200">NT$ 1,000</span>
                 </div>
                 <div class="animate-pulse space-x-1 text-sm text-transparent">
-                  <span class="rounded-lg bg-slate-200">訂單編號 </span>
-                  <span class="break-all rounded-lg bg-slate-200">000000000000000000</span>
+                  <span class="rounded-[4px] bg-slate-200">訂單編號 </span>
+                  <span class="break-all rounded-[4px] bg-slate-200">000000000000000000</span>
                 </div>
                 <span
-                  class="inline-block rounded-full bg-slate-200 px-2 py-1 text-sm text-transparent"
+                  class="inline-block rounded-[4px] bg-slate-200 px-2 py-1 text-sm text-transparent"
                   >付款狀態</span
                 >
               </div>
@@ -571,12 +574,16 @@ onMounted(async () => {
         v-if="hasData && currentView === 'collections' && !isCardLoading"
       >
         <li v-for="item in filterCollection" :key="item._id">
-          <component
+          <!-- <component
             :is="content[currentView]"
             :key="currentView"
             :collection="item"
             @refecthCollections="handleRefreshCollections"
-          ></component>
+          ></component> -->
+          <FrontMemberCourseCard
+            :collection="item"
+            @refecthCollections="handleRefreshCollections"
+          ></FrontMemberCourseCard>
         </li>
       </ul>
 
@@ -587,8 +594,8 @@ onMounted(async () => {
       >
         <div v-for="n in 5" :key="n">
           <div class="space-y-2">
-            <div class="aspect-square animate-pulse rounded-lg">
-              <div class="h-full w-full bg-slate-200"></div>
+            <div class="aspect-square animate-pulse">
+              <div class="h-full w-full rounded-lg bg-slate-200"></div>
             </div>
             <div class="flex space-x-2">
               <div
@@ -597,23 +604,27 @@ onMounted(async () => {
                 體驗
               </div>
               <div
-                class="w-full animate-pulse rounded-[4px] bg-slate-200 px-2 py-0.5 text-transparent"
+                class="line-clamp-2 w-full animate-pulse text-wrap rounded-[4px] bg-slate-200 px-2 py-0.5 text-transparent"
               >
                 課程名稱 placeholder
               </div>
             </div>
             <div class="flex flex-col space-y-2">
-              <span class="animate-pulse self-start bg-slate-200 text-transparent"
-                >品牌名稱 placeholder</span
+              <div
+                class="line-clamp-2 animate-pulse self-start text-wrap rounded-[4px] bg-slate-200 text-transparent"
               >
-              <span class="animate-pulse self-start bg-slate-200 text-transparent">NT$ 0,000</span>
+                品牌名稱 placeholder
+              </div>
+              <div class="animate-pulse self-start rounded-[4px] bg-slate-200 text-transparent">
+                NT$ 0,000
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- No Data -->
-      <div class="" v-if="!hasData">
+      <div class="" v-if="!hasData && !isCardLoading">
         <div class="mx-auto max-w-[600px] p-8 md:p-14">
           <img
             src="/assets/images/nodata.png"

@@ -62,7 +62,7 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
         </div>
-        <div class="px-8">
+        <div class="md:px-8">
           <front-product-card-swiper courseTerm="0" />
         </div>
       </div>
@@ -74,7 +74,7 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
         </div>
-        <div class="px-8">
+        <div class="md:px-8">
           <front-product-card-swiper courseTerm="1" />
         </div>
       </div>
@@ -86,7 +86,7 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
             <Icon name="ph:caret-right" class="text-xl text-primary" />
           </button>
         </div>
-        <div class="px-8">
+        <div class="md:px-8">
           <front-product-card-swiper />
         </div>
       </div>

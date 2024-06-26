@@ -10,6 +10,9 @@ const memberStore = useMemberStore()
 const uploadStore = useUploadStore()
 
 // const googleUrl = ref(authStore.apiUrl + '/auth/google')
+
+// 取得會員資料
+const isMemberLoding = ref(false)
 const memberEmail = ref('')
 const member: any = ref({
   email: '會員email',
@@ -22,16 +25,23 @@ const member: any = ref({
   interests: [],
   googleId: 'Google Email'
 })
-
-// 取得會員資料
-const isMemberLoding = ref(false)
+// 會員資料區
+// 監聽 memberStore.orders 的變化
+watch(
+  () => memberStore.member,
+  (newOrders, oldOrders) => {
+    member.value = newOrders
+  }
+)
 const fetchMemberData = async () => {
   isMemberLoding.value = true
   try {
     const res: any = await memberStore.getMember()
     const result = res.data
-    member.value = result.data
-    member.value.birthday = result.data.birthday.split('T')[0]
+    memberStore.member = result.data
+    memberStore.member.birthday = result.data.birthday.split('T')[0]
+    // member.value = result.data
+    // member.value.birthday = result.data.birthday.split('T')[0]
     memberEmail.value = result.data.email ? result.data.email : result.data.googleAccount
   } catch (error) {
     showToast('取得會員資料失敗')
@@ -48,6 +58,7 @@ const clickFileInput = () => {
 
 // 圖片上傳
 const handleFileUpload = async (event: any, type: string) => {
+  showToast('圖片上傳中')
   const file = event.target.files[0]
   const formData: any = new FormData()
   formData.append('file', file)
