@@ -10,10 +10,9 @@ export const useAuthStore = defineStore('auth', {
     name: null as any,
     token: null as any,
     photo: null as any,
-    isLogin: null as any,
+    isLogin: false as any,
     isLoginModalOpen: false as boolean
   }),
-  getters: {},
   actions: {
     async login(data: JsonObject) {
       return await axios.post(`${this.apiUrl}/auth/signin`, data)
@@ -66,13 +65,18 @@ export const useAuthStore = defineStore('auth', {
         }
       })
     },
-    logout() {
+    async logout() {
+      const memberStore = useMemberStore()
       localStorage.removeItem('memberId')
       localStorage.removeItem('token')
-      this.isLogin = false
+      localStorage.removeItem('photo')
       // 刷新頁面，清空資料
       if (process.client) {
-        window.location.reload()
+        // window.location.reload()
+        memberStore.member = {}
+        memberStore.collections = []
+        memberStore.orders = []
+        this.isLogin = false
       }
     },
 

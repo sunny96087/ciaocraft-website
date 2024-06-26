@@ -46,6 +46,14 @@ const toMemberAndClickTab = (tab: string): void => {
 
 // 會員資料區
 const member: any = ref({})
+// 監聽 memberStore.orders 的變化
+watch(
+  () => memberStore.member,
+  (newOrders, oldOrders) => {
+    member.value = newOrders
+  }
+)
+
 const fetchMember = async () => {
   try {
     const res = await memberStore.getMember()
@@ -59,10 +67,15 @@ const fetchMember = async () => {
 }
 
 const isLogin = ref<boolean>()
+watch(
+  () => authStore.isLogin,
+  (newValue) => {
+    isLogin.value = newValue
+  }
+)
 
 const signOut = (): void => {
   authStore.logout()
-  router.push('/')
 }
 
 onMounted(async () => {

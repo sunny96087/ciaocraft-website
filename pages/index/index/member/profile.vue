@@ -24,7 +24,9 @@ const member: any = ref({
 })
 
 // 取得會員資料
+const isMemberLoding = ref(false)
 const fetchMemberData = async () => {
+  isMemberLoding.value = true
   try {
     const res: any = await memberStore.getMember()
     const result = res.data
@@ -34,6 +36,7 @@ const fetchMemberData = async () => {
   } catch (error) {
     showToast('取得會員資料失敗')
   }
+  isMemberLoding.value = false
 }
 
 // 上傳圖片，點擊編輯照片按鈕時觸發隱藏的圖片上傳輸入框
@@ -108,8 +111,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-gray1 p-5 lg:px-[100px]">
-    <div class="mx-auto py-6 lg:max-w-screen-xl">
+  <div class="bg-gray1 py-5 lg:px-[100px]">
+    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
       <h1 class="mb-3 mt-3 text-4xl lg:text-4xl">會員資料</h1>
       <p class="mb-8 text-base">
         請放心，你的電子郵件及所有與品牌溝通的訊息、檔案及相關購買資料，網站將依照個人資料保護法保障你的個人隱私！
@@ -119,7 +122,7 @@ onMounted(() => {
           <!-- 大頭貼 -->
           <div
             class="mb-3 aspect-square max-h-[160px] max-w-[160px] overflow-hidden"
-            v-if="!isUpdating"
+            v-if="!isUpdating && !isMemberLoding"
           >
             <img
               :src="member.photo || defaultAvatar"
@@ -129,10 +132,10 @@ onMounted(() => {
           </div>
           <div
             class="mb-3 aspect-square max-h-[160px] max-w-[160px] animate-pulse overflow-hidden"
-            v-else
+            v-if="isUpdating || isMemberLoding"
           >
             <div class="flex h-full w-full items-center justify-center rounded-full bg-gray3">
-              圖片上傳中...
+              圖片載入中...
             </div>
           </div>
           <button

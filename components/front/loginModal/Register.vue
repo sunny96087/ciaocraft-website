@@ -35,7 +35,6 @@ const registerMember = async () => {
       .then((res) => {
         hideLoading()
         const result = res.data
-        console.log('result', result)
         if (result.status === 'success') {
           authStore.setMember(result.user)
           showToast('登入成功')

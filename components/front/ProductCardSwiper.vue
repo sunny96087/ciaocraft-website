@@ -145,7 +145,7 @@ onMounted(async () => {
       fetchMemberCollection()
     }
   } catch (err) {
-    console.log('header checkLogin err', err)
+    showToast('發生錯誤，請聯繫客服人員')
   }
 })
 </script>

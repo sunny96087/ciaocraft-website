@@ -1,16 +1,15 @@
-// 可以用於驗證是否登入，如果沒有登入就導向首頁
 export default defineNuxtRouteMiddleware(async (to, from) => {
+    // 驗證權限頁面，監控 isLogin 如非登入狀態則導向首頁
     const authStore = useAuthStore()
-    const nuxtApp = useNuxtApp()
-    if (process.client && nuxtApp.isHydrating && nuxtApp.payload.serverRendered) {
-        return
-    }
-    else {
-        authStore.checkLogin()
-        if (authStore.isLogin) {
-            return
-        } else {
-            return navigateTo('/')
+    watch(
+        () => authStore.isLogin,
+        (newValue) => {
+            if (!newValue) {
+                return navigateTo('/');
+            }
+            else {
+                return
+            }
         }
-    }
+    )
 })

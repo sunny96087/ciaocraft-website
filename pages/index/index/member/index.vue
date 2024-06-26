@@ -1,27 +1,41 @@
 <script setup lang="ts">
-import { useMemberStore } from '~/stores/member'
-
 // 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
 definePageMeta({
   middleware: ['auth']
 })
+
 import defaultAvatar from '~/assets/images/front/member/default-avatar.jpg'
 
 const memberStore = useMemberStore()
-const router = useRouter()
 const route = useRoute()
 
 // 會員資料區
 const member: any = ref({})
+const memberPhoto: any = ref('')
+const isMemberLoading = ref(false)
 const fetchMember = async () => {
+  isMemberLoading.value = true
   try {
     const res = await memberStore.getMember()
     const result = res.data
     member.value = result.data
+    if (memberPhoto.value == '') {
+      memberPhoto.value = member.value.photo
+    }
   } catch (err) {
     showToastError('取得會員資料失敗，請重新登入')
   }
+  isMemberLoading.value = false
 }
+
+// 監聽 memberStore.orders 的變化
+watch(
+  () => memberStore.orders,
+  (newOrders, oldOrders) => {
+    memberOrders.value = newOrders
+    filterOrders.value = newOrders
+  }
+)
 
 // 訂單和收藏區
 const currentView = ref('orders') // 當前畫面
@@ -33,15 +47,6 @@ let memberCollections: any = ref([])
 let memberOrders: any = ref([])
 let filterCollection: any = ref([])
 let filterOrders: any = ref([])
-
-// 監聽 memberStore.orders 的變化
-watch(
-  () => memberStore.orders,
-  (newOrders, oldOrders) => {
-    memberOrders.value = newOrders
-    filterOrders.value = newOrders
-  }
-)
 
 watch(
   () => memberStore.collections,
@@ -67,20 +72,15 @@ const content: any = {
 
 const isCardLoading = ref(false)
 const renderCurrentView = async (viewName: string) => {
-  // showLoading()
   currentView.value = viewName
   isCardLoading.value = true
-  // if (viewName === 'orders') {
-  //   await fetchOrdersData()
-  // } else {
-  //   await fetchCollectionData()
-  // }
-  // 先兩個都跑加速載入速度
-  await fetchOrdersData()
-  await fetchCollectionData()
+  if (viewName === 'orders') {
+    await fetchOrdersData()
+  } else {
+    await fetchCollectionData()
+  }
   setFilter(filter.value)
   isCardLoading.value = false
-  // hideLoading()
 }
 
 // 排序下拉選單
@@ -110,7 +110,7 @@ const handleSort = (orderName: string) => {
   }
 }
 
-// 透過 filter 名稱篩選資料
+// 透過 filter tags 名稱篩選資料
 const setFilter: any = (filterName: string) => {
   showDropdown.value = false
   filter.value = filterName
@@ -188,7 +188,6 @@ const fetchOrdersData = async () => {
     }
   } catch (err) {
     showToastError('取得訂單資料失敗，請聯繫客服人員')
-    // router.push('/error')
   }
 }
 
@@ -207,10 +206,10 @@ const fetchCollectionData = async () => {
     }
   } catch (err) {
     showToastError('取得收藏資料失敗，請聯繫客服人員')
-    // router.push('/error')
   }
 }
 
+// 持續監聽路由的 query 參數切換畫面
 const tab = watch(
   () => route.query.tab,
   (tab) => {
@@ -222,8 +221,9 @@ const tab = watch(
   }
 )
 
-onMounted(() => {
+onMounted(async () => {
   fetchMember()
+  // 元件初始時，判斷路由 query 參數切換畫面
   if (route.query.tab === 'collections') {
     renderCurrentView('collections')
   } else {
@@ -234,15 +234,26 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-gray1 p-5 lg:px-[80px]">
-    <div class="mx-auto py-14 lg:max-w-screen-xl">
-      <div class="mx-auto mb-14 flex space-x-8">
+  <div class="bg-gray1 py-5 lg:px-[100px]">
+    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+      <div class="mx-auto mb-14 flex space-x-8" :class="{ 'animate-pulse': isMemberLoading }">
         <!-- 大頭貼 -->
         <div
           class="aspect-square max-h-[120px] w-1/3 max-w-[120px] overflow-hidden md:max-h-[180px] md:max-w-[180px]"
+          v-if="!isMemberLoading"
         >
           <img
-            :src="member.photo || defaultAvatar"
+            :src="memberPhoto || defaultAvatar"
+            alt="member-photo"
+            class="h-full w-full rounded-full bg-gray3 object-cover"
+          />
+        </div>
+        <div
+          class="aspect-square max-h-[120px] w-1/3 max-w-[120px] animate-pulse overflow-hidden md:max-h-[180px] md:max-w-[180px]"
+          v-if="isMemberLoading"
+        >
+          <img
+            :src="memberPhoto || defaultAvatar"
             alt="member-photo"
             class="h-full w-full rounded-full bg-gray3 object-cover"
           />
@@ -252,8 +263,8 @@ onMounted(() => {
           <div class="mb-6 space-y-3 md:mb-0">
             <div class="block text-sm">Hello!</div>
             <div>
-              <div class="text-xl md:text-base">{{ member.nickname || '會員暱稱未提供' }}</div>
-              <div class="text-sm">{{ member.email || '會員 email 未提供' }}</div>
+              <div class="text-xl md:text-base">{{ member.nickname || '會員暱稱' }}</div>
+              <div class="text-sm">{{ member.email || '會員 email ' }}</div>
             </div>
             <div>
               <NuxtLink
