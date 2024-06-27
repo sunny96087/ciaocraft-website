@@ -521,7 +521,7 @@ onMounted(async () => {
         </div>
       </div>
       <!-- 訂單元件 -->
-      <ul class="space-y-3" v-if="hasData && currentView === 'orders'">
+      <ul class="space-y-3" v-if="hasData && currentView === 'orders' && !isCardLoading">
         <li v-for="item in filterOrders" :key="item._id">
           <!-- <component :is="content[currentView]" :key="currentView" :order="item"></component> -->
           <FrontMemberOrderCard :order="item"></FrontMemberOrderCard>
