@@ -400,27 +400,27 @@ onMounted(async () => {
     v-if="isCardLoading"
   >
     <swiper-slide v-for="n in 5" :key="n">
-      <div class="flex h-full flex-col justify-between">
+      <div class="flex h-full animate-pulse flex-col justify-between">
         <div>
           <div class="mx-auto mb-2">
-            <div class="mx-auto aspect-square overflow-hidden rounded bg-gray2">
+            <div class="mx-auto aspect-square overflow-hidden rounded bg-gray3">
               <div class="h-full w-full rounded object-cover"></div>
             </div>
           </div>
           <div class="mb-2 flex space-x-2">
             <div
-              class="mb-2 self-start whitespace-nowrap rounded-[4px] bg-gray2 px-2 py-0.5 text-sm leading-6 text-transparent"
+              class="mb-2 self-start whitespace-nowrap rounded-[4px] bg-gray3 px-2 py-0.5 text-sm leading-6 text-transparent"
             >
               體驗
             </div>
-            <div class="line-clamp-2 bg-gray2 text-transparent">課程名稱 placeholder</div>
+            <div class="line-clamp-2 bg-gray3 text-transparent">課程名稱 placeholder</div>
           </div>
         </div>
         <div>
-          <span class="mb-1 block bg-gray2 text-transparent">品牌名稱 placeholder</span>
+          <span class="mb-1 block bg-gray3 text-transparent">品牌名稱 placeholder</span>
           <div class="flex items-center">
-            <div class="mr-1 bg-gray2 text-transparent">NT$</div>
-            <div class="bg-gray2 text-transparent">$1,000</div>
+            <div class="mr-1 bg-gray3 text-transparent">NT$</div>
+            <div class="bg-gray3 text-transparent">$1,000</div>
           </div>
         </div>
       </div>

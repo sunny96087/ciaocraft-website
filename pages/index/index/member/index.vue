@@ -249,7 +249,7 @@ onMounted(async () => {
           />
         </div>
         <div
-          class="aspect-square max-h-[120px] w-1/3 max-w-[120px] animate-pulse overflow-hidden md:max-h-[180px] md:max-w-[180px]"
+          class="aspect-square max-h-[120px] w-1/3 max-w-[120px] overflow-hidden md:max-h-[180px] md:max-w-[180px]"
           v-if="isMemberLoading"
         >
           <img
@@ -528,38 +528,37 @@ onMounted(async () => {
         </li>
       </ul>
       <!-- 訂單元件 Skeleton loader -->
-      <div class="space-y-3" v-if="currentView === 'orders' && isCardLoading">
+      <div class="animate-pulse space-y-3" v-if="currentView === 'orders' && isCardLoading">
         <div v-for="n in 5" :key="n">
           <div
-            class="w-full items-center rounded-[4px] bg-slate-100 p-4 md:flex md:justify-between"
+            class="w-full items-center rounded-[4px] border-[1px] border-solid border-gray4 bg-gray1 p-4 md:flex md:justify-between"
           >
             <div class="mb-8 flex items-center md:m-0">
-              <div class="mr-6 h-[120px] w-[120px] animate-pulse rounded-lg bg-slate-200"></div>
+              <div class="mr-6 h-[120px] w-[120px] rounded-lg bg-gray4"></div>
               <div class="space-y-1">
-                <div class="rounded-[4px] bg-slate-200 text-sm text-transparent">課程名稱</div>
-                <div class="rounded-[4px] bg-slate-200 text-sm text-transparent">品牌名稱</div>
-                <div class="animate-pulse space-x-1 text-sm text-transparent">
-                  <span class="rounded-[4px] bg-slate-200">總計</span>
-                  <span class="rounded-[4px] bg-slate-200">NT$ 1,000</span>
+                <div class="rounded-[4px] bg-gray4 text-sm text-transparent">課程名稱</div>
+                <div class="rounded-[4px] bg-gray4 text-sm text-transparent">品牌名稱</div>
+                <div class="space-x-1 text-sm text-transparent">
+                  <span class="rounded-[4px] bg-gray4">總計</span>
+                  <span class="rounded-[4px] bg-gray4">NT$ 1,000</span>
                 </div>
-                <div class="animate-pulse space-x-1 text-sm text-transparent">
-                  <span class="rounded-[4px] bg-slate-200">訂單編號 </span>
-                  <span class="break-all rounded-[4px] bg-slate-200">000000000000000000</span>
+                <div class="space-x-1 text-sm text-transparent">
+                  <span class="rounded-[4px] bg-gray4">訂單編號 </span>
+                  <span class="break-all rounded-[4px] bg-gray4">000000000000000000</span>
                 </div>
-                <span
-                  class="inline-block rounded-[4px] bg-slate-200 px-2 py-1 text-sm text-transparent"
+                <span class="inline-block rounded-[4px] bg-gray4 px-2 py-1 text-sm text-transparent"
                   >付款狀態</span
                 >
               </div>
             </div>
             <div class="space-y-3">
               <div
-                class="block rounded bg-slate-200 py-2 text-center text-transparent transition md:px-10"
+                class="block rounded bg-gray4 py-2 text-center text-transparent transition md:px-10"
               >
                 訂單詳情
               </div>
               <div
-                class="block rounded bg-slate-200 py-2 text-center text-transparent transition md:px-10"
+                class="block rounded bg-gray4 py-2 text-center text-transparent transition md:px-10"
               >
                 訂單詳情
               </div>
@@ -589,35 +588,33 @@ onMounted(async () => {
 
       <!-- 收藏元件 Skeleton loader -->
       <div
-        class="grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
+        class="grid animate-pulse grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
         v-if="currentView === 'collections' && isCardLoading"
       >
         <div v-for="n in 5" :key="n">
           <div class="space-y-2">
-            <div class="aspect-square animate-pulse">
-              <div class="h-full w-full rounded-lg bg-slate-200"></div>
+            <div class="aspect-square">
+              <div class="h-full w-full rounded-lg bg-gray3"></div>
             </div>
             <div class="flex space-x-2">
               <div
-                class="animate-pulse self-start whitespace-nowrap rounded-[4px] bg-slate-200 px-2 py-0.5 text-transparent"
+                class="self-start whitespace-nowrap rounded-[4px] bg-gray3 px-2 py-0.5 text-transparent"
               >
                 體驗
               </div>
               <div
-                class="line-clamp-2 w-full animate-pulse text-wrap rounded-[4px] bg-slate-200 px-2 py-0.5 text-transparent"
+                class="line-clamp-2 w-full text-wrap rounded-[4px] bg-gray3 px-2 py-0.5 text-transparent"
               >
                 課程名稱 placeholder
               </div>
             </div>
             <div class="flex flex-col space-y-2">
               <div
-                class="line-clamp-2 animate-pulse self-start text-wrap rounded-[4px] bg-slate-200 text-transparent"
+                class="line-clamp-2 self-start text-wrap rounded-[4px] bg-gray3 text-transparent"
               >
                 品牌名稱 placeholder
               </div>
-              <div class="animate-pulse self-start rounded-[4px] bg-slate-200 text-transparent">
-                NT$ 0,000
-              </div>
+              <div class="self-start rounded-[4px] bg-gray3 text-transparent">NT$ 0,000</div>
             </div>
           </div>
         </div>
