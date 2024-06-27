@@ -17,7 +17,9 @@ const courseId = ref('id')
 const courseImage = ref('')
 const vendorId = ref('id')
 
+const isLoading = ref(false)
 const fetchOrder = async () => {
+  isLoading.value = true
   try {
     const res = await orderStore.getMemberOrderByOrderId(orderId)
     const result = res.data
@@ -28,6 +30,7 @@ const fetchOrder = async () => {
   } catch (err) {
     showToast('取得訂單失敗，請聯繫客服人員')
   }
+  isLoading.value = false
 }
 
 const rating: any = ref(0)
@@ -142,8 +145,8 @@ const createComment = async () => {
   }
 }
 
-onMounted(() => {
-  fetchOrder()
+onMounted(async () => {
+  await fetchOrder()
 })
 </script>
 <template>
@@ -156,6 +159,7 @@ onMounted(() => {
         </p>
         <div
           class="mb-8 flex items-center space-x-6 rounded border-[1px] border-solid border-gray3 bg-white p-3"
+          v-if="!isLoading"
         >
           <div class="group aspect-square max-w-32 overflow-hidden rounded bg-gray2">
             <NuxtLink :to="{ name: 'index-index-course-id', params: { id: courseId } }">
@@ -183,6 +187,23 @@ onMounted(() => {
             </NuxtLink>
           </div>
         </div>
+
+        <!-- 課程 skeleton -->
+        <div
+          class="mb-8 flex items-center space-x-6 rounded border-[1px] border-solid border-gray3 bg-gray2 p-3"
+          v-if="isLoading"
+        >
+          <div class="aspect-square overflow-hidden rounded">
+            <div class="h-32 w-32 rounded bg-gray3 object-cover"></div>
+          </div>
+          <div class="space-y-2">
+            <div class="line-clamp-1 bg-gray3 text-lg text-transparent">
+              --- 課程名稱 placeholder ---
+            </div>
+            <div class="bg-gray3 text-sm text-transparent">品牌名稱</div>
+          </div>
+        </div>
+
         <div class="mb-5">
           <label for="rating" class="mb-2">為整個課程體驗打個分數 </label>
           <div class="flex items-center space-x-1 py-3 text-4xl">

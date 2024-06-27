@@ -9,63 +9,65 @@ import defaultImage from '~/assets/images/front/member/default-image.jpg'
 const orderStore = useOrderStore()
 const route = useRoute()
 const orderId: any = route.params.id
+const today = new Date().toString()
 
 const order = ref({
-  _id: '[id]',
-  courseId: '[id]',
-  brandName: '品牌名稱',
-  courseName: '課程名稱',
-  courseItemName: '1900-01-01 00:00:00',
-  coureTime: '1900-01-01 00:00:00',
-  courseImage: '圖片連結',
+  _id: '[訂單編號]',
+  courseId: '[課程編號]',
+  brandName: '[品牌名稱]',
+  courseName: '[課程名稱]',
+  courseItemName: '[課程項目]',
+  coureTime: '[課程時間]',
   price: 0,
   count: 0,
   totalPrice: 0,
-  paidStatus: 0,
-  courseLocation: '教室地點',
+  paidStatus: 8,
+  courseLocation: '[上課地點]',
   commentId: '',
-  createdAt: '1900-01-01 00:00:00'
+  createdAt: today
 })
 
 const course = ref({
   _id: '[id]',
-  courseAddress: '',
-  courseImage: ['']
+  courseAddress: '[課程地址]',
+  courseImage: ''
 })
 
 const vendor = ref({
-  representative: '負責人名稱',
-  bankName: '銀行名稱',
-  bankAccountName: '帳戶名稱',
-  bankAccount: '銀行帳號',
-  bankCode: '銀號代碼',
-  bankBranch: '分行名稱'
+  representative: '[負責人]',
+  bankName: '[銀行名稱]',
+  bankAccountName: '[帳號名稱]',
+  bankAccount: '[帳號]',
+  bankCode: '[銀行代碼]',
+  bankBranch: '[分行]'
 })
 
 const comment = ref({
-  _id: 'id',
-  content: '評論內容',
+  _id: '[評論id]',
+  content: '[評論內容]',
   rating: 0,
-  createdAt: '1900-01-01 00:00:00',
+  createdAt: '',
   images: [],
   tags: [],
   likes: []
 })
 
 const rating: any = ref(0)
-
 const fetchOrder = async (orderId: string) => {
+  showLoading()
   try {
     const res = await orderStore.getMemberOrderByOrderId(orderId)
     const result = res.data
     order.value = result.data
     vendor.value = result.data.vendorId
     course.value = result.data.courseId
+    course.value.courseImage = result.data.courseId.courseImage[0]
     comment.value = result.data.commentId ? result.data.commentId : {}
     rating.value = result.data.commentId ? result.data.commentId.rating : 0
   } catch (err) {
     showToast('訂單資料載入失敗，請重新整理頁面')
   }
+  hideLoading()
 }
 
 // 依照付款狀態 付款方式文字內容
@@ -88,7 +90,7 @@ const getOrderStatusName = (status: number) => {
     case 7:
       return '訂單取消(已退款)'
     default:
-      return '錯誤'
+      return '訂單狀態'
   }
 }
 
@@ -136,7 +138,7 @@ const getBtnTextByPaidStatus = (status: number) => {
     case 7:
       return '訂單取消(已退款)'
     default:
-      return '訂單出現錯誤，請聯繫客服人員'
+      return '訂單狀態'
   }
 }
 
@@ -263,7 +265,7 @@ onMounted(() => {
             >
               <NuxtLink :to="{ name: 'index-index-course-id', params: { id: course._id } }">
                 <img
-                  :src="course.courseImage[0] || defaultImage"
+                  :src="course.courseImage || defaultImage"
                   alt="course-img"
                   class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
                 />
@@ -360,7 +362,7 @@ onMounted(() => {
                     恭喜你完成課程，試著將完課的體驗心得分享給其他也有興趣的朋友們，也可累積點數享優惠喔!
                   </p>
                   <NuxtLink
-                    :to="{ path: '/member/comment', query: { orderId: order._id } }"
+                    :to="{ name: 'index-index-member-comment-id', params: { id: order._id } }"
                     v-if="order.paidStatus === 3 && !order.commentId"
                     class="block w-full rounded bg-primary py-2 text-center tracking-[0.5px] text-white transition hover:bg-primary-light"
                   >
