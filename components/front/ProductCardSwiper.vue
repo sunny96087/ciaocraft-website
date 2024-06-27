@@ -47,7 +47,7 @@ async function getCourse() {
     const result = res.data
     request(result)
   } catch (e) {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
   }
   isCardLoading.value = false
 }
@@ -62,7 +62,7 @@ function request(result: { statusCode: number; data: any }) {
       allCourseInfo.value = result.data
     }
   } else {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log('取得課程資料失敗')
   }
 }
@@ -85,7 +85,7 @@ const fetchMemberCollection = async () => {
     memberStore.collections = result.data
     memberCollection.value = memberStore.collections
   } catch (err) {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
   }
 }
 
@@ -112,11 +112,11 @@ const addCollection = async (courseId: string) => {
       if (result.statusCode === 200) {
         memberStore.collections.push(result.data)
       } else {
-        showToast('收藏失敗，請聯繫客服人員')
+        showToast('收藏失敗，請聯繫客服人員', 'error')
       }
     }
   } catch (e) {
-    showToast('收藏失敗，請聯繫客服人員')
+    showToast('收藏失敗，請聯繫客服人員', 'error')
   }
 }
 
@@ -134,10 +134,10 @@ const removeCollection = async (courseId: string) => {
         (item: any) => item.courseId !== courseId
       )
     } else {
-      showToast('取消收藏失敗，請聯繫客服人員')
+      showToast('取消收藏失敗，請聯繫客服人員', 'error')
     }
   } catch (e) {
-    showToast('取消收藏失敗，請聯繫客服人員')
+    showToast('取消收藏失敗，請聯繫客服人員', 'error')
   }
 }
 

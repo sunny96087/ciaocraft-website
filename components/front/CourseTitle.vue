@@ -15,15 +15,31 @@ const formattedPrice = (price: number): string => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-onMounted(async () => {
-  await fetchMemberCollection()
-  checkIfCollected(courseStore.oneCourseData[0].id)
-  console.log(isCollected.value)
-})
-
 const memberStore = useMemberStore()
 const authStore = useAuthStore()
 const isCollected = ref(false)
+const router = useRouter()
+
+onMounted(async () => {
+  courseStore.resetoneCourseData()
+  try {
+    authStore.checkLogin()
+    if (authStore.isLogin) {
+      await fetchMemberCollection()
+      watch(
+        () => courseStore.oneCourseData[0].id,
+        (newVal) => {
+          if (newVal.length > 0) {
+            checkIfCollected(newVal)
+          }
+        },
+        { immediate: true, deep: true }
+      )
+    }
+  } catch (err) {
+    console.log('header checkLogin err', err)
+  }
+})
 
 // 取得收藏資料
 let memberCollection: any = computed(() => memberStore.collections)
@@ -35,7 +51,7 @@ const fetchMemberCollection = async () => {
     memberStore.collections = result.data
     memberCollection.value = memberStore.collections
   } catch (err) {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
   }
 }
 
@@ -45,25 +61,46 @@ const checkIfCollected = (courseId: string) => {
 
 // 加入收藏
 const addCollection = async (courseId: string) => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  }
+
   try {
     if (authStore.isLogin) {
       let postData = {
         courseId: courseId
       }
-      if (isCollected.value) {
-        const res: any = await memberStore.addCollection(postData)
-        const result = res.data
+      const res: any = await memberStore.addCollection(postData)
+      const result = res.data
 
-        if (result.statusCode === 200) {
-          memberStore.collections.push(result.data)
-          showToast('課程已收藏')
-        } else {
-          showToast('收藏失敗，請聯繫客服人員')
-        }
-      }
+      request(result)
     }
   } catch (e) {
-    showToast('收藏失敗，請聯繫客服人員')
+    showToast('課程收藏失敗，請聯繫客服人員', 'error')
+  }
+}
+
+function request(result: { statusCode: number; data: any }) {
+  if (result.statusCode === 200) {
+    memberStore.collections.push(result.data)
+    isCollected.value = true
+    showToast('課程收藏成功')
+  } else {
+    showToast('課程收藏失敗，請聯繫客服人員', 'error')
+  }
+}
+
+// 登入/註冊 modal 控制
+const openLoginModal = (): void => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  } else {
+    router.push({
+      name: 'index-index-message',
+      query: { vendorId: courseStore.oneCourseData[0].vendorId._id }
+    })
   }
 }
 </script>
@@ -115,25 +152,29 @@ const addCollection = async (courseId: string) => {
     </div>
     <div class="mb-3 rounded">
       <button
-        class="flex w-full items-center justify-center text-lg leading-[3rem]"
+        class="flex w-full items-center justify-center bg-secondary text-lg leading-[3rem] text-white hover:bg-[#2B71BF]"
         @click="addCollection(courseStore.oneCourseData[0].id)"
-        :disabled="!isCollected"
-        :class="{
-          'bg-secondary text-white hover:bg-[#2B71BF]': isCollected,
-          'cursor-not-allowed bg-gray5': !isCollected
-        }"
+        v-if="!isCollected"
       >
         <Icon name="ph:star-bold" class="mr-2 text-xl" />
         收藏課程
       </button>
+      <button
+        class="flex w-full cursor-not-allowed items-center justify-center border border-primary bg-white text-lg leading-[3rem]"
+        v-else
+      >
+        <Icon name="ph:star-bold" class="mr-2 text-xl" />
+        已收藏
+      </button>
     </div>
     <div class="rounded border border-primary bg-white hover:bg-primary-light hover:text-white">
-      <NuxtLink to="/message">
-        <button class="flex w-full items-center justify-center text-lg leading-[3rem]">
-          <Icon name="ph:chats" class="mr-2 text-xl" />
-          品牌聊聊
-        </button>
-      </NuxtLink>
+      <button
+        class="flex w-full items-center justify-center text-lg leading-[3rem]"
+        @click="openLoginModal"
+      >
+        <Icon name="ph:chats" class="mr-2 text-xl" />
+        品牌聊聊
+      </button>
     </div>
   </div>
 </template>

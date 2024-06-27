@@ -25,6 +25,28 @@ const toggleSort = (): void => {
 //   isMoreOpen.value = false
 // }
 
+let filterOrders: any = ref([])
+// 處理排序
+const handleSort = (orderName: string) => {
+  if (orderName === 'newest') {
+    filterOrders.value = filterOrders.value.sort(
+      (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+  } else if (orderName === 'hot') {
+    filterOrders.value = filterOrders.value.sort((a: any, b: any) => {
+      if (a.courseTerm === 0 && b.courseTerm !== 0) return -1
+      if (a.courseTerm !== 0 && b.courseTerm === 0) return 1
+      return a.courseTerm - b.courseTerm
+    })
+  } else if (orderName === 'training') {
+    filterOrders.value = filterOrders.value.sort((a: any, b: any) => {
+      if (a.courseTerm === 1 && b.courseTerm !== 1) return -1
+      if (a.courseTerm !== 1 && b.courseTerm === 1) return 1
+      return b.courseTerm - a.courseTerm
+    })
+  }
+}
+
 // 放大評論照片 modal 控制
 const isPhotoModalOpen = ref<boolean>(false)
 const selectedImageUrl = ref<string>('')
@@ -62,7 +84,7 @@ async function getOneCourseComments() {
 
     request(result)
   } catch (e) {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log(e)
   } finally {
     hideLoading()
@@ -74,7 +96,7 @@ function request(result: { statusCode: number; data: any }) {
     courseInfo.value = result.data
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
   } else {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log('取得單一課程失敗')
   }
 }
@@ -124,7 +146,7 @@ function request(result: { statusCode: number; data: any }) {
             <li>
               <button
                 class="d-block w-full py-1 hover:bg-secondary hover:text-white"
-                @click="toggleSort"
+                @click="handleSort('newest')"
               >
                 最近時間
               </button>
@@ -132,17 +154,25 @@ function request(result: { statusCode: number; data: any }) {
             <li>
               <button
                 class="d-block w-full py-1 hover:bg-secondary hover:text-white"
-                @click="toggleSort"
+                @click="handleSort('hot')"
               >
-                評分最高
+                熱門評論
               </button>
             </li>
             <li>
               <button
                 class="d-block w-full py-1 hover:bg-secondary hover:text-white"
-                @click="toggleSort"
+                @click="handleSort('highScore')"
               >
-                評分最低
+                最高評分
+              </button>
+            </li>
+            <li>
+              <button
+                class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                @click="handleSort('lowScore')"
+              >
+                最低評分
               </button>
             </li>
           </ul>

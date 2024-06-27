@@ -52,7 +52,18 @@ export const useCourseStore = defineStore('course', {
         courseSuitableFor: '',
         courseContent: '',
         courseSkillsLearned: '',
-        courseNotice: ''
+        courseNotice: '',
+        courseItemId: [
+          {
+            capacity: 0,
+            // endTime: new Date('2024-08-17T00:00:00.000Z'),
+            endTime: '',
+            itemName: '',
+            // startTime: new Date('2024-08-17T00:00:00.000Z'),
+            startTime: '',
+            _id: ''
+          }
+        ]
       }
     ]
   }),
@@ -88,6 +99,17 @@ export const useCourseStore = defineStore('course', {
       console.log(data.courseId)
       console.log(`${apiUrl}/courses/${data.courseId}/comments`)
       return await axios.get(`${apiUrl}/courses/${data.courseId}/comments`)
+    },
+
+    // 新增訂單(預約)
+    async apiPostOrders(data: any) {
+      console.log(data)
+      console.log(`${apiUrl}/orders`)
+      return await axios.post(`${apiUrl}/orders`, data, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
     },
 
     async getCourseCollection(data: JsonObject) {
@@ -138,7 +160,18 @@ export const useCourseStore = defineStore('course', {
           courseSuitableFor: '',
           courseContent: '',
           courseSkillsLearned: '',
-          courseNotice: ''
+          courseNotice: '',
+          courseItemId: [
+            {
+              capacity: 0,
+              // endTime: new Date('2024-08-17T00:00:00.000Z'),
+              endTime: '',
+              itemName: '',
+              // startTime: new Date('2024-08-17T00:00:00.000Z'),
+              startTime: '',
+              _id: ''
+            }
+          ]
         }
       ]
     },

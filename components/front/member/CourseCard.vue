@@ -31,7 +31,7 @@ const removeCollection = (courseId: string) => {
       emit('refecthCollections', courseId)
     })
     .catch((e) => {
-      showToast('取消收藏失敗，請聯繫客服人員')
+      showToast('取消收藏失敗，請聯繫客服人員', 'error')
     })
 }
 </script>
