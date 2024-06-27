@@ -83,119 +83,121 @@ function resetFilter() {
 </script>
 
 <template>
-  <div class="pt-14">
-    <div
-      class="mx-5 mb-[30px] overflow-hidden rounded-[40px] border border-gray md:mx-[84px] lg:mx-[360px]"
-    >
-      <front-search />
-    </div>
-  </div>
-  <div class="mx-[20px] pb-9 lg:mx-[100px]">
-    <!-- 有搜尋結果(顯示筆數) -->
-    <div class="mb-[30px] text-xl font-medium leading-[30px]">
-      <span class="mr-1">有</span>
-      <span class="mr-1">{{ searchResults }}</span>
-      <span class="mr-1">筆</span>
-      <span class="mr-1" v-if="!isNoResult">搜尋：{{ keyword }}</span>
-      <span class="mr-1" v-if="!isNoResult"
-        >“{{ courseTerm === '0' ? '單堂體驗' : courseTerm === '全部' ? '全部' : '專業培訓' }} 且
-        {{ courseType }}”</span
-      >
-      <span>結果</span>
-    </div>
-    <!-- 有搜尋結果(顯示下拉篩選區塊) -->
-    <div class="mb-5 flex items-center justify-between" v-if="!isNoResult">
-      <div>
-        <select
-          name="course"
-          id="course"
-          class="mr-5 rounded border border-dark1 px-4 py-2"
-          v-model="courseTerm"
-          @change="selectedCourseTerm"
-        >
-          <option value="全部">全部</option>
-          <option value="0">單堂體驗</option>
-          <option value="1">專業培訓</option>
-        </select>
-        <select
-          name="courseType"
-          id="courseType"
-          class="rounded border border-dark1 px-4 py-2"
-          v-model="courseType"
-          @change="selectedCourseType"
-        >
-          <option value="全部">全部</option>
-          <option value="工藝手作">工藝手作</option>
-          <option value="烹飪烘焙">烹飪烘焙</option>
-          <option value="藝術人文">藝術人文</option>
-          <option value="生活品味">生活品味</option>
-        </select>
+  <div class="bg-gray1">
+    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+      <div class="m-8 mx-auto max-w-[720px]">
+        <div class="overflow-hidden rounded-[40px] border border-gray">
+          <front-search />
+        </div>
       </div>
-      <div class="relative">
-        <button class="flex items-center" @click="toggleSort">
-          <p class="mr-0.5 text-primary">排序</p>
-          <Icon name="ph:arrows-down-up" class="text-xl text-primary" />
-        </button>
-        <ul
-          :class="[
-            'sort absolute right-0 z-50 w-[120px] rounded border border-gray5 bg-white text-center',
-            { hidden: !isSortOpen, block: isSortOpen }
-          ]"
-        >
-          <li>
-            <button
-              class="d-block w-full py-1 hover:bg-secondary hover:text-white"
-              @click="handleSort('newest')"
+      <div class="pb-9">
+        <!-- 有搜尋結果(顯示筆數) -->
+        <div class="mb-[30px] text-xl font-medium leading-[30px]">
+          <span class="mr-1">有</span>
+          <span class="mr-1">{{ searchResults }}</span>
+          <span class="mr-1">筆</span>
+          <span class="mr-1" v-if="!isNoResult">搜尋：{{ keyword }}</span>
+          <span class="mr-1" v-if="!isNoResult"
+            >“{{ courseTerm === '0' ? '單堂體驗' : courseTerm === '全部' ? '全部' : '專業培訓' }} 且
+            {{ courseType }}”</span
+          >
+          <span>結果</span>
+        </div>
+        <!-- 有搜尋結果(顯示下拉篩選區塊) -->
+        <div class="mb-5 flex items-center justify-between" v-if="!isNoResult">
+          <div>
+            <select
+              name="course"
+              id="course"
+              class="mr-5 rounded border border-dark1 px-4 py-2"
+              v-model="courseTerm"
+              @change="selectedCourseTerm"
             >
-              最近時間
-            </button>
-          </li>
-          <li>
-            <button
-              class="d-block w-full py-1 hover:bg-secondary hover:text-white"
-              @click="handleSort('mostPopular')"
+              <option value="全部">全部</option>
+              <option value="0">單堂體驗</option>
+              <option value="1">專業培訓</option>
+            </select>
+            <select
+              name="courseType"
+              id="courseType"
+              class="rounded border border-dark1 px-4 py-2"
+              v-model="courseType"
+              @change="selectedCourseType"
             >
-              熱門課程
+              <option value="全部">全部</option>
+              <option value="工藝手作">工藝手作</option>
+              <option value="烹飪烘焙">烹飪烘焙</option>
+              <option value="藝術人文">藝術人文</option>
+              <option value="生活品味">生活品味</option>
+            </select>
+          </div>
+          <div class="relative">
+            <button class="flex items-center" @click="toggleSort">
+              <p class="mr-0.5 text-primary">排序</p>
+              <Icon name="ph:arrows-down-up" class="text-xl text-primary" />
             </button>
-          </li>
-          <li>
-            <button
-              class="d-block w-full py-1 hover:bg-secondary hover:text-white"
-              @click="handleSort('highestRate')"
+            <ul
+              :class="[
+                'sort absolute right-0 z-50 w-[120px] rounded border border-gray5 bg-white text-center',
+                { hidden: !isSortOpen, block: isSortOpen }
+              ]"
             >
-              評分最高
+              <li>
+                <button
+                  class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                  @click="handleSort('newest')"
+                >
+                  最近時間
+                </button>
+              </li>
+              <li>
+                <button
+                  class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                  @click="handleSort('mostPopular')"
+                >
+                  熱門課程
+                </button>
+              </li>
+              <li>
+                <button
+                  class="d-block w-full py-1 hover:bg-secondary hover:text-white"
+                  @click="handleSort('highestRate')"
+                >
+                  評分最高
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 無搜尋結果(顯示筆數搜尋關鍵字) -->
+        <div v-if="isNoResult" class="mb-24 flex justify-between">
+          <p class="text-[40px] font-medium leading-[54px]">搜尋：{{ keyword }}</p>
+          <button
+            class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
+            @click="resetFilter"
+          >
+            重新搜尋
+          </button>
+        </div>
+        <!-- 有搜尋結果(顯示卡片內容) -->
+        <div v-if="!isNoResult">
+          <div class="mb-5 md:mx-[30px]">
+            <front-product-card />
+          </div>
+          <div class="flex justify-center" v-if="isShowloadMore">
+            <button
+              class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
+              @click="loadMore"
+            >
+              載入更多
             </button>
-          </li>
-        </ul>
+          </div>
+        </div>
+        <!-- 無搜尋結果(顯示內容) -->
+        <div class="mb-24 flex items-center justify-center" v-if="isNoResult">
+          <img src="~/assets/images/nodata.png" alt="找不到所搜尋的資料" class="mx-auto block" />
+        </div>
       </div>
-    </div>
-    <!-- 無搜尋結果(顯示筆數搜尋關鍵字) -->
-    <div v-if="isNoResult" class="mb-24 flex justify-between">
-      <p class="text-[40px] font-medium leading-[54px]">搜尋：{{ keyword }}</p>
-      <button
-        class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
-        @click="resetFilter"
-      >
-        重新搜尋
-      </button>
-    </div>
-    <!-- 有搜尋結果(顯示卡片內容) -->
-    <div v-if="!isNoResult">
-      <div class="mx-[30px] mb-5">
-        <front-product-card />
-      </div>
-      <div class="flex justify-center" v-if="isShowloadMore">
-        <button
-          class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
-          @click="loadMore"
-        >
-          載入更多
-        </button>
-      </div>
-    </div>
-    <!-- 無搜尋結果(顯示內容) -->
-    <div class="mb-24 flex items-center justify-center" v-if="isNoResult">
-      <img src="~/assets/images/nodata.png" alt="找不到所搜尋的資料" class="mx-auto block" />
     </div>
   </div>
 </template>

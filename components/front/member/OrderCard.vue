@@ -4,6 +4,7 @@ const props = defineProps<{
   order: {
     _id: string
     courseId: string
+    vendorId: string
     brandName: string
     courseName: string
     courseImage: string
@@ -104,7 +105,7 @@ const getPaidStatusTagColor: any = (status: number) => {
     </div>
     <div class="space-y-3">
       <NuxtLink
-        to="/message"
+        :to="{ name: 'index-index-message', query: { vendorId: order.vendorId } }"
         class="block rounded border-[1px] border-solid border-primary bg-white py-2 text-center transition hover:border-primary hover:bg-primary hover:text-white md:px-10 md:py-2"
         >品牌聊聊</NuxtLink
       >
