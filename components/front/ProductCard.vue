@@ -96,23 +96,23 @@ const formattedPrice = (price: number): string => {
 
 <!-- 切版缺：卡片點擊時星星變色並留停 -->
 <template>
-  <ul class="flex grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5">
+  <ul class="grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5">
     <li v-for="item in courseInfo" class="flex min-h-[300px] flex-col">
       <NuxtLink
         :to="{ name: 'index-index-course-id', params: { id: item._id } }"
-        class="relative block flex h-full flex-col"
+        class="relative flex flex-col"
         :id="item._id"
       >
         <img
           :src="item.courseImage[0]"
           alt="課程圖片"
-          class="course mb-2 h-[220px] w-full rounded object-cover"
+          class="course mb-2 aspect-square h-full w-full rounded object-cover"
         />
-        <div class="course-star absolute right-0 top-0 hidden h-[32px] w-[32px]"></div>
+        <div class="course-star absolute right-0 top-0 hidden h-8 w-8"></div>
         <div class="flex flex-col">
-          <div class="mb-2 flex h-[90px] items-start lg:h-[95px]">
+          <div class="mb-2 flex max-h-[90px] items-start lg:max-h-[95px]">
             <p
-              class="mr-[8px] w-1/3 rounded px-2 py-0.5 text-center"
+              class="mb-2 mr-2 self-start whitespace-nowrap rounded-[4px] px-2 py-0.5 text-sm leading-6"
               :class="{
                 'bg-blue4 text-secondary': item.courseTerm === 0,
                 'bg-primary text-white': item.courseTerm !== 0
@@ -120,7 +120,7 @@ const formattedPrice = (price: number): string => {
             >
               {{ item.courseTerm === 0 ? '體驗' : '培訓' }}
             </p>
-            <p>{{ item.courseName }}</p>
+            <p class="line-clamp-2">{{ item.courseName }}</p>
           </div>
           <p class="mb-1 w-full text-sm leading-[22px]">{{ item.brandName }}</p>
           <p class="text-secondary">

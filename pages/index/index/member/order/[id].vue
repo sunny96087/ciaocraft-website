@@ -34,6 +34,7 @@ const course = ref({
 })
 
 const vendor = ref({
+  _id: '[id]',
   representative: '[負責人]',
   bankName: '[銀行名稱]',
   bankAccountName: '[帳號名稱]',
@@ -395,16 +396,6 @@ onMounted(() => {
                         >
                           {{ tag }}
                         </span>
-                        <!-- <span
-                          class="mr-2 inline-block self-start rounded bg-orange3 px-2 py-[2px] leading-6 text-primary-dark"
-                        >
-                          教學環境
-                        </span>
-                        <span
-                          class="mr-2 inline-block self-start rounded bg-orange3 px-2 py-[2px] leading-6 text-primary-dark"
-                        >
-                          專業度
-                        </span> -->
                       </div>
                       <div class="flex flex-wrap gap-2">
                         <div
@@ -511,7 +502,7 @@ onMounted(() => {
               返回
             </button>
             <NuxtLink
-              to="/message"
+              :to="{ name: 'index-index-message', query: { vendorId: vendor._id } }"
               class="w-1/2 rounded-[4px] border-[1px] border-solid bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light hover:text-white"
             >
               品牌聊聊
