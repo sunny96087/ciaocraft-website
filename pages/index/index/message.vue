@@ -4,7 +4,7 @@ const store = APIStore()
 import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
 
 const route = useRoute()
-// http://localhost:3000/message?vendorId=66517253807e0d84e5c8d514
+// http://localhost:3000/message?vendorId=667d2d195a7fe62e1bee0647
 
 let ws: any
 
@@ -38,8 +38,16 @@ onMounted(async () => {
   //   console.log(memberInfo)
 
   vendorId.value = route.query.vendorId as string
-  memberId.value = '665e98d8d118bf965c174ad8' // 測試魚
-  //   memberId.value = store.memberInfo.id
+
+  // 從 localStorage 取得 memberId
+  const storedMemberId = localStorage.getItem('memberId')
+  if (storedMemberId) {
+    memberId.value = storedMemberId
+  }
+  console.log(`memberId: ${memberId.value}`)
+
+  // memberId.value = '665e98d8d118bf965c174ad8' // 測試魚
+  // memberId.value = store.memberInfo.id
 
   // 如果沒有 memberId，則不執行後續邏輯
   if (vendorId.value) {
