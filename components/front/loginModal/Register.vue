@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import auth from '~/middleware/auth'
+import { registerRuntimeCompiler } from 'vue'
 
 const authStore = useAuthStore()
+const memberStore = useMemberStore()
 
 const isEmailCheck = ref(false)
 const password = ref('')
@@ -18,35 +19,46 @@ const registerMember = async () => {
   if (!email.value) {
     alertText.value = '請輸入帳號'
     hasError.value = true
+    return
   } else if (!password.value) {
     alertText.value = '請輸入密碼'
     hasError.value = true
+    return
   } else if (!confirmPassword.value || password.value !== confirmPassword.value) {
     alertText.value = '密碼不一致，請確認後再試一次。'
     hasError.value = true
-  } else {
-    showLoading()
-    await authStore
-      .register({
-        account: email.value,
-        password: password.value,
-        confirmPassword: confirmPassword.value
-      })
-      .then((res) => {
-        hideLoading()
-        const result = res.data
-        if (result.status === 'success') {
-          authStore.setMember(result.user)
-          showToast('登入成功')
-          emit('changeContent', 'registerSuccess')
-        }
-      })
-      .catch((err) => {
-        hideLoading()
-        alertText.value = err.response.data.message
-        hasError.value = true
-      })
+    return
   }
+
+  showLoading()
+  const registerRes = await authStore.register({
+    account: email.value,
+    password: password.value,
+    confirmPassword: confirmPassword.value
+  })
+
+  const registerResult = registerRes.data
+  // console.log('註冊', registerResult)
+  if (registerResult.statusCode == 201) {
+    authStore.setMember(registerResult.user)
+    const res = await memberStore.getMember()
+    const result = res.data
+    // console.log('會員資料', result)
+    if (result.statusCode == 200) {
+      memberStore.member = result.data
+      showToast('註冊成功')
+      emit('changeContent', 'registerSuccess')
+    } else {
+      alertText.value = result.message
+      hasError.value = true
+      showToast('註冊失敗')
+    }
+  } else {
+    alertText.value = registerResult.message
+    hasError.value = true
+    showToast('註冊失敗')
+  }
+  hideLoading()
 }
 
 const checkEmail = () => {

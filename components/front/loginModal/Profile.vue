@@ -8,6 +8,26 @@ const nickName = ref('')
 const interests = ref([])
 const isUpdateSuccess = ref(false)
 
+const saveAndToHome = async () => {
+  updateProfile()
+  if (isUpdateSuccess.value) {
+    emit('changeContent', 'close')
+    router.push('/search')
+  } else {
+    showToast('儲存失敗，請再試一次')
+  }
+}
+
+const saveToMemberProfile = async () => {
+  await updateProfile()
+  if (isUpdateSuccess.value) {
+    emit('changeContent', 'close')
+    router.push('/member/profile')
+  } else {
+    showToast('儲存失敗，請再試一次')
+  }
+}
+
 const updateProfile = async () => {
   if (!nickName.value) {
     alertText.value = '請輸入暱稱'
@@ -23,34 +43,14 @@ const updateProfile = async () => {
     .updateMember(postData)
     .then((res) => {
       hideLoading()
-      showToast('更新成功')
       isUpdateSuccess.value = true
+      showToast('更新成功')
     })
     .catch((err) => {
       hideLoading()
-      showToast('儲存失敗，請再試一次')
       isUpdateSuccess.value = false
+      showToast('儲存失敗，請再試一次')
     })
-}
-
-const saveAndToHome = () => {
-  updateProfile()
-  if (isUpdateSuccess.value) {
-    emit('changeContent', 'close')
-    router.push('/search')
-  } else {
-    showToast('儲存失敗，請再試一次')
-  }
-}
-
-const saveToMemberProfile = () => {
-  updateProfile()
-  if (isUpdateSuccess.value) {
-    emit('changeContent', 'close')
-    router.push('/member/profile')
-  } else {
-    showToast('儲存失敗，請再試一次')
-  }
 }
 
 watchEffect(() => {
