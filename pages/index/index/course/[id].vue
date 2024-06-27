@@ -67,12 +67,13 @@ async function getOneCourse() {
     courseStore.oneCourseData[0].courseSkillsLearned = result.data.courseSkillsLearned
     courseStore.oneCourseData[0].courseContent = result.data.courseContent
     courseStore.oneCourseData[0].courseNotice = result.data.courseNotice
+    courseStore.oneCourseData[0].courseItemId = result.data.courseItemId
 
     console.log(courseStore.oneCourseData)
 
     request(result)
   } catch (e) {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log(e)
   } finally {
     hideLoading()
@@ -84,7 +85,7 @@ function request(result: { statusCode: number; data: any }) {
     courseInfo.value = result.data
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
   } else {
-    showToast('發生錯誤，請聯繫客服人員')
+    showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log('取得單一課程失敗')
   }
 }

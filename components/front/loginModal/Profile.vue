@@ -30,7 +30,7 @@ const updateProfile = async () => {
     .catch((err) => {
       hideLoading()
       console.log(err)
-      showToast('儲存失敗，請再試一次')
+      showToast('儲存失敗，請再試一次', 'error')
       isUpdateSuccess.value = false
     })
 }
@@ -41,7 +41,7 @@ const saveAndToHome = () => {
     emit('changeContent', 'close')
     router.push('/search')
   } else {
-    showToast('儲存失敗，請再試一次')
+    showToast('儲存失敗，請再試一次', 'error')
   }
 }
 
@@ -51,7 +51,7 @@ const saveToMemberProfile = () => {
     emit('changeContent', 'close')
     router.push('/member/profile')
   } else {
-    showToast('儲存失敗，請再試一次')
+    showToast('儲存失敗，請再試一次', 'error')
   }
 }
 
