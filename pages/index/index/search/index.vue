@@ -2,6 +2,11 @@
 // 使用 ref 選取 dom 元素
 import { ref } from 'vue'
 
+const breadcrumb = [
+  { pageName: '首頁', link: '/', isCurrentPage: false },
+  { pageName: '搜尋', link: '/search', isCurrentPage: true }
+]
+
 // 定義 isSortOpen 為布林類型的 ref
 // 使用 ref 管理排序選單的顯示狀態
 const isSortOpen = ref<boolean>(false)
@@ -84,7 +89,8 @@ function resetFilter() {
 
 <template>
   <div class="bg-gray1">
-    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+    <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
+      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="m-8 mx-auto max-w-[720px]">
         <div class="overflow-hidden rounded-[40px] border border-gray">
           <front-search />

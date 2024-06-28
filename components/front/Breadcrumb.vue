@@ -6,12 +6,10 @@ const props = defineProps({
   }
 })
 const breadcrumbs: any = props.breadcrumb
-
-console.log('breadcrumb')
 </script>
 
 <template>
-  <div class="mb-5 w-full space-x-2">
+  <div class="mb-5 w-full">
     <NuxtLink
       v-for="(item, index) in breadcrumbs"
       :to="item.link"

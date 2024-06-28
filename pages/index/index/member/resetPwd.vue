@@ -5,7 +5,16 @@ definePageMeta({
 })
 
 const router = useRouter()
+
+const breadcrumb = [
+  { pageName: '首頁', link: '/', isCurrentPage: false },
+  { pageName: '會員中心', link: '/member', isCurrentPage: false },
+  { pageName: '會員資料', link: '/member/profile', isCurrentPage: false },
+  { pageName: '修改密碼', link: '/member/profile/resetPwd', isCurrentPage: true }
+]
+
 const memberStore = useMemberStore()
+
 const password = ref('')
 const confirmPassword = ref('')
 const passwordVisible = ref(false)
@@ -61,8 +70,9 @@ const resetPassword = async () => {
 </script>
 
 <template>
-  <div class="bg-gray1 py-5 lg:px-[100px]">
-    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+  <div class="bg-gray1">
+    <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
+      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="space-y-8 md:max-w-[711px]">
         <h1 class="mb-3 mt-3 text-4xl">修改密碼</h1>
         <div class="space-y-3">

@@ -240,8 +240,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-gray1 py-5 lg:px-[100px]">
-    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+  <div class="bg-gray1">
+    <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
       <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="mx-auto mb-14 flex space-x-8" :class="{ 'animate-pulse': isMemberLoading }">
         <!-- 大頭貼 -->
@@ -528,14 +528,14 @@ onMounted(async () => {
         </div>
       </div>
       <!-- 訂單元件 -->
-      <ul class="space-y-3" v-if="hasData && currentView === 'orders' && !isCardLoading">
+      <ul class="space-y-3 md:mx-8" v-if="hasData && currentView === 'orders' && !isCardLoading">
         <li v-for="item in filterOrders" :key="item._id">
           <!-- <component :is="content[currentView]" :key="currentView" :order="item"></component> -->
           <FrontMemberOrderCard :order="item"></FrontMemberOrderCard>
         </li>
       </ul>
       <!-- 訂單元件 Skeleton loader -->
-      <div class="animate-pulse space-y-3" v-if="currentView === 'orders' && isCardLoading">
+      <div class="animate-pulse space-y-3 md:mx-8" v-if="currentView === 'orders' && isCardLoading">
         <div v-for="n in 5" :key="n">
           <div
             class="w-full items-center rounded-[4px] border-[1px] border-solid border-gray4 bg-gray1 p-4 md:flex md:justify-between"
@@ -576,7 +576,7 @@ onMounted(async () => {
 
       <!-- 收藏元件 -->
       <ul
-        class="grid grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
+        class="grid grid-cols-2 gap-8 md:grid-cols-3 md:px-8 lg:grid-cols-5"
         v-if="hasData && currentView === 'collections' && !isCardLoading"
       >
         <li v-for="item in filterCollection" :key="item._id">
@@ -595,7 +595,7 @@ onMounted(async () => {
 
       <!-- 收藏元件 Skeleton loader -->
       <div
-        class="grid animate-pulse grid-cols-2 gap-8 px-4 md:grid-cols-3 md:px-8 lg:grid-cols-5"
+        class="grid animate-pulse grid-cols-2 gap-8 md:grid-cols-3 md:px-8 lg:grid-cols-5"
         v-if="currentView === 'collections' && isCardLoading"
       >
         <div v-for="n in 5" :key="n">
