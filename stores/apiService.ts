@@ -380,6 +380,17 @@ export const APIStore = defineStore({
       this.vendorInfo = null
       this.isVendorLoggedIn = false
     },
+    // * 確認是否登入
+    async checkVendorLogin() {
+      // 從 localStorage 取出 vendorInfo 字符串
+      const vendorInfoString = localStorage.getItem('vendorInfo')
+      // 將字符串反序列化為 JavaScript 對象
+      const vendorInfo = vendorInfoString ? JSON.parse(vendorInfoString) : null
+      // 如果 vendorInfo 存在，則設置登入狀態為 true
+      if (vendorInfo) {
+        this.isVendorLoggedIn = true
+      }
+    },
 
     // todo IP
     // * 取得使用者 IP
