@@ -2,8 +2,13 @@
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
+const token: any = route.query.token
 
-const token: any = ref('')
+const breadcrumb = [
+  { pageName: '首頁', link: '/', isCurrentPage: false },
+  { pageName: '忘記密碼', link: '/member/forgetPwd', isCurrentPage: true }
+]
+
 const password: any = ref('')
 const confirmPassword: any = ref('')
 
@@ -12,9 +17,13 @@ const confirmPasswordVisible = ref(false)
 
 const getResetPasswordToken = () => {
   if (process.client) {
-    token.value = route.query.token
+    if (token) {
+      return
+    }
+    showToast('無權限，請重新申請密碼重設')
+    router.push('/')
   } else {
-    showToastError('未攜帶有效權杖，請重新申請密碼重設')
+    showToast('無權限，請重新申請密碼重設')
     router.push('/')
   }
 }
@@ -44,11 +53,11 @@ const resetPassword = async () => {
       showToast('修改成功')
       router.push('/')
     } else {
-      showToastError('未帶有效權杖，請重新申請忘記密碼')
+      showToastError('無權限，請重新申請密碼重設')
       router.push('/')
     }
   } catch (e) {
-    showToastError('未帶有效權杖，請重新申請忘記密碼')
+    showToastError('無權限，請重新申請密碼重設')
     router.push('/')
   }
   hideLoading()
@@ -60,10 +69,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-gray1 py-5 lg:px-[100px]">
-    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+  <div class="bg-gray1">
+    <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
+      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="space-y-8 md:max-w-[711px]">
-        <h1 class="mb-3 mt-3 text-4xl">修改密碼</h1>
+        <h1 class="mb-3 mt-3 text-4xl">忘記密碼</h1>
         <div class="space-y-3">
           <div class="space-y-2">
             <h2>密碼<span class="text-danger">*</span></h2>

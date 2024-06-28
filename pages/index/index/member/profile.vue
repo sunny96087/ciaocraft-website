@@ -126,8 +126,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-gray1 py-5 lg:px-[100px]">
-    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+  <div class="bg-gray1">
+    <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
       <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <h1 class="mb-3 mt-3 text-4xl lg:text-4xl">會員資料</h1>
       <p class="mb-8 text-base">
