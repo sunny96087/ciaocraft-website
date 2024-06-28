@@ -90,7 +90,7 @@ async function cancelOrder() {
     showLoading()
     let data = {
       orderId: orderId,
-      paidStatus: order.paidStatus === 0 ? 5 : 6,
+      paidStatus: order.value.paidStatus === 0 ? 5 : 6,
       cancelReason: dialogresult.userInput
     }
 
@@ -218,7 +218,7 @@ async function confirmCancelPaymeny() {
             <div class="text-fill">待付款</div>
             <div class="text-fill text-with-date">
               已付款
-              <div class="text-gray5">{{ order.paidTime }}</div>
+              <div class="text-gray5">{{ convertUtcToLocaleDatetime(order.paidTime) }}</div>
             </div>
             <div class="text-disable">已確認</div>
             <div class="text-disable">訂單完成</div>
@@ -246,7 +246,7 @@ async function confirmCancelPaymeny() {
             <div class="text-fill">已付款</div>
             <div class="text-fill text-with-date">
               已確認
-              <div class="text-gray5">{{ order.confirmTime }}</div>
+              <div class="text-gray5">{{ convertUtcToLocaleDatetime(order.confirmTime) }}</div>
             </div>
             <div class="text-disable">訂單完成</div>
             <div class="text-disable">填寫評論</div>
@@ -276,7 +276,7 @@ async function confirmCancelPaymeny() {
             <div class="text-fill text-with-date">
               填寫評論
               <div class="text-gray5">
-                {{ order.commentId?.createdAt }}
+                {{ convertUtcToLocaleDatetime(order.commentId?.createdAt) }}
               </div>
             </div>
           </div>
@@ -328,7 +328,7 @@ async function confirmCancelPaymeny() {
             <div class="text-fill text-with-date">
               已取消
               <div class="text-gray5" v-if="order.cancelTime">
-                未在{{ order.cancelTime }}前完成轉帳
+                未在{{ convertUtcToLocaleDatetime(order.cancelTime) }}前完成轉帳
               </div>
             </div>
             <div class="text-disable">已確認</div>
@@ -357,7 +357,7 @@ async function confirmCancelPaymeny() {
             <div class="text-fill text-with-date">
               已取消
               <div class="text-gray5" v-if="order.cancelTime">
-                {{ order.cancelTime }}
+                {{ convertUtcToLocaleDatetime(order.cancelTime) }}
               </div>
               <div class="text-gray5" v-if="order.cancelReason">
                 {{ order.cancelReason }}
@@ -415,7 +415,7 @@ async function confirmCancelPaymeny() {
             <div class="text-fill">退款處理</div>
             <div class="text-fill text-with-date">
               完成退款
-              <div class="text-gray5">{{ order.refundTime }}</div>
+              <div class="text-gray5">{{ convertUtcToLocaleDatetime(order.refundTime) }}</div>
             </div>
           </div>
         </div>
@@ -457,13 +457,13 @@ async function confirmCancelPaymeny() {
           <div class="">數量：{{ order?.count }}</div>
           <div class="">課程名稱：{{ order?.courseName }}</div>
           <div class="">訂單金額：{{ order?.totalPrice }}</div>
-          <div class="">提交時間：{{ order?.createdAt }}</div>
+          <div class="">提交時間：{{ convertUtcToLocaleDatetime(order?.createdAt) }}</div>
         </div>
       </div>
     </section>
 
     <!-- * 付款資訊 -->
-    <section class="mt-5" v-if="order.paidStatus > 0">
+    <section class="mt-5" v-if="order.paidStatus > 0 && order.paidStatus !== 5">
       <div class="block-title">付款資訊</div>
 
       <div class="admin-block p-8 text-dark2">

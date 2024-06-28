@@ -271,10 +271,10 @@ onUpdated(scrollToBottomM)
             class="flex gap-3"
           >
             <div
-              v-if="currentVendorInfo && currentVendorInfo.avatar"
+              v-if="item.vendorId && item.vendorId.avatar"
               class="h-[44px] min-h-[44px] w-[44px] min-w-[44px] overflow-hidden rounded-full"
             >
-              <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
+              <img :src="item.vendorId?.avatar" alt="" class="pic-auto" />
             </div>
             <Icon
               v-else
@@ -339,13 +339,13 @@ onUpdated(scrollToBottomM)
               <div class="message left">
                 <div class="left-content">{{ message.content }}</div>
               </div>
-              <div class="message-date">{{ message.timestamp }}</div>
+              <div class="message-date">{{ convertUtcToLocaleDatetime(message.timestamp) }}</div>
             </div>
             <div v-else class="message right">
               <div class="right-content">
                 {{ message.content }}
               </div>
-              <div class="message-date">{{ message.timestamp }}</div>
+              <div class="message-date">{{ convertUtcToLocaleDatetime(message.timestamp) }}</div>
             </div>
           </div>
         </div>
@@ -392,10 +392,10 @@ onUpdated(scrollToBottomM)
             class="flex gap-3"
           >
             <div
-              v-if="currentVendorInfo && currentVendorInfo.avatar"
+              v-if="item.vendorId && item.vendorId.avatar"
               class="h-[44px] min-h-[44px] w-[44px] min-w-[44px] overflow-hidden rounded-full"
             >
-              <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
+              <img :src="item.vendorId?.avatar" alt="" class="pic-auto" />
             </div>
             <Icon
               v-else
@@ -458,13 +458,13 @@ onUpdated(scrollToBottomM)
               <div class="message left">
                 <div class="left-content">{{ message.content }}</div>
               </div>
-              <div class="message-date">{{ message.timestamp }}</div>
+              <div class="message-date">{{ convertUtcToLocaleDatetime(message.timestamp) }}</div>
             </div>
             <div v-else class="message right">
               <div class="right-content">
                 {{ message.content }}
               </div>
-              <div class="message-date">{{ message.timestamp }}</div>
+              <div class="message-date">{{ convertUtcToLocaleDatetime(message.timestamp) }}</div>
             </div>
           </div>
         </div>
@@ -476,6 +476,7 @@ onUpdated(scrollToBottomM)
             v-model="inputMemberMessage"
             class="w-full rounded-md border border-gray5 bg-gray2 px-3 py-2"
             placeholder="輸入訊息..."
+            @keyup.enter="sendMemberMessage"
           />
           <button
             :disabled="!inputMemberMessage"

@@ -326,7 +326,7 @@ async function getOverviewData() {
       >
         <div class="flex items-center gap-5">
           <div class="payment-no">{{ overviewInfo?.orderStatusCounts[0].status6 }}</div>
-          <div class="">待退訂訂單</div>
+          <div class="">待退款訂單</div>
         </div>
 
         <div class="flex items-center gap-5">

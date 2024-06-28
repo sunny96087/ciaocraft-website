@@ -54,12 +54,6 @@ async function getCommentsData() {
   }
 }
 
-// function toggleCreatedAt() {
-//   currentCreatedAt.value = currentCreatedAt.value === '' ? 'CREATED_AT_ASC' : ''
-
-//   getTeachersData()
-// }
-
 // NOTE 查看評價詳細內容
 const showModal = ref(false)
 const selectedItem: any = ref({})
@@ -152,7 +146,7 @@ function closeDialog() {
         <div class="col-span-1 flex items-center gap-1">
           <Icon name="material-symbols:star-rounded" size="20"></Icon>({{ item.rating }})
         </div>
-        <div class="col-span-2">{{ item.createdAt }}</div>
+        <div class="col-span-2">{{ convertUtcToLocaleDatetime(item.createdAt) }}</div>
         <div class="col-span-1">
           <div v-for="tag in item.tags">{{ tag }}</div>
         </div>
@@ -230,7 +224,7 @@ function closeDialog() {
 
           <div class="row-input">
             <div class="row-input-title-gray">建立時間</div>
-            <div class="">{{ selectedItem.createdAt }}</div>
+            <div class="">{{ convertUtcToLocaleDatetime(selectedItem.createdAt) }}</div>
           </div>
 
           <div class="row-input">
@@ -239,48 +233,6 @@ function closeDialog() {
               <div v-for="tag in selectedItem.tags">{{ tag }}</div>
             </div>
           </div>
-
-          <!-- <div class="row-input">
-            <div class="row-input-title">舊密碼</div>
-            <div class="w-full">
-              <input
-                class="admin-input"
-                type="password"
-                placeholder="請輸入舊密碼"
-                v-model="currentPassword"
-                :class="{ 'admin-input-error': currentPassword === '' }"
-              />
-              <div v-if="currentPassword === ''" class="admin-input-error-note">此欄位不能留空</div>
-            </div>
-          </div>
-
-          <div class="row-input">
-            <div class="row-input-title">新密碼</div>
-            <div class="w-full">
-              <input
-                class="admin-input"
-                type="password"
-                placeholder="請輸入新密碼（至少8字元且中英混用）"
-                v-model="password"
-                :class="{ 'admin-input-error': password === '' }"
-              />
-              <div v-if="password === ''" class="admin-input-error-note">此欄位不能留空</div>
-            </div>
-          </div>
-
-          <div class="row-input">
-            <div class="row-input-title">確認新密碼</div>
-            <div class="w-full">
-              <input
-                class="admin-input"
-                type="password"
-                placeholder="請確認新密碼（至少8字元且中英混用）"
-                v-model="confirmPassword"
-                :class="{ 'admin-input-error': confirmPassword === '' }"
-              />
-              <div v-if="confirmPassword === ''" class="admin-input-error-note">此欄位不能留空</div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
