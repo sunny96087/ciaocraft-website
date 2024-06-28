@@ -1,4 +1,10 @@
 <script setup lang="ts">
+// BUG > F5 會被打回登入頁
+// 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
+// definePageMeta({
+//   middleware: ['admin-auth']
+// })
+
 /*
 * 一次引入過多 icon 會導致 vercel 崩潰
 import {
