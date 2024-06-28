@@ -15,10 +15,15 @@ const isBookingVisible = ref(false)
 // 切換預定選單顯示狀態
 const toggleBookingVisible = (): void => {
   isBookingVisible.value = !isBookingVisible.value
+  showToast('下方已展開預約畫面')
 }
 
 // 子層按了"取消預定"，要將 isBookingVisible 恢復預設
 const handleBookingCancel = () => {
+  isBookingVisible.value = false
+}
+
+const handleBookingSubmitted = () => {
   isBookingVisible.value = false
 }
 
@@ -122,7 +127,10 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
       <front-course-title @toggleBooking="toggleBookingVisible" />
     </section>
     <section class="mb-[30px]" v-if="isBookingVisible">
-      <front-course-booking @bookingReset="handleBookingCancel" />
+      <front-course-booking
+        @bookingReset="handleBookingCancel"
+        @bookingSubmitted="handleBookingSubmitted"
+      />
     </section>
     <section class="mb-[30px]">
       <front-course-info />

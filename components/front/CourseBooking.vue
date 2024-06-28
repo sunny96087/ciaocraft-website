@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue'
 
-const emit = defineEmits(['bookingReset'])
-
+// const emit = defineEmits(['bookingReset'])
+const emit = defineEmits(['bookingReset', 'bookingSubmitted'])
 const handleBookingCancel = () => {
   emit('bookingReset')
 }
@@ -136,8 +136,37 @@ const addBooking = async () => {
 function request(result: { statusCode: number; data: any }) {
   if (result.statusCode === 200) {
     showToast('預約成功')
+    emit('bookingSubmitted')
+    getOneCourse()
   } else {
     showToast('預約失敗，請聯繫客服人員', 'error')
+  }
+}
+const courseInfo: any = ref({})
+// 取得單一課程資料
+async function getOneCourse() {
+  try {
+    let data = {
+      courseId: courseStore.oneCourseData[0].id
+    }
+    const res = await courseStore.apiGetOneCourse(data)
+    const result = res.data
+    console.log(result)
+    // 將資料寫入 courseStore
+    courseStore.oneCourseData[0].courseItemId = result.data.courseItemId
+
+    console.log(courseStore.oneCourseData)
+
+    if (result.statusCode === 200) {
+      courseInfo.value = result.data
+      // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
+    } else {
+      console.log('取得單一課程失敗')
+    }
+  } catch (e) {
+    console.log(e)
+  } finally {
+    hideLoading()
   }
 }
 
