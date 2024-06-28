@@ -194,7 +194,7 @@ watch(route, () => {
 
     <!-- * pc 左側選單 -->
     <div
-      class="hover-auto fixed bottom-0 left-0 top-0 z-50 hidden min-h-full w-[96px] shrink-0 flex-col items-center gap-5 overflow-y-auto bg-[#FFFBF8] px-2 py-6 shadow-lg md:flex"
+      class="scroll-container hover-auto fixed bottom-0 left-0 top-0 z-50 hidden min-h-full w-[96px] shrink-0 flex-col items-center gap-5 overflow-y-auto bg-[#FFFBF8] px-2 py-6 shadow-lg md:flex"
       :class="{ 'min-w-[240px]': barOpen, 'min-w-[96px]': !barOpen }"
       @mouseover="barOpen = true"
       @mouseleave="barOpen = false"
@@ -386,5 +386,16 @@ watch(route, () => {
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* 隱藏垂直滾動條的 CSS */
+.scroll-container {
+  -ms-overflow-style: none; /* IE 和 Edge */
+  scrollbar-width: none; /* Firefox */
+  overflow-y: scroll;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari 和 Opera */
 }
 </style>

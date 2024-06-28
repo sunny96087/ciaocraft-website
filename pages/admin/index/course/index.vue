@@ -176,8 +176,12 @@ async function deleteCourse(courseId: string, latestEndTime: string) {
         <div class="col-span-1">{{ item.courseTerm === 0 ? '體驗課' : '培訓課' }}</div>
         <div class="col-span-1">{{ item.teacherId.name }}</div>
         <div class="col-span-1">{{ item.courseStatus === 0 ? '下架' : '上架' }}</div>
-        <div class="col-span-2">{{ item.earliestStartTime }}</div>
-        <div class="col-span-2">{{ item.latestEndTime }}</div>
+        <div class="col-span-2">
+          {{ convertUtcToLocaleDatetime(item.earliestStartTime).split(' ')[0] }}
+        </div>
+        <div class="col-span-2">
+          {{ convertUtcToLocaleDatetime(item.latestEndTime).split(' ')[0] }}
+        </div>
         <div class="col-span-1 flex items-start gap-2">
           <nuxt-link :to="{ path: '/admin/course/edit', query: { id: item._id } }">
             <Icon name="ic:round-edit-note" size="24" class="text-dark3"></Icon>

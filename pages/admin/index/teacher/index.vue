@@ -139,14 +139,14 @@ async function deleteCourse(teacherId: string) {
     <!-- * table -->
     <div class="table-block" v-if="teacherInfo.length > 0">
       <!-- header -->
-      <div class="table-header min-w-[1200px] grid-cols-11">
+      <div class="table-header min-w-[1200px] grid-cols-9">
         <div @click="toggleOrder" class="table-th-icon col-span-1">
           排序
           <Icon name="fluent:arrow-sort-20-filled" size="20"></Icon>
         </div>
         <div class="col-span-1">老師姓名</div>
         <div class="col-span-3">基本介紹</div>
-        <div class="col-span-3">建立時間</div>
+        <div class="col-span-1">建立時間</div>
         <!-- <div @click="toggleCreatedAt" class="table-th-icon col-span-3">
           建立時間<Icon name="fluent:arrow-sort-20-filled" size="20"></Icon>
         </div> -->
@@ -155,11 +155,11 @@ async function deleteCourse(teacherId: string) {
         <div class="col-span-1">操作</div>
       </div>
       <!-- body -->
-      <div class="table-body min-w-[1200px] grid-cols-11" v-for="item in teacherInfo">
+      <div class="table-body min-w-[1200px] grid-cols-9" v-for="item in teacherInfo">
         <div class="col-span-1">{{ item.order }}</div>
         <div class="col-span-1">{{ item.name }}</div>
         <div class="col-span-3">{{ item.intro }}</div>
-        <div class="col-span-3">{{ item.createdAt }}</div>
+        <div class="col-span-1">{{ convertUtcToLocaleDatetime(item.createdAt) }}</div>
         <div class="col-span-1">
           <div>
             <div v-if="offersCourseTerm(item, 0)">體驗課</div>

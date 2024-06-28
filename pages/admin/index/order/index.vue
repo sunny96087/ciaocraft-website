@@ -174,10 +174,11 @@ const convertStatus = (status: any) => statusMap[status]
     <!-- * table -->
     <div class="table-block" v-if="orderInfo.length > 0">
       <!-- header -->
-      <div class="table-header min-w-[1400px] grid-cols-10">
+      <div class="table-header min-w-[1580px] grid-cols-[repeat(13,minmax(0,1fr))]">
         <div class="col-span-2">訂單編號</div>
         <div class="col-span-1">購買用戶</div>
         <div class="col-span-3">課程名稱</div>
+        <div class="col-span-3">時段名稱</div>
         <div class="col-span-1">訂單金額</div>
         <div class="table-th-icon col-span-2" @click="toggleCreatedAt">
           建立時間<Icon name="fluent:arrow-sort-20-filled" size="20"></Icon>
@@ -185,12 +186,16 @@ const convertStatus = (status: any) => statusMap[status]
         <div class="col-span-1">訂單狀態</div>
       </div>
       <!-- body -->
-      <div class="table-body min-w-[1400px] grid-cols-10" v-for="(item, i) in orderInfo">
+      <div
+        class="table-body min-w-[1580px] grid-cols-[repeat(13,minmax(0,1fr))]"
+        v-for="(item, i) in orderInfo"
+      >
         <nuxt-link :to="`/admin/order/${item._id}`" class="col-span-2">{{ item._id }}</nuxt-link>
         <div class="col-span-1">{{ item.memberId?.name }}</div>
+        <div class="col-span-3">{{ item.courseName }}</div>
         <div class="col-span-3">{{ item.courseItemName }}</div>
         <div class="col-span-1">{{ item.totalPrice }}</div>
-        <div class="col-span-2">{{ item.createdAt }}</div>
+        <div class="col-span-2">{{ convertUtcToLocaleDatetime(item.createdAt) }}</div>
         <div class="col-span-1">{{ convertStatus(item.paidStatus) }}</div>
       </div>
     </div>
