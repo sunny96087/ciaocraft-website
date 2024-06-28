@@ -188,7 +188,7 @@ onMounted(async () => {
               </h3>
             </NuxtLink>
             <NuxtLink
-              :to="{ name: 'index-index-course-id', params: { id: vendorId } }"
+              :to="{ name: 'index-index-vendor-id', params: { id: vendorId } }"
               class="block transition duration-500 hover:opacity-50 hover:transition-opacity"
             >
               <div class="text-sm leading-[22px]">{{ order.brandName }}</div>

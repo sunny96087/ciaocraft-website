@@ -87,7 +87,12 @@ const getPaidStatusTagColor: any = (status: number) => {
             {{ order.courseName }}
           </h2>
         </NuxtLink>
-        <div class="line-clamp-1 text-sm font-medium">{{ order.brandName }}</div>
+        <NuxtLink
+          :to="{ name: 'index-index-vendor-id', params: { id: order.vendorId } }"
+          class="block transition duration-500 hover:opacity-50 hover:transition-opacity"
+        >
+          <div class="line-clamp-1 text-sm font-medium leading-[22px]">{{ order.brandName }}</div>
+        </NuxtLink>
         <div class="space-x-3 text-sm leading-[22px]">
           <span class="font-medium">總計</span>
           <span>NT$ {{ formatCurrency(order.totalPrice) }}</span>
