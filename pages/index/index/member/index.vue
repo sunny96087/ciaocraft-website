@@ -65,10 +65,10 @@ watch(
 const hasData = ref(true)
 
 // 動態切換渲染元件
-const content: any = {
-  collections: resolveComponent('FrontMemberCourseCard'),
-  orders: resolveComponent('FrontMemberOrderCard')
-}
+// const content: any = {
+//   collections: resolveComponent('FrontMemberCourseCard'),
+//   orders: resolveComponent('FrontMemberOrderCard')
+// }
 
 const isCardLoading = ref(false)
 const renderCurrentView = async (viewName: string) => {
@@ -162,6 +162,7 @@ const handleOrderFilter = (filterName: string) => {
 const handleRefreshCollections = (courseId: string) => {
   fetchMember()
   filterCollection.value = filterCollection.value.filter((item: any) => item.courseId !== courseId)
+  selectedFilterCount.value = filterCollection.value.length
   memberStore.collections = memberStore.collections.filter(
     (item: any) => item.courseId !== courseId
   )

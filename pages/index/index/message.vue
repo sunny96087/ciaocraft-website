@@ -1,4 +1,9 @@
 <script setup lang="ts">
+// 此頁面需要登入，中介層驗證身分，若未登入則導向登入頁
+definePageMeta({
+  middleware: ['auth']
+})
+
 import { APIStore } from '~/stores/apiService'
 const store = APIStore()
 import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
