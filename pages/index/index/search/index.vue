@@ -72,6 +72,7 @@ watch(searchResults, (newVal) => {
 
 // 每點擊"載入更多"就增加 20 (筆)
 function loadMore() {
+  showToast('載入更多課程...')
   courseStore.courseData.pageSize += 20
 }
 

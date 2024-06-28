@@ -15,11 +15,13 @@
 // }
 
 // 串接 API
+import defaultImage from '~/assets/images/front/member/default-image.jpg'
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
 const memberStore = useMemberStore()
 const authStore = useAuthStore()
 const courseInfo: any = ref({})
+const isCardLoading = ref(false)
 
 // 載入時取得 courseStore
 onMounted(() => {
@@ -47,6 +49,7 @@ async function getCourse(
 ) {
   // console.log(courseTerm, courseType, keyword, sortBy, pageSize)
   // console.log('被call了')
+  isCardLoading.value = true
   try {
     let query = ''
     let countCourseQuery = ''
@@ -80,6 +83,7 @@ async function getCourse(
     showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log(e)
   }
+  isCardLoading.value = false
 }
 
 function request(result: { statusCode: number; data: any }) {
@@ -172,7 +176,10 @@ const removeCollection = async (courseId: string) => {
 </script>
 
 <template>
-  <ul class="grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5">
+  <ul
+    class="grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5"
+    v-if="!isCardLoading || courseInfo.length > 0"
+  >
     <li v-for="item in courseInfo" class="flex min-h-[300px] flex-col">
       <NuxtLink
         :to="{ name: 'index-index-course-id', params: { id: item._id } }"
@@ -180,9 +187,10 @@ const removeCollection = async (courseId: string) => {
         :id="item._id"
       >
         <img
-          :src="item.courseImage[0]"
+          :src="item.courseImage[0] || defaultImage"
           alt="課程圖片"
-          class="course mb-2 aspect-square h-full w-full rounded object-cover"
+          class="course mb-2 block aspect-square h-full w-full rounded object-cover"
+          loading="lazy"
         />
         <transition name="star">
           <button
@@ -229,6 +237,37 @@ const removeCollection = async (courseId: string) => {
       </NuxtLink>
     </li>
   </ul>
+  <!-- 課程元件 Skeleton loader -->
+  <div
+    class="grid animate-pulse grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5"
+    v-if="isCardLoading && !courseInfo.length"
+  >
+    <div v-for="n in 5" :key="n">
+      <div class="space-y-2">
+        <div class="aspect-square">
+          <div class="h-full w-full rounded-lg bg-gray3"></div>
+        </div>
+        <div class="flex space-x-2">
+          <div
+            class="self-start whitespace-nowrap rounded-[4px] bg-gray3 px-2 py-0.5 text-transparent"
+          >
+            體驗
+          </div>
+          <div
+            class="line-clamp-2 w-full text-wrap rounded-[4px] bg-gray3 px-2 py-0.5 text-transparent"
+          >
+            課程名稱 placeholder
+          </div>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <div class="line-clamp-2 self-start text-wrap rounded-[4px] bg-gray3 text-transparent">
+            品牌名稱 placeholder
+          </div>
+          <div class="self-start rounded-[4px] bg-gray3 text-transparent">NT$ 0,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
