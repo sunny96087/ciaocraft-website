@@ -412,31 +412,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* modal transition 動畫設置  */
-.modal-enter-active,
-.modal-leave-active {
-  transition: all 0.5s ease;
-}
-.modal-enter-from {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
-.modal-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.modal-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.modal-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
 /* 桌機漢堡動畫設置  */
 .hamburger-enter-active,
 .hamburger-leave-active {

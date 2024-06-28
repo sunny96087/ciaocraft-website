@@ -19,7 +19,7 @@ export const useCourseStore = defineStore('course', {
       keyword: '',
       sortBy: '',
       // 該頁面顯示筆數預設 20 筆
-      pageSize: 20,
+      pageSize: 15,
       searchResultCount: 0
     },
     oneCourseData: [
@@ -124,7 +124,7 @@ export const useCourseStore = defineStore('course', {
         courseType: '',
         keyword: '',
         sortBy: '',
-        pageSize: 5,
+        pageSize: 15,
         searchResultCount: 0
       }
     },
@@ -178,7 +178,7 @@ export const useCourseStore = defineStore('course', {
 
     // 變更課程篩選條件時就恢復筆數預設
     resetPageSize() {
-      this.courseData.pageSize = 5
+      this.courseData.pageSize = 15
     },
 
     // 新增評論

@@ -9,6 +9,11 @@ import defaultAvatar from '~/assets/images/front/member/default-avatar.jpg'
 const memberStore = useMemberStore()
 const route = useRoute()
 
+const breadcrumb = [
+  { pageName: '首頁', link: '/', isCurrentPage: false },
+  { pageName: '會員中心', link: '/member', isCurrentPage: true }
+]
+
 // 會員資料區
 const member: any = ref({})
 const memberPhoto: any = ref('')
@@ -237,6 +242,7 @@ onMounted(async () => {
 <template>
   <div class="bg-gray1 py-5 lg:px-[100px]">
     <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="mx-auto mb-14 flex space-x-8" :class="{ 'animate-pulse': isMemberLoading }">
         <!-- 大頭貼 -->
         <div

@@ -11,6 +11,12 @@ const route = useRoute()
 const orderId: any = route.params.id
 const today = new Date().toString()
 
+const breadcrumb = [
+  { pageName: '首頁', link: '/', isCurrentPage: false },
+  { pageName: '會員中心', link: '/member', isCurrentPage: false },
+  { pageName: '訂單詳情', link: `/member/order/${orderId}`, isCurrentPage: true }
+]
+
 const order = ref({
   _id: '[訂單編號]',
   courseId: '[課程編號]',
@@ -215,14 +221,20 @@ const updateLastFiveDigit = async () => {
 // 取消預約
 const showCancelModal = ref(false)
 
+// 點擊背景關閉 modal
+const clickMaskToCloseModal = (e: MouseEvent) => {
+  showCancelModal.value = false
+}
+
 onMounted(() => {
   fetchOrder(orderId)
 })
 </script>
 
 <template>
-  <div class="bg-gray1 p-5 lg:px-[100px]">
-    <div class="mx-auto py-6 lg:max-w-screen-xl">
+  <div class="bg-gray1 py-5 lg:px-[100px]">
+    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="max-w-[817px]">
         <h1 class="mb-8 mt-3 text-4xl font-medium lg:text-3xl">訂單詳情</h1>
         <div class="mb-3 justify-between md:flex">
@@ -431,58 +443,62 @@ onMounted(() => {
   </div>
 
   <!-- 繳費完成通知 Modal -->
-  <div class="modal-bg z-40" v-if="showConfirmModal">
-    <div
-      class="z-50 mx-auto w-full max-w-[560px] flex-col items-center justify-center rounded-lg bg-white p-5"
-    >
-      <div class="mx-auto mb-[30px] w-[160px]">
-        <img
-          src="/assets/images/front/Logo_Img.png"
-          alt="ciao-craft-logo"
-          class="h-full w-full object-cover"
-        />
-      </div>
-      <div class="modal-content">
-        <div class="space-y-8 md:px-[60px]">
-          <div class="space-y-4">
-            <span class="block text-center text-2xl font-medium">繳費完成通知</span>
-            <span class="block text-center">請輸入繳費帳戶後5碼，方便品牌查詢</span>
-            <span class="block text-center" :class="{ 'text-danger': hasError }" v-if="hasError">{{
-              alert
-            }}</span>
-          </div>
-          <div
-            class="flex w-full items-center justify-between rounded-[4px] border border-solid border-gray px-4 py-2 text-sm"
-          >
-            <input
-              class="w-full"
-              type="text"
-              name="lastFiveDigits"
-              v-model="lastFiveDigits"
-              placeholder="請輸入帳戶後5碼 ex. 12345"
-            />
-          </div>
-          <button
-            class="box my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light"
-            @click="updateLastFiveDigit"
-          >
-            送出
-          </button>
+  <transition name="modal">
+    <div class="modal-bg z-40" v-if="showConfirmModal" @click.capture="showConfirmModal = false">
+      <div
+        class="z-50 mx-auto w-full max-w-[560px] flex-col items-center justify-center rounded-lg bg-white p-5"
+      >
+        <div class="mx-auto mb-[30px] w-[160px]">
+          <img
+            src="/assets/images/front/Logo_Img.png"
+            alt="ciao-craft-logo"
+            class="h-full w-full object-cover"
+          />
         </div>
-      </div>
-      <div class="mt-[30px]">
-        <div class="flex justify-center">
-          <button
-            class="inline-block text-primary transition hover:text-primary-light"
-            @click="showConfirmModal = false"
-          >
-            回上一頁
-          </button>
+        <div class="modal-content">
+          <div class="space-y-8 md:px-[60px]">
+            <div class="space-y-4">
+              <span class="block text-center text-2xl font-medium">繳費完成通知</span>
+              <span class="block text-center">請輸入繳費帳戶後5碼，方便品牌查詢</span>
+              <span
+                class="block text-center"
+                :class="{ 'text-danger': hasError }"
+                v-if="hasError"
+                >{{ alert }}</span
+              >
+            </div>
+            <div
+              class="flex w-full items-center justify-between rounded-[4px] border border-solid border-gray px-4 py-2 text-sm"
+            >
+              <input
+                class="w-full"
+                type="text"
+                name="lastFiveDigits"
+                v-model="lastFiveDigits"
+                placeholder="請輸入帳戶後5碼 ex. 12345"
+              />
+            </div>
+            <button
+              class="box my-6 flex w-full items-center justify-center rounded-[4px] bg-primary py-2 text-center text-white transition duration-300 hover:bg-primary-light"
+              @click="updateLastFiveDigit"
+            >
+              送出
+            </button>
+          </div>
+        </div>
+        <div class="mt-[30px]">
+          <div class="flex justify-center">
+            <button
+              class="inline-block text-primary transition hover:text-primary-light"
+              @click="showConfirmModal = false"
+            >
+              回上一頁
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
+  </transition>
   <!-- 取消預約 Modal -->
   <div class="modal-bg z-40" v-if="showCancelModal">
     <div

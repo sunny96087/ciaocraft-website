@@ -11,6 +11,13 @@ const orderStore = useOrderStore()
 const uploadStore = useUploadStore()
 const courseStore = useCourseStore()
 
+const breadcrumb = [
+  { pageName: '首頁', link: '/', isCurrentPage: false },
+  { pageName: '會員中心', link: '/member', isCurrentPage: false },
+  { pageName: '訂單詳情', link: `/member/order/${orderId}`, isCurrentPage: false },
+  { pageName: '課後心得分享', link: `/member/comment/${orderId}`, isCurrentPage: true }
+]
+
 const order: any = ref('')
 
 const courseId = ref('id')
@@ -150,8 +157,9 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div class="bg-gray1 p-5 lg:px-[100px]">
-    <div class="mx-auto py-6 lg:max-w-screen-xl">
+  <div class="bg-gray1 py-5 lg:px-[100px]">
+    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="max-w-[817px]">
         <h2 class="mb-3 mt-3 text-4xl font-medium lg:text-3xl">課後心得分享</h2>
         <p class="mb-8">
