@@ -17,13 +17,17 @@
 // 串接 API
 import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
-
+const memberStore = useMemberStore()
+const authStore = useAuthStore()
 const courseInfo: any = ref({})
 
 // 載入時取得 courseStore
 onMounted(() => {
   const { courseTerm, courseType, keyword, sortBy, pageSize } = courseStore.courseData
   getCourse(courseTerm, courseType, keyword, sortBy, pageSize)
+  if (authStore.isLogin) {
+    fetchMemberCollection()
+  }
 })
 
 // 監控 courseStore。有異動就調用函式 getCourse
@@ -41,8 +45,8 @@ async function getCourse(
   sortBy: string,
   pageSize: number
 ) {
-  console.log(courseTerm, courseType, keyword, sortBy, pageSize)
-  console.log('被call了')
+  // console.log(courseTerm, courseType, keyword, sortBy, pageSize)
+  // console.log('被call了')
   try {
     let query = ''
     let countCourseQuery = ''
@@ -60,16 +64,16 @@ async function getCourse(
     query += `sortBy=${sortBy}&pageSize=${pageSize}&keyword=${keyword}`
     countCourseQuery += `sortBy=${sortBy}&keyword=${keyword}`
 
-    console.log(query)
+    // console.log(query)
     res = await courseStore.apiGetCourses({ query })
     countRes = await courseStore.apiGetCourses({ countCourseQuery })
 
     const result = res.data
     const countresult = countRes.data
     courseStore.courseData.searchResultCount = countresult.data.length
-    console.log(result)
-    console.log(countresult.data.length)
-    console.log(courseStore.courseData)
+    // console.log(result)
+    // console.log(countresult.data.length)
+    // console.log(courseStore.courseData)
 
     request(result)
   } catch (e) {
@@ -84,7 +88,6 @@ function request(result: { statusCode: number; data: any }) {
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
   } else {
     showToast('發生錯誤，請聯繫客服人員', 'error')
-    console.log('篩選課程失敗')
   }
 }
 
@@ -92,15 +95,88 @@ function request(result: { statusCode: number; data: any }) {
 const formattedPrice = (price: number): string => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
+
+// 取得收藏資料
+// 監控收藏資料
+const memberCollection = ref(memberStore.collections)
+watch(
+  () => memberStore.collections,
+  (newCollections) => {
+    memberCollection.value = newCollections
+  },
+  { immediate: true }
+)
+
+const fetchMemberCollection = async () => {
+  try {
+    const res = await memberStore.getMemberCollection()
+    const result = res.data
+    memberStore.collections = result.data
+    memberCollection.value = memberStore.collections
+  } catch (err) {
+    showToast('發生錯誤，請聯繫客服人員', 'error')
+  }
+}
+
+const isCollected = (id: string): boolean => {
+  const isCollected = memberCollection.value.some((item: any) => item.courseId === id)
+  return isCollected
+}
+
+// 加入收藏
+const addCollection = async (courseId: string) => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  }
+
+  showToast('收藏課程')
+  try {
+    if (authStore.isLogin) {
+      let postData = {
+        courseId: courseId
+      }
+      const res: any = await memberStore.addCollection(postData)
+      const result = res.data
+      if (result.statusCode === 200) {
+        memberStore.collections.push(result.data)
+      } else {
+        showToast('收藏失敗，請聯繫客服人員', 'error')
+      }
+    }
+  } catch (e) {
+    showToast('收藏失敗，請聯繫客服人員', 'error')
+  }
+}
+
+// 刪除收藏
+const removeCollection = async (courseId: string) => {
+  showToast('取消收藏')
+  try {
+    let postData = {
+      courseId: courseId
+    }
+    const res = await memberStore.removeCollection(postData)
+    const result = res.data
+    if (result.statusCode === 200) {
+      memberStore.collections = memberStore.collections.filter(
+        (item: any) => item.courseId !== courseId
+      )
+    } else {
+      showToast('取消收藏失敗，請聯繫客服人員', 'error')
+    }
+  } catch (e) {
+    showToast('取消收藏失敗，請聯繫客服人員', 'error')
+  }
+}
 </script>
 
-<!-- 切版缺：卡片點擊時星星變色並留停 -->
 <template>
   <ul class="grid grid-cols-2 gap-[30px] md:grid-cols-3 lg:grid-cols-5">
     <li v-for="item in courseInfo" class="flex min-h-[300px] flex-col">
       <NuxtLink
         :to="{ name: 'index-index-course-id', params: { id: item._id } }"
-        class="relative flex flex-col"
+        class="group relative flex flex-col"
         :id="item._id"
       >
         <img
@@ -108,7 +184,28 @@ const formattedPrice = (price: number): string => {
           alt="課程圖片"
           class="course mb-2 aspect-square h-full w-full rounded object-cover"
         />
-        <div class="course-star absolute right-0 top-0 hidden h-8 w-8"></div>
+        <transition name="star">
+          <button
+            class="absolute right-0 top-0 block p-3"
+            @click.stop.prevent="addCollection(item._id)"
+            v-if="isCollected(item._id) == false"
+          >
+            <Icon
+              name="ph:star"
+              class="text-xl text-primary opacity-0 transition duration-300 hover:text-primary-light group-hover:-translate-y-1 group-hover:opacity-100"
+            />
+          </button>
+          <button
+            class="absolute right-0 top-0 block p-3"
+            @click.stop.prevent="removeCollection(item._id)"
+            v-else
+          >
+            <Icon
+              name="ph:star-fill"
+              class="text-xl text-primary transition duration-300 hover:text-primary-light group-hover:-translate-y-1"
+            />
+          </button>
+        </transition>
         <div class="flex flex-col">
           <div class="mb-2 flex max-h-[90px] items-start lg:max-h-[95px]">
             <p
@@ -157,4 +254,50 @@ li:hover .course-star:hover {
     width: 32px;
     height: 32px;
   } */
+
+/* 定义动画效果 */
+@keyframes starIn {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes starOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* 应用于过渡的类 */
+.star-enter-active,
+.star-leave-active {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.star-enter {
+  animation-name: starIn;
+}
+
+.star-leave-to {
+  animation-name: starOut;
+}
 </style>

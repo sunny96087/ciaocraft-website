@@ -246,57 +246,64 @@ watch(messages, () => {
 })
 
 onUpdated(scrollToBottomM)
+
+const breadcrumb = [
+  { pageName: '首頁', link: '/', isCurrentPage: false },
+  { pageName: '訊息中心', link: '/message', isCurrentPage: true }
+]
 </script>
 
 <template>
-  <div class="bg-[#F9FAFB]">
-    <!-- * mb -->
-    <div class="relative h-[90vh] items-start gap-[30px] overflow-hidden p-5 lg:hidden">
-      <!-- * mb 聊天室列表 -->
-      <div class="m-message-list" v-if="rooms.length">
-        <div class="message-list-title">訊息中心</div>
-        <div class="admin-select mb-7 flex">
-          <input type="text" class="w-full" v-model="currentKeyword" placeholder="賣場名稱" />
-          <button class="">
-            <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
-          </button>
-        </div>
+  <div class="bg-gray1 py-5 lg:px-[100px]">
+    <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
+      <!-- * mb -->
+      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <div class="relative h-[90vh] items-start gap-[30px] overflow-hidden p-5 lg:hidden">
+        <!-- * mb 聊天室列表 -->
+        <div class="m-message-list" v-if="rooms.length">
+          <div class="message-list-title">訊息中心</div>
+          <div class="admin-select mb-7 flex">
+            <input type="text" class="w-full" v-model="currentKeyword" placeholder="賣場名稱" />
+            <button class="">
+              <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
+            </button>
+          </div>
 
-        <div class="max-h-full w-full overflow-y-auto">
-          <div
-            v-for="item in rooms"
-            :key="item._id"
-            @click="selectRoom(item)"
-            :class="['message-list-item', { 'selected-room': roomId === item._id }]"
-            class="flex gap-3"
-          >
+          <div class="max-h-full w-full overflow-y-auto">
             <div
-              v-if="currentVendorInfo && currentVendorInfo.avatar"
-              class="h-[44px] min-h-[44px] w-[44px] min-w-[44px] overflow-hidden rounded-full"
+              v-for="item in rooms"
+              :key="item._id"
+              @click="selectRoom(item)"
+              :class="['message-list-item', { 'selected-room': roomId === item._id }]"
+              class="flex gap-3"
             >
-              <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
-            </div>
-            <Icon
-              v-else
-              size="44"
-              class="min-w-[44px] text-gray4"
-              name="material-symbols:account-circle-full"
-            />
-            <div class="grow">
-              <div class="">{{ item._id }}</div>
-              <div class="">{{ item.vendorId?.brandName }}</div>
+              <div
+                v-if="currentVendorInfo && currentVendorInfo.avatar"
+                class="h-[44px] min-h-[44px] w-[44px] min-w-[44px] overflow-hidden rounded-full"
+              >
+                <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
+              </div>
+              <Icon
+                v-else
+                size="44"
+                class="min-w-[44px] text-gray4"
+                name="material-symbols:account-circle-full"
+              />
+              <div class="grow">
+                <div class="">{{ item._id }}</div>
+                <div class="">{{ item.vendorId?.brandName }}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div v-else class="text-center text-gray">
-        目前還沒有聊天室，可以到品牌賣場或訂單管理進行詢問或建議歐！
-      </div>
+        <div v-else class="text-center text-gray">
+          目前還沒有聊天室，可以到品牌賣場或訂單管理進行詢問或建議歐！
+        </div>
 
-      <!-- * mb 聊天框 -->
-      <div class="m-message-block" v-if="messages && roomId">
-        <!-- ? 測試資料 -->
-        <!-- <div>
+        <!-- * mb 聊天框 -->
+        <div class="m-message-block" v-if="messages && roomId">
+          <!-- ? 測試資料 -->
+          <!-- <div>
             <p>
               會員ID: <span id="memberId">{{ memberId }}</span>
             </p>
@@ -308,116 +315,119 @@ onUpdated(scrollToBottomM)
             </p>
           </div> -->
 
-        <!-- ? 用戶資料 -->
-        <div class="flex items-center gap-3 border-b border-[#DFE4EA] p-4" v-if="currentVendorInfo">
+          <!-- ? 用戶資料 -->
           <div
-            v-if="currentVendorInfo.avatar"
-            class="h-[52px] w-[52px] overflow-hidden rounded-full"
-          >
-            <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
-          </div>
-          <Icon v-else size="52" class="text-gray4" name="material-symbols:account-circle-full" />
-
-          <div class="grow">{{ currentVendorInfo.brandName }}</div>
-
-          <button @click="closeChatRoom">
-            <Icon name="material-symbols:close-rounded" size="24" class="text-gray"></Icon>
-          </button>
-        </div>
-
-        <!-- ? 訊息 -->
-        <div
-          id="list"
-          ref="messageListM"
-          class="flex h-full grow flex-col gap-3 overflow-y-auto p-5"
-        >
-          <div v-for="(message, index) in messages" :key="index">
-            <div v-if="message.vendorId">
-              <div v-if="currentVendorInfo" class="text-[14px] text-text-secondary">
-                {{ currentVendorInfo.brandName }}
-              </div>
-              <div class="message left">
-                <div class="left-content">{{ message.content }}</div>
-              </div>
-              <div class="message-date">{{ message.timestamp }}</div>
-            </div>
-            <div v-else class="message right">
-              <div class="right-content">
-                {{ message.content }}
-              </div>
-              <div class="message-date">{{ message.timestamp }}</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ? 輸入框 -->
-        <div class="flex gap-5 border-t border-[#DFE4EA] p-5">
-          <input
-            type="text"
-            v-model="inputMemberMessage"
-            class="w-full rounded-md border border-gray5 bg-gray2 px-3 py-2"
-            placeholder="輸入訊息..."
-          />
-          <button
-            :disabled="!inputMemberMessage"
-            type="button"
-            id="vendorSendBtn"
-            class="btn-orange shrink-0"
-            @click="sendMemberMessage"
-          >
-            送出
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- * pc -->
-    <div class="hidden h-[90vh] items-start gap-[30px] overflow-hidden px-5 py-8 lg:flex">
-      <!-- * pc 聊天室列表 -->
-      <div class="message-list" v-if="rooms.length">
-        <div class="message-list-title">訊息中心</div>
-        <div class="admin-select mb-7 flex">
-          <input type="text" class="w-full" v-model="currentKeyword" placeholder="用戶名稱" />
-          <button class="">
-            <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
-          </button>
-        </div>
-
-        <div class="max-h-full w-full">
-          <div
-            v-for="item in rooms"
-            :key="item._id"
-            @click="selectRoom(item)"
-            :class="['message-list-item', { 'selected-room': roomId === item._id }]"
-            class="flex gap-3"
+            class="flex items-center gap-3 border-b border-[#DFE4EA] p-4"
+            v-if="currentVendorInfo"
           >
             <div
-              v-if="currentVendorInfo && currentVendorInfo.avatar"
-              class="h-[44px] min-h-[44px] w-[44px] min-w-[44px] overflow-hidden rounded-full"
+              v-if="currentVendorInfo.avatar"
+              class="h-[52px] w-[52px] overflow-hidden rounded-full"
             >
               <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
             </div>
-            <Icon
-              v-else
-              size="44"
-              class="min-w-[44px] text-gray4"
-              name="material-symbols:account-circle-full"
-            />
-            <div class="grow">
-              <div class="">{{ item._id }}</div>
-              <div class="">{{ item.vendorId?.brandName }}</div>
+            <Icon v-else size="52" class="text-gray4" name="material-symbols:account-circle-full" />
+
+            <div class="grow">{{ currentVendorInfo.brandName }}</div>
+
+            <button @click="closeChatRoom">
+              <Icon name="material-symbols:close-rounded" size="24" class="text-gray"></Icon>
+            </button>
+          </div>
+
+          <!-- ? 訊息 -->
+          <div
+            id="list"
+            ref="messageListM"
+            class="flex h-full grow flex-col gap-3 overflow-y-auto p-5"
+          >
+            <div v-for="(message, index) in messages" :key="index">
+              <div v-if="message.vendorId">
+                <div v-if="currentVendorInfo" class="text-[14px] text-text-secondary">
+                  {{ currentVendorInfo.brandName }}
+                </div>
+                <div class="message left">
+                  <div class="left-content">{{ message.content }}</div>
+                </div>
+                <div class="message-date">{{ message.timestamp }}</div>
+              </div>
+              <div v-else class="message right">
+                <div class="right-content">
+                  {{ message.content }}
+                </div>
+                <div class="message-date">{{ message.timestamp }}</div>
+              </div>
             </div>
+          </div>
+
+          <!-- ? 輸入框 -->
+          <div class="flex gap-5 border-t border-[#DFE4EA] p-5">
+            <input
+              type="text"
+              v-model="inputMemberMessage"
+              class="w-full rounded-md border border-gray5 bg-gray2 px-3 py-2"
+              placeholder="輸入訊息..."
+            />
+            <button
+              :disabled="!inputMemberMessage"
+              type="button"
+              id="vendorSendBtn"
+              class="btn-orange shrink-0"
+              @click="sendMemberMessage"
+            >
+              送出
+            </button>
           </div>
         </div>
       </div>
-      <div v-else class="text-center text-gray">
-        目前還沒有聊天室，可以到品牌賣場或訂單管理進行詢問或建議歐！
-      </div>
 
-      <!-- * pc 聊天框 -->
-      <div class="message-block" v-if="messages && roomId">
-        <!-- ? 測試資料 -->
-        <!-- <div>
+      <!-- * pc -->
+      <div class="hidden h-[90vh] items-start gap-[30px] overflow-hidden px-5 py-8 lg:flex">
+        <!-- * pc 聊天室列表 -->
+        <div class="message-list" v-if="rooms.length">
+          <div class="message-list-title">訊息中心</div>
+          <div class="admin-select mb-7 flex">
+            <input type="text" class="w-full" v-model="currentKeyword" placeholder="用戶名稱" />
+            <button class="">
+              <Icon name="fluent:search-48-filled" size="24" class="text-dark3"></Icon>
+            </button>
+          </div>
+
+          <div class="max-h-full w-full">
+            <div
+              v-for="item in rooms"
+              :key="item._id"
+              @click="selectRoom(item)"
+              :class="['message-list-item', { 'selected-room': roomId === item._id }]"
+              class="flex gap-3"
+            >
+              <div
+                v-if="currentVendorInfo && currentVendorInfo.avatar"
+                class="h-[44px] min-h-[44px] w-[44px] min-w-[44px] overflow-hidden rounded-full"
+              >
+                <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
+              </div>
+              <Icon
+                v-else
+                size="44"
+                class="min-w-[44px] text-gray4"
+                name="material-symbols:account-circle-full"
+              />
+              <div class="grow">
+                <div class="">{{ item._id }}</div>
+                <div class="">{{ item.vendorId?.brandName }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="text-center text-gray">
+          目前還沒有聊天室，可以到品牌賣場或訂單管理進行詢問或建議歐！
+        </div>
+
+        <!-- * pc 聊天框 -->
+        <div class="message-block" v-if="messages && roomId">
+          <!-- ? 測試資料 -->
+          <!-- <div>
             <p>
               會員ID: <span id="memberId">{{ memberId }}</span>
             </p>
@@ -429,73 +439,78 @@ onUpdated(scrollToBottomM)
             </p>
           </div> -->
 
-        <!-- ? 用戶資料 -->
-        <div class="flex items-center gap-3 border-b border-[#DFE4EA] p-4" v-if="currentVendorInfo">
+          <!-- ? 用戶資料 -->
           <div
-            v-if="currentVendorInfo.avatar"
-            class="h-[52px] w-[52px] overflow-hidden rounded-full"
+            class="flex items-center gap-3 border-b border-[#DFE4EA] p-4"
+            v-if="currentVendorInfo"
           >
-            <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
-          </div>
-          <Icon v-else size="52" class="text-gray4" name="material-symbols:account-circle-full" />
-
-          <div class="grow">{{ currentVendorInfo?.brandName }}</div>
-
-          <button @click="closeChatRoom">
-            <Icon name="material-symbols:close-rounded" size="24" class="text-gray"></Icon>
-          </button>
-        </div>
-
-        <!-- ? 訊息 -->
-        <div
-          id="list"
-          ref="messageList"
-          class="flex h-full grow flex-col gap-3 overflow-y-auto p-5"
-        >
-          <div v-for="(message, index) in messages" :key="index">
-            <div v-if="message.vendorId">
-              <div class="text-[14px] text-text-secondary">{{ currentVendorInfo?.brandName }}</div>
-              <div class="message left">
-                <div class="left-content">{{ message.content }}</div>
-              </div>
-              <div class="message-date">{{ message.timestamp }}</div>
+            <div
+              v-if="currentVendorInfo.avatar"
+              class="h-[52px] w-[52px] overflow-hidden rounded-full"
+            >
+              <img :src="currentVendorInfo?.avatar" alt="" class="pic-auto" />
             </div>
-            <div v-else class="message right">
-              <div class="right-content">
-                {{ message.content }}
-              </div>
-              <div class="message-date">{{ message.timestamp }}</div>
-            </div>
-          </div>
-        </div>
+            <Icon v-else size="52" class="text-gray4" name="material-symbols:account-circle-full" />
 
-        <!-- ? 輸入框 -->
-        <div class="flex gap-5 border-t border-[#DFE4EA] p-5">
-          <input
-            type="text"
-            v-model="inputMemberMessage"
-            class="w-full rounded-md border border-gray5 bg-gray2 px-3 py-2"
-            placeholder="輸入訊息..."
-          />
-          <button
-            :disabled="!inputMemberMessage"
-            type="button"
-            id="vendorSendBtn"
-            class="btn-orange shrink-0"
-            @click="sendMemberMessage"
+            <div class="grow">{{ currentVendorInfo?.brandName }}</div>
+
+            <button @click="closeChatRoom">
+              <Icon name="material-symbols:close-rounded" size="24" class="text-gray"></Icon>
+            </button>
+          </div>
+
+          <!-- ? 訊息 -->
+          <div
+            id="list"
+            ref="messageList"
+            class="flex h-full grow flex-col gap-3 overflow-y-auto p-5"
           >
-            送出
-          </button>
-        </div>
+            <div v-for="(message, index) in messages" :key="index">
+              <div v-if="message.vendorId">
+                <div class="text-[14px] text-text-secondary">
+                  {{ currentVendorInfo?.brandName }}
+                </div>
+                <div class="message left">
+                  <div class="left-content">{{ message.content }}</div>
+                </div>
+                <div class="message-date">{{ message.timestamp }}</div>
+              </div>
+              <div v-else class="message right">
+                <div class="right-content">
+                  {{ message.content }}
+                </div>
+                <div class="message-date">{{ message.timestamp }}</div>
+              </div>
+            </div>
+          </div>
 
-        <!-- <input
+          <!-- ? 輸入框 -->
+          <div class="flex gap-5 border-t border-[#DFE4EA] p-5">
+            <input
+              type="text"
+              v-model="inputMemberMessage"
+              class="w-full rounded-md border border-gray5 bg-gray2 px-3 py-2"
+              placeholder="輸入訊息..."
+            />
+            <button
+              :disabled="!inputMemberMessage"
+              type="button"
+              id="vendorSendBtn"
+              class="btn-orange shrink-0"
+              @click="sendMemberMessage"
+            >
+              送出
+            </button>
+          </div>
+
+          <!-- <input
             type="text"
             id="memberMessage"
             v-model="inputMemberMessage"
             placeholder="會員輸入訊息"
           />
           <button type="button" id="memberSendBtn" @click="sendMemberMessage">會員送出</button> 
-        -->
+        --></div>
       </div>
     </div>
   </div>

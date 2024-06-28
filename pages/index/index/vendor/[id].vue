@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { APIStore } from '~/stores/apiService'
 const store = APIStore()
+const courseStore = useCourseStore()
 import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
 
 const router = useRouter()
@@ -341,7 +342,7 @@ function changeSort(sort: string) {
       </client-only>
     </section>
 
-    <div class="mb-5">
+    <div>
       <h4 class="mb-5 border-b border-dark1 pb-3 text-[30px] font-medium leading-[38px]">課程</h4>
       <div class="mb-5 flex items-center justify-between">
         <div>
@@ -408,7 +409,6 @@ function changeSort(sort: string) {
       </div>
 
       <!-- * courses -->
-      <!-- <front-product-card /> -->
       <div
         class="grid grid-cols-2 items-stretch gap-[30px] md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
       >
@@ -454,11 +454,11 @@ function changeSort(sort: string) {
       </div>
     </div>
 
-    <!-- <div class="flex justify-center pb-[66px]">
+    <div class="flex justify-center pb-[66px]">
       <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
         載入更多
       </button>
-    </div> -->
+    </div>
   </div>
 </template>
 
