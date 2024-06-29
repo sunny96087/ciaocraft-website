@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { APIStore } from '~/stores/apiService'
-import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
 import defaultImage from '~/assets/images/front/member/default-image.jpg'
+import { APIStore } from '~/stores/apiService'
+import { hideLoading, showLoading, showToast } from '~/stores/eventBus'
 const store = APIStore()
 const authStore = useAuthStore()
 const memberStore = useMemberStore()
@@ -78,7 +78,7 @@ const fetchMemberCollection = async () => {
     memberStore.collections = result.data
     memberCollection.value = memberStore.collections
   } catch (err) {
-    showToast('發生錯誤，請聯繫客服人員', 'error')
+    // showToast('發生錯誤，請聯繫客服人員', 'error')
   }
 }
 

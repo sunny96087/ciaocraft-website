@@ -66,6 +66,7 @@ async function getVendorData() {
     // console.log(`getVendorData result = ${JSON.stringify(result)}`)
     if (result.statusCode === 200) {
       vendorInfo.value = result.data
+      console.log(vendorInfo.value)
       // console.log(`vendorInfo = ${JSON.stringify(vendorInfo.value)}`)
     } else {
       console.log('取得廠商資料失敗')
@@ -109,7 +110,7 @@ const fetchMemberCollection = async () => {
     memberStore.collections = result.data
     memberCollection.value = memberStore.collections
   } catch (err) {
-    showToast('發生錯誤，請聯繫客服人員', 'error')
+    // showToast('發生錯誤，請聯繫客服人員', 'error')
   }
 }
 
@@ -164,6 +165,20 @@ const removeCollection = async (courseId: string) => {
     showToast('取消收藏失敗，請聯繫客服人員', 'error')
   }
 }
+
+// 品牌聊聊必須登入才行操作
+// 登入/註冊 modal 控制
+const openLoginModal = (): void => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  } else {
+    router.push({
+      name: 'index-index-message',
+      query: { vendorId: vendorInfo.value.vendor?._id }
+    })
+  }
+}
 </script>
 
 <template>
@@ -193,7 +208,7 @@ const removeCollection = async (courseId: string) => {
                   <li class="mb-5">
                     <ul class="flex items-center">
                       <li class="mr-2 text-[18px] font-medium leading-[26px]">
-                        {{ vendorInfo.averageRating }}
+                        {{ Math.round(vendorInfo.averageRating) }}
                       </li>
                       <li class="mr-2 flex">
                         <Icon
@@ -238,6 +253,7 @@ const removeCollection = async (courseId: string) => {
                       <nuxt-link
                         :to="{ path: '/message', query: { vendorId: vendorInfo.vendor?._id } }"
                         class="px-[93px] py-2 text-lg leading-[26px]"
+                        @click="openLoginModal"
                       >
                         <Icon name="ph:chats" class="mr-2 text-base" />
                         品牌聊聊

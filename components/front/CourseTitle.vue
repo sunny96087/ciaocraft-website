@@ -123,6 +123,7 @@ const removeCollection = async (courseId: string) => {
   }
 }
 
+// 品牌聊聊必須登入才行操作
 // 登入/註冊 modal 控制
 const openLoginModal = (): void => {
   if (!authStore.isLogin) {
