@@ -15,7 +15,6 @@ const isBookingVisible = ref(false)
 // 切換預定選單顯示狀態
 const toggleBookingVisible = (): void => {
   isBookingVisible.value = !isBookingVisible.value
-  showToast('下方已展開預約畫面')
 }
 
 // 子層按了"取消預定"，要將 isBookingVisible 恢復預設
@@ -100,6 +99,15 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
   courseStore.courseData.courseType = courseType
   router.push({ path: '/search', query: { courseTerm: courseTerm, courseType: courseType } })
 }
+
+// 點擊預約課程鈕後滑動到預約區塊
+const scrollToBookingSection = async () => {
+  await nextTick()
+  const element = document.getElementById('booking-section')
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
 </script>
 
 <template>
@@ -124,12 +132,16 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
     </nav>
     <section class="mb-[60px] justify-between lg:mb-[30px] lg:flex">
       <front-photo-carousel class="mb-[60px] lg:mb-0" />
-      <front-course-title @toggleBooking="toggleBookingVisible" />
+      <front-course-title
+        @toggleBooking="toggleBookingVisible"
+        @scrollBooking="scrollToBookingSection"
+      />
     </section>
     <section class="mb-[30px]" v-if="isBookingVisible">
       <front-course-booking
         @bookingReset="handleBookingCancel"
         @bookingSubmitted="handleBookingSubmitted"
+        ref="bookingSection"
       />
     </section>
     <section class="mb-[30px]">
@@ -146,11 +158,11 @@ const clickToSearch = (courseTerm: string, courseType: string) => {
         其他相似的課程
       </h4>
       <front-product-card class="mb-5" />
-      <div class="flex justify-center">
+      <!-- <div class="mt-10 flex justify-center">
         <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
           更多課程
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

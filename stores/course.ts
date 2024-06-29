@@ -56,10 +56,8 @@ export const useCourseStore = defineStore('course', {
         courseItemId: [
           {
             capacity: 0,
-            // endTime: new Date('2024-08-17T00:00:00.000Z'),
             endTime: '',
             itemName: '',
-            // startTime: new Date('2024-08-17T00:00:00.000Z'),
             startTime: '',
             _id: ''
           }
@@ -175,10 +173,8 @@ export const useCourseStore = defineStore('course', {
           courseItemId: [
             {
               capacity: 0,
-              // endTime: new Date('2024-08-17T00:00:00.000Z'),
               endTime: '',
               itemName: '',
-              // startTime: new Date('2024-08-17T00:00:00.000Z'),
               startTime: '',
               _id: ''
             }

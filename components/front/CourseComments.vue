@@ -40,12 +40,15 @@ const route = useRoute()
 // 單一課程評論
 const courseId = ref()
 const courseInfo: any = ref({})
+const courseInfoAll: any = ref({})
 
 onMounted(async () => {
   // 從網址取得參數
   courseId.value = route.params.id
   console.log(courseId)
-  getOneCourseComments()
+  filterComments.value = []
+  sortedComments.value = []
+  await getOneCourseComments()
 })
 
 let filterComments: any = ref([])
@@ -70,21 +73,37 @@ async function getOneCourseComments() {
   }
 }
 
+// 控制「查看所有評價」按鈕是否顯示
+let isShowloadMore = ref(true)
+// 控制是否顯示所有評論
+let showAll = ref(false)
+// 控制沒評價時文字是否顯示
+let isShowNoComment = ref(false)
 function request(result: { statusCode: number; data: any }) {
   if (result.statusCode === 200) {
-    // courseInfo.value = result.data
     // 陣列物件內增加計算天數
-    courseInfo.value = result.data.map((comment: any) => {
+    courseInfoAll.value = result.data.map((comment: any) => {
       return {
         ...comment,
         daysSince: calculateDaysSince(comment.createdAt)
       }
     })
     console.log('Updated courseInfo:', courseInfo.value)
-    // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
-    console.log(courseInfo.value)
+    // console.log(`courseInfoAll = ${JSON.stringify(courseInfoAll.value)}`)
+
+    // 依據 showAll 狀態控制 courseInfo 顯示筆數(預設2筆)
+    // courseInfo.value = showAll.value ? courseInfoAll.value : courseInfoAll.value.slice(0, 2)
+    afterSortData()
+    // 沒有評論時隱藏"查看所有評價"按鈕+顯示"無評論"文字
+    if (courseInfo.value.length === 0) {
+      isShowNoComment.value = true
+      isShowloadMore.value = false
+    }
+
     // 排序用
-    filterComments.value = courseInfo.value
+    // filterComments.value = courseInfo.value
+    // 篩選標籤用
+    // courseInfoArray.value = courseInfo.value
   } else {
     showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log('取得單一課程所有評論失敗')
@@ -133,35 +152,134 @@ const addLikeComment = async (itemId: string) => {
   }
 }
 
+function afterSortData() {
+  // 依據 showAll 狀態控制 courseInfo 顯示筆數(預設2筆)
+  courseInfo.value = showAll.value ? courseInfoAll.value : courseInfoAll.value.slice(0, 2)
+
+  // 以當前資料數進行排序
+  filterComments.value = courseInfo.value
+  // 篩選標籤用
+  courseInfoArray.value = courseInfoAll.value
+}
+
+// 以所選的排序規則對所有評論數進行排序
+let sortedComments: any = ref([])
 // 處理排序
 const handleSort = (orderName: string) => {
   if (orderName === 'newest') {
+    afterSortData()
     filterComments.value = filterComments.value.sort(
+      (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    sortedComments.value = courseInfoAll.value.sort(
       (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
     isSortOpen.value = false
   } else if (orderName === 'hot') {
+    afterSortData()
     filterComments.value = filterComments.value.sort((a: any, b: any) => {
       return (b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0)
     })
+    sortedComments.value = courseInfoAll.value.sort((a: any, b: any) => {
+      ;(b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0)
+    })
     isSortOpen.value = false
   } else if (orderName === 'highScore') {
+    afterSortData()
     filterComments.value = filterComments.value.sort((a: any, b: any) => {
-      return b.rating - a.rating
+      return Number(b.rating) - Number(a.rating)
+    })
+    sortedComments.value = courseInfoAll.value.sort((a: any, b: any) => {
+      return Number(b.rating) - Number(a.rating)
     })
     isSortOpen.value = false
   } else if (orderName === 'lowScore') {
+    afterSortData()
     filterComments.value = filterComments.value.sort((a: any, b: any) => {
-      return a.rating - b.rating
+      return Number(a.rating) - Number(b.rating)
+    })
+    sortedComments.value = courseInfoAll.value.sort((a: any, b: any) => {
+      return Number(a.rating) - Number(b.rating)
     })
     isSortOpen.value = false
   }
 }
 
-// 監控：當搜尋結果筆數>3筆數，就顯示"載入更多"
-const isShowloadMore = computed(() => {
-  return courseInfo.value.length > 2
+// 展開所有評論
+function loadMoreComments() {
+  showAll.value = true
+  if (sortedComments.value.length === 0) {
+    courseInfo.value = courseInfoAll.value
+  } else {
+    courseInfo.value = showAll.value ? sortedComments.value : filterComments.value
+  }
+  isShowloadMore.value = false
+}
+
+// 篩選下拉選單(tags項目不重複)
+const courseInfoArray = ref<any[]>([courseInfoAll])
+const uniqueTags = computed(() => {
+  const allTags = courseInfoArray.value.reduce((acc: any, item: any) => {
+    return acc.concat(item.tags)
+  }, [])
+  return [...new Set(allTags)]
 })
+
+// 下拉篩選在這邊以下打結~
+// 計算每個評論標籤筆數
+// const courseInfoArrayCount = ref<any[]>([courseInfoAll])
+// function selectedFilterCount1(filterName: string): number {
+//   // if(filterName==='師生互動'){
+//   //   courseInfoAll.value.filter((item: any) => item.tags === '師生互動')
+//   // }else if(filterName==='教學環境'){
+//   //   courseInfoAll.value.filter((item: any) => item.tags === '教學環境')
+//   // }else if (filterName === '專業度'){
+//   //   courseInfoAll.value.filter((item: any) => item.tags === '專業度')
+//   // }else{
+//   //   courseInfoAll.value.filter((item: any) => item.tags === '其他')
+//   // }
+//   return courseInfoArrayCount.value.filter((item: any) => item.tags.includes(filterName)).length
+// }
+
+// const filter = ref('all')
+// // 篩選標籤條件名稱
+// const selectedFilterName = ref('所有課程')
+// // 選中的條件數量 (下拉選單用)
+// const selectedFilterCount = ref(0)
+// // 篩選評論
+// // 透過 filter tags 名稱篩選資料
+// const handleFilter = (filterName: string) => {
+//   // const setFilter: any = (filterName: string) => {
+//   // showDropdown.value = false
+//   filter.value = filterName
+//   // if (currentView.value === 'orders') {
+//   handleCommentFilter(filterName)
+//   // } else {
+//   //   handleCollectionFilter(filterName)
+//   // }
+// }
+// console.log(selectedFilterName.value)
+// const handleCommentFilter = (filterName: string) => {
+//   if (filterName === '所有評論') {
+//     courseInfo.value = courseInfoAll.value
+//     selectedFilterName.value = '所有評論'
+//   } else if (filterName === '師生互動') {
+//     courseInfo.value = courseInfoArrayCount.value.filter((item: any) => item.tags === '師生互動')
+//     selectedFilterName.value = '師生互動'
+//     console.log(courseInfo.value)
+//   } else if (filterName === '教學環境') {
+//     courseInfo.value = courseInfoArrayCount.value.filter((item: any) => item.tags === '教學環境')
+//     selectedFilterName.value = '教學環境'
+//   } else if (filterName === '專業度') {
+//     courseInfo.value = courseInfoArrayCount.value.filter((item: any) => item.tags === '專業度')
+//     selectedFilterName.value = '專業度'
+//   } else {
+//     courseInfo.value = courseInfoArrayCount.value.filter((item: any) => item.tags === '其他')
+//     selectedFilterName.value = '其他'
+//   }
+//   // 選中的條件數量 (下拉選單用)
+//   selectedFilterCount.value = courseInfo.value.length
+// }
 </script>
 
 <template>
@@ -186,12 +304,32 @@ const isShowloadMore = computed(() => {
       <ul class="mb-[30px] flex items-center justify-between">
         <li>
           <select name="course" id="course" class="mr-5 rounded border border-dark1 px-4 py-2">
+            <!-- 下拉篩選在這邊以下打結~ -->
+            <!-- <option value="所有評論" @click="handleFilter('所有評論')">所有評論</option>
+            <option
+              :value="tag"
+              v-for="(tag, index) in uniqueTags"
+              :key="index"
+              @click="handleFilter('tag')"
+            >
+              {{ tag }}({{ selectedFilterCount1('tag') }})
+            </option> -->
+            <option value="所有評論">所有評論</option>
+            <option :value="tag" v-for="(tag, index) in uniqueTags" :key="index">
+              {{ tag }}(比數)
+            </option>
+
+            <!-- 別管我，我是切死的。待刪除 -->
             <!-- ()內放變數 -->
-            <option value="所有評論">所有評論(61)</option>
-            <option value="師生互動">師生互動(1)</option>
-            <option value="教學環境">教學環境(3)</option>
-            <option value="專業度">專業度(6)</option>
-            <option value="其他">其他(26)</option>
+            <!-- <option value="所有評論" @click="handleFilter('所有評論')">所有評論(61)</option>
+            <option value="師生互動" @click="handleFilter('師生互動')">師生互動(1)</option>
+            <option value="教學環境" @click="handleFilter('教學環境')">教學環境(3)</option>
+            <option value="專業度" @click="handleFilter('專業度')">專業度(6)</option>
+            <option value="其他" @click="handleFilter('其他')">其他(26)</option> -->
+
+            <!-- <option value="selectedFilterName" @click="handleFilter('selectedFilterName')">
+              {{ selectedFilterName }}({{ selectedFilterCount }})
+            </option> -->
           </select>
         </li>
         <li class="relative">
@@ -328,11 +466,12 @@ const isShowloadMore = computed(() => {
       </ul>
     </li>
   </ul>
-  <div class="flex justify-center" v-if="isShowloadMore">
+  <div class="flex justify-center" @click="loadMoreComments" v-if="isShowloadMore">
     <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
       查看所有評價
     </button>
   </div>
+  <div v-if="isShowNoComment">目前無任何評論</div>
 
   <!-- 檢舉彈窗 -->
   <!-- <transition name="modal">

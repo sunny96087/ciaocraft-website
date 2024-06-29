@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue'
 
-// const emit = defineEmits(['bookingReset'])
 const emit = defineEmits(['bookingReset', 'bookingSubmitted'])
 const handleBookingCancel = () => {
   emit('bookingReset')
@@ -11,22 +10,17 @@ import { useCourseStore } from '~/stores/course'
 const courseStore = useCourseStore()
 const selectedItem = ref(null)
 
-// const selectedItemId = ref<string | null>(null)
-// // 將點擊的 item (課程名稱)賦值給 selectedItem
+// 將點擊的 item (課程名稱)賦值給 selectedItem
 const selectItem = (item: any) => {
   selectedItem.value = item
   quantity.value = 1
   getRemainingCapacity(selectedItem.value)
 }
 
-// let selectedCourseId: CourseItem | undefined;
-
-const selectedCapacity = ref({
+const selectedObject = ref({
   capacity: 0,
-  // endTime: new Date(),
   endTime: '',
   itemName: '',
-  // startTime: new Date(),
   startTime: '',
   _id: ''
 })
@@ -35,18 +29,13 @@ const selectedCapacity = ref({
 const getRemainingCapacity = (selectedItem: any) => {
   if (!selectedItem) return 0
 
-  // 使用 selectedItem 的 itemName 來篩選並取相應 capacity
-  // const selectedCapacity = courseStore.oneCourseData[0].courseItemId.find(
-  //   (item) => item.itemName === selectedItem.itemName
-  // )
-
   const foundItem = courseStore.oneCourseData[0].courseItemId.find(
     (item) => item.itemName === selectedItem.itemName
   )
 
-  // 找到對應資料後賦值給 selectedCapacity.value
+  // 找到對應資料後賦值給 selectedObject.value
   if (foundItem) {
-    selectedCapacity.value = {
+    selectedObject.value = {
       capacity: foundItem.capacity,
       endTime: foundItem.endTime,
       itemName: foundItem.itemName,
@@ -54,8 +43,8 @@ const getRemainingCapacity = (selectedItem: any) => {
       _id: foundItem._id
     }
   } else {
-    // 沒有找到就將 selectedCapacity.value 變成預設值
-    selectedCapacity.value = {
+    // 沒有找到就將 selectedObject.value 變成預設值
+    selectedObject.value = {
       capacity: 0,
       endTime: '',
       itemName: '',
@@ -63,9 +52,9 @@ const getRemainingCapacity = (selectedItem: any) => {
       _id: ''
     }
   }
-  console.log(selectedCapacity.value)
+  console.log(selectedObject.value)
 
-  return selectedCapacity.value ? selectedCapacity.value : 0
+  return selectedObject.value ? selectedObject.value : 0
 }
 
 // 預約人數預設 1 人
@@ -82,8 +71,6 @@ const decrementQuantity = () => {
 const incrementQuantity = () => {
   const remainingCapacity = getRemainingCapacity(selectedItem.value)
   if (remainingCapacity && quantity.value < remainingCapacity.capacity) {
-    // const remainingCapacity = getRemainingCapacity(selectedItem.value)
-    // if (quantity.value < remainingCapacity) {
     quantity.value += 1
   } else {
     showToast('預約人數已滿', 'error')
@@ -99,7 +86,6 @@ const totalPrice = computed(() => {
 const suggestion = ref('')
 const authStore = useAuthStore()
 // 新增訂單(預約)
-// const addBooking = async (courseId: string) => {
 const addBooking = async () => {
   if (!authStore.isLogin) {
     authStore.openLoginModal()
@@ -110,16 +96,16 @@ const addBooking = async () => {
       let data = {
         vendorId: courseStore.oneCourseData[0].vendorId._id,
         courseId: courseStore.oneCourseData[0].id,
-        courseItemId: selectedCapacity.value._id,
+        courseItemId: selectedObject.value._id,
         brandName: courseStore.oneCourseData[0].vendorId.brandName,
         courseName: courseStore.oneCourseData[0].courseName,
-        courseItemName: selectedCapacity.value.itemName,
+        courseItemName: selectedObject.value.itemName,
         count: quantity.value,
         price: courseStore.oneCourseData[0].coursePrice,
         totalPrice: totalPrice.value,
         courseLocation: courseStore.oneCourseData[0].courseAddress,
-        startTime: selectedCapacity.value.startTime,
-        endTime: selectedCapacity.value.endTime,
+        startTime: selectedObject.value.startTime,
+        endTime: selectedObject.value.endTime,
         note: suggestion.value
       }
       console.log(data)
@@ -178,7 +164,7 @@ const formattedPrice = (price: number): string => {
 const resetData = (item: any) => {
   quantity.value = 1
   suggestion.value = ''
-  selectedCapacity.value = {
+  selectedObject.value = {
     capacity: 0,
     endTime: '',
     itemName: '',
@@ -193,6 +179,7 @@ const resetData = (item: any) => {
     class="rounded-xl border border-[#DFE4EA] bg-white p-5"
     v-for="(item, index) in courseStore.oneCourseData"
     :key="index"
+    id="booking-section"
   >
     <li class="mb-5 flex justify-between">
       <h4 class="text-[30px] font-medium leading-[38px]">預約課程</h4>
@@ -228,7 +215,7 @@ const resetData = (item: any) => {
                 class="mb-2 rounded border px-6 py-2"
                 :class="{
                   'text-secondary hover:bg-secondary hover:text-white': true,
-                  'bg-secondary text-white': selectedCapacity.itemName === item.itemName,
+                  'bg-secondary text-white': selectedObject.itemName === item.itemName,
                   'cursor-not-allowed bg-gray5 hover:bg-gray5 hover:text-secondary':
                     item.capacity === 0
                 }"
@@ -261,12 +248,8 @@ const resetData = (item: any) => {
                   />
                 </div>
               </li>
-              <!-- <li>
-                剩餘<span class="mx-2"> {{ getRemainingCapacity(selectedItem) }}</span
-                >人
-              </li> -->
               <li>
-                剩餘<span class="mx-2"> {{ selectedCapacity.capacity }}</span
+                剩餘<span class="mx-2"> {{ selectedObject.capacity }}</span
                 >人
               </li>
             </ul>
@@ -302,7 +285,7 @@ const resetData = (item: any) => {
         <button
           class="flex items-center rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
           @click="addBooking()"
-          :disabled="selectedCapacity.capacity === 0"
+          :disabled="selectedObject.capacity === 0"
         >
           <Icon name="ph:paper-plane-right" class="mr-2 text-xl" />
           送出訂單
