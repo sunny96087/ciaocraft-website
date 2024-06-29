@@ -42,29 +42,31 @@ const courseId = ref()
 const courseInfo: any = ref({})
 const courseInfoAll: any = ref({})
 
+// Shuan 新增的評論用資料
+let courseComments: any = ref([]) // 課程所有評論
+let filterComments: any = ref([]) // 用於評論filter
+
 onMounted(async () => {
   // 從網址取得參數
   courseId.value = route.params.id
-  console.log(courseId)
-  filterComments.value = []
-  sortedComments.value = []
+  // console.log(courseId)
+  // filterComments.value = []
+  // sortedComments.value = []
   await getOneCourseComments()
 })
 
-let filterComments: any = ref([])
 // 取得單一課程所有評論
 async function getOneCourseComments() {
   try {
     showLoading()
-
     let data = {
       courseId: courseId.value
     }
     const res = await courseStore.apiGetOneCourseComments(data)
     const result = res.data
-    console.log(result)
-
+    console.log(result.data)
     request(result)
+    // console.log(result)
   } catch (e) {
     showToast('發生錯誤，請聯繫客服人員', 'error')
     console.log(e)
@@ -79,26 +81,31 @@ let isShowloadMore = ref(true)
 let showAll = ref(false)
 // 控制沒評價時文字是否顯示
 let isShowNoComment = ref(false)
+
 function request(result: { statusCode: number; data: any }) {
   if (result.statusCode === 200) {
     // 陣列物件內增加計算天數
-    courseInfoAll.value = result.data.map((comment: any) => {
+    courseComments.value = result.data.map((comment: any) => {
       return {
         ...comment,
         daysSince: calculateDaysSince(comment.createdAt)
       }
     })
-    console.log('Updated courseInfo:', courseInfo.value)
-    // console.log(`courseInfoAll = ${JSON.stringify(courseInfoAll.value)}`)
 
-    // 依據 showAll 狀態控制 courseInfo 顯示筆數(預設2筆)
-    // courseInfo.value = showAll.value ? courseInfoAll.value : courseInfoAll.value.slice(0, 2)
-    afterSortData()
-    // 沒有評論時隱藏"查看所有評價"按鈕+顯示"無評論"文字
+    // courseComments 是用來存原始資料內容 (用於讓filterComments進行篩選還有下拉選單的數字)
+    // filterComments 則用於存篩選的結果 (實際顯示用)
+    filterComments.value = courseComments.value
+
     if (courseInfo.value.length === 0) {
       isShowNoComment.value = true
       isShowloadMore.value = false
     }
+
+    // console.log(`courseInfoAll = ${JSON.stringify(courseInfoAll.value)}`)
+    // 依據 showAll 狀態控制 courseInfo 顯示筆數(預設2筆)
+    // courseInfo.value = showAll.value ? courseInfoAll.value : courseInfoAll.value.slice(0, 2)
+    // afterSortData()
+    // 沒有評論時隱藏"查看所有評價"按鈕+顯示"無評論"文字
 
     // 排序用
     // filterComments.value = courseInfo.value
@@ -119,8 +126,34 @@ const calculateDaysSince = (createdAt: any) => {
   return diffDays
 }
 
+// 選擇後，將用原始資料重新篩選，存入顯示用的 filterComments 中
+const handleFilterChange = (event: any) => {
+  const selectedValue = event.target.value
+  console.log('handleFilter', selectedValue)
+  if (selectedValue === '所有評論') {
+    filterComments.value = courseComments.value
+  } else if (selectedValue === '師生互動') {
+    filterComments.value = courseComments.value.filter((item: any) =>
+      item.tags.includes(selectedValue)
+    )
+  } else if (selectedValue === '教學環境') {
+    filterComments.value = courseComments.value.filter((item: any) =>
+      item.tags.includes(selectedValue)
+    )
+  } else if (selectedValue === '專業度') {
+    filterComments.value = courseComments.value.filter((item: any) =>
+      item.tags.includes(selectedValue)
+    )
+  } else if (selectedValue === '其他') {
+    filterComments.value = courseComments.value.filter((item: any) =>
+      item.tags.includes(selectedValue)
+    )
+  }
+}
+
 const authStore = useAuthStore()
 const likeCommentInfo: any = ref({})
+
 // 新增課程評論按讚/取消讚
 const addLikeComment = async (itemId: string) => {
   if (!authStore.isLogin) {
@@ -152,56 +185,71 @@ const addLikeComment = async (itemId: string) => {
   }
 }
 
-function afterSortData() {
-  // 依據 showAll 狀態控制 courseInfo 顯示筆數(預設2筆)
-  courseInfo.value = showAll.value ? courseInfoAll.value : courseInfoAll.value.slice(0, 2)
+// function afterSortData() {
+//   // 依據 showAll 狀態控制 courseInfo 顯示筆數(預設2筆)
+//   courseInfo.value = showAll.value ? courseInfoAll.value : courseInfoAll.value.slice(0, 2)
 
-  // 以當前資料數進行排序
-  filterComments.value = courseInfo.value
-  // 篩選標籤用
-  courseInfoArray.value = courseInfoAll.value
-}
+//   // 以當前資料數進行排序
+//   filterComments.value = courseInfo.value
+//   // 篩選標籤用
+//   courseInfoArray.value = courseInfoAll.value
+// }
 
 // 以所選的排序規則對所有評論數進行排序
-let sortedComments: any = ref([])
+// let sortedComments: any = ref([])
+
 // 處理排序
-const handleSort = (orderName: string) => {
+const handleSort: any = (orderName: string) => {
+  isSortOpen.value = !isSortOpen.value
   if (orderName === 'newest') {
-    afterSortData()
     filterComments.value = filterComments.value.sort(
       (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     )
-    sortedComments.value = courseInfoAll.value.sort(
-      (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    isSortOpen.value = false
+    // afterSortData()
+    // filterComments.value = filterComments.value.sort(
+    //   (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    // )
+    // sortedComments.value = filterComments.value.sort(
+    //   (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    // )
+    // isSortOpen.value = false
   } else if (orderName === 'hot') {
-    afterSortData()
     filterComments.value = filterComments.value.sort((a: any, b: any) => {
       return (b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0)
     })
-    sortedComments.value = courseInfoAll.value.sort((a: any, b: any) => {
-      ;(b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0)
-    })
-    isSortOpen.value = false
+    // afterSortData()
+    // filterComments.value = filterComments.value.sort((a: any, b: any) => {
+    //   return (b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0)
+    // })
+    // sortedComments.value = filterComments.value.sort((a: any, b: any) => {
+    //   ;(b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0)
+    // })
+    // isSortOpen.value = false
   } else if (orderName === 'highScore') {
-    afterSortData()
     filterComments.value = filterComments.value.sort((a: any, b: any) => {
       return Number(b.rating) - Number(a.rating)
     })
-    sortedComments.value = courseInfoAll.value.sort((a: any, b: any) => {
-      return Number(b.rating) - Number(a.rating)
-    })
-    isSortOpen.value = false
+    // afterSortData()
+    // filterComments.value = filterComments.value.sort((a: any, b: any) => {
+    //   return Number(b.rating) - Number(a.rating)
+    // })
+    // sortedComments.value = filterComments.value.sort((a: any, b: any) => {
+    //   return Number(b.rating) - Number(a.rating)
+    // })
+    // isSortOpen.value = false
   } else if (orderName === 'lowScore') {
-    afterSortData()
     filterComments.value = filterComments.value.sort((a: any, b: any) => {
       return Number(a.rating) - Number(b.rating)
     })
-    sortedComments.value = courseInfoAll.value.sort((a: any, b: any) => {
-      return Number(a.rating) - Number(b.rating)
-    })
-    isSortOpen.value = false
+
+    // afterSortData()
+    // filterComments.value = filterComments.value.sort((a: any, b: any) => {
+    //   return Number(a.rating) - Number(b.rating)
+    // })
+    // sortedComments.value = filterComments.value.sort((a: any, b: any) => {
+    //   return Number(a.rating) - Number(b.rating)
+    // })
+    // isSortOpen.value = false
   }
 }
 
@@ -217,13 +265,13 @@ function loadMoreComments() {
 }
 
 // 篩選下拉選單(tags項目不重複)
-const courseInfoArray = ref<any[]>([courseInfoAll])
-const uniqueTags = computed(() => {
-  const allTags = courseInfoArray.value.reduce((acc: any, item: any) => {
-    return acc.concat(item.tags)
-  }, [])
-  return [...new Set(allTags)]
-})
+// const courseInfoArray = ref<any[]>([courseInfoAll])
+// const uniqueTags = computed(() => {
+//   const allTags = courseInfoArray.value.reduce((acc: any, item: any) => {
+//     return acc.concat(item.tags)
+//   }, [])
+//   return [...new Set(allTags)]
+// })
 
 // 下拉篩選在這邊以下打結~
 // 計算每個評論標籤筆數
@@ -303,33 +351,33 @@ const uniqueTags = computed(() => {
     <li>
       <ul class="mb-[30px] flex items-center justify-between">
         <li>
-          <select name="course" id="course" class="mr-5 rounded border border-dark1 px-4 py-2">
-            <!-- 下拉篩選在這邊以下打結~ -->
-            <!-- <option value="所有評論" @click="handleFilter('所有評論')">所有評論</option>
-            <option
-              :value="tag"
-              v-for="(tag, index) in uniqueTags"
-              :key="index"
-              @click="handleFilter('tag')"
-            >
-              {{ tag }}({{ selectedFilterCount1('tag') }})
-            </option> -->
-            <option value="所有評論">所有評論</option>
-            <option :value="tag" v-for="(tag, index) in uniqueTags" :key="index">
-              {{ tag }}(比數)
+          <select
+            name="course"
+            id="course"
+            class="mr-5 rounded border border-dark1 px-4 py-2"
+            @change="handleFilterChange"
+          >
+            <option value="所有評論">所有評論({{ courseComments.length }})</option>
+            <option value="師生互動">
+              師生互動({{
+                courseComments.filter((item: any) => item.tags.includes('師生互動')).length || 0
+              }})
             </option>
-
-            <!-- 別管我，我是切死的。待刪除 -->
-            <!-- ()內放變數 -->
-            <!-- <option value="所有評論" @click="handleFilter('所有評論')">所有評論(61)</option>
-            <option value="師生互動" @click="handleFilter('師生互動')">師生互動(1)</option>
-            <option value="教學環境" @click="handleFilter('教學環境')">教學環境(3)</option>
-            <option value="專業度" @click="handleFilter('專業度')">專業度(6)</option>
-            <option value="其他" @click="handleFilter('其他')">其他(26)</option> -->
-
-            <!-- <option value="selectedFilterName" @click="handleFilter('selectedFilterName')">
-              {{ selectedFilterName }}({{ selectedFilterCount }})
-            </option> -->
+            <option value="教學環境">
+              教學環境({{
+                courseComments.filter((item: any) => item.tags.includes('教學環境')).length || 0
+              }})
+            </option>
+            <option value="專業度">
+              專業度({{
+                courseComments.filter((item: any) => item.tags.includes('專業度')).length || 0
+              }})
+            </option>
+            <option value="其他">
+              其他({{
+                courseComments.filter((item: any) => item.tags.includes('其他')).length || 0
+              }})
+            </option>
           </select>
         </li>
         <li class="relative">
@@ -383,7 +431,7 @@ const uniqueTags = computed(() => {
       <ul>
         <li
           class="mb-3 rounded-lg border border-[#DFE4EA] bg-white p-5"
-          v-for="(item, index) in courseInfo"
+          v-for="(item, index) in filterComments"
           :key="item.id"
         >
           <ul>
@@ -451,14 +499,20 @@ const uniqueTags = computed(() => {
                   </p>
                 </div>
               </div>
-              <div class="grid grid-cols-4 gap-3 md:grid-cols-6 lg:grid-cols-10">
-                <img
+              <div class="flex flex-wrap gap-3">
+                <div
                   v-for="img in item.images"
-                  :src="img"
+                  :key="index"
                   alt="評論照片"
-                  class="h-[100px] w-[100px] object-cover hover:cursor-pointer"
+                  class="block aspect-square h-[100px] w-[100px] overflow-hidden rounded bg-gray2"
                   @click="openPhotoModal(img)"
-                />
+                >
+                  <img
+                    :src="img"
+                    alt="course-img"
+                    class="h-full w-full object-cover hover:cursor-pointer hover:opacity-80"
+                  />
+                </div>
               </div>
             </li>
           </ul>

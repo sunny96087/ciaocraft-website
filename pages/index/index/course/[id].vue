@@ -36,7 +36,7 @@ onMounted(async () => {
 
   // 從網址取得參數
   courseId.value = route.params.id
-  console.log(courseId)
+  // console.log(courseId)
   getOneCourse()
 })
 
@@ -50,7 +50,7 @@ async function getOneCourse() {
     }
     const res = await courseStore.apiGetOneCourse(data)
     const result = res.data
-    console.log(result)
+    // console.log(result)
     // 將資料寫入 courseStore
     courseStore.oneCourseData[0].id = result.data._id
     courseStore.oneCourseData[0].courseTerm = result.data.courseTerm
@@ -73,7 +73,7 @@ async function getOneCourse() {
     courseStore.oneCourseData[0].courseNotice = result.data.courseNotice
     courseStore.oneCourseData[0].courseItemId = result.data.courseItemId
 
-    console.log(courseStore.oneCourseData)
+    // console.log(courseStore.oneCourseData)
 
     request(result)
   } catch (e) {
