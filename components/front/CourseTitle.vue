@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { defineEmits } from 'vue'
 
-const emit = defineEmits(['toggleBooking'])
+const emit = defineEmits(['toggleBooking', 'scrollBooking'])
 
 const handleBookingClick = (): void => {
   emit('toggleBooking')
+  emit('scrollBooking')
 }
 
 import { useCourseStore } from '~/stores/course'
@@ -91,6 +92,37 @@ function request(result: { statusCode: number; data: any }) {
   }
 }
 
+// 移除收藏
+const removeCollection = async (courseId: string) => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  }
+
+  try {
+    if (authStore.isLogin) {
+      let postData = {
+        courseId: courseId
+      }
+      console.log(courseId)
+      const res: any = await memberStore.removeCollection(postData)
+      const result = res.data
+
+      if (result.statusCode === 200) {
+        memberStore.collections = memberStore.collections.filter(
+          (item: any) => item.courseId !== courseId
+        )
+        showToast('已取消收藏')
+        isCollected.value = false
+      } else {
+        showToast('取消收藏失敗，請聯繫客服人員', 'error')
+      }
+    }
+  } catch (e) {
+    showToast('取消收藏失敗，請聯繫客服人員', 'error')
+  }
+}
+
 // 登入/註冊 modal 控制
 const openLoginModal = (): void => {
   if (!authStore.isLogin) {
@@ -135,7 +167,7 @@ const openLoginModal = (): void => {
       <li>
         <Icon name="ph:map-pin-line" class="mr-2 text-2xl" />
       </li>
-      <li>{{ item.courseAddress.substring(0, 3) }}</li>
+      <li>{{ item.courseAddress }}</li>
     </ul>
     <p class="mb-2">課程簡述</p>
     <p class="mb-[30px]">
@@ -160,7 +192,8 @@ const openLoginModal = (): void => {
         收藏課程
       </button>
       <button
-        class="flex w-full cursor-not-allowed items-center justify-center border border-primary bg-white text-lg leading-[3rem]"
+        class="flex w-full items-center justify-center border border-primary bg-white text-lg leading-[3rem]"
+        @click="removeCollection(courseStore.oneCourseData[0].id)"
         v-else
       >
         <Icon name="ph:star-bold" class="mr-2 text-xl" />

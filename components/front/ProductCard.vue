@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// 這個註解是我寫的嗎???(困惑)(非必要可刪)
-
 // // 使用 ref 選取 dom 元素
 // import { ref } from 'vue'
 
