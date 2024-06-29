@@ -46,6 +46,7 @@ const registerMember = async () => {
     // console.log('會員資料', result)
     if (result.statusCode == 200) {
       memberStore.member = result.data
+      authStore.checkLogin()
       showToast('註冊成功')
       emit('changeContent', 'registerSuccess')
     } else {
