@@ -25,28 +25,6 @@ const toggleSort = (): void => {
 //   isMoreOpen.value = false
 // }
 
-let filterOrders: any = ref([])
-// 處理排序
-const handleSort = (orderName: string) => {
-  if (orderName === 'newest') {
-    filterOrders.value = filterOrders.value.sort(
-      (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-  } else if (orderName === 'hot') {
-    filterOrders.value = filterOrders.value.sort((a: any, b: any) => {
-      if (a.courseTerm === 0 && b.courseTerm !== 0) return -1
-      if (a.courseTerm !== 0 && b.courseTerm === 0) return 1
-      return a.courseTerm - b.courseTerm
-    })
-  } else if (orderName === 'training') {
-    filterOrders.value = filterOrders.value.sort((a: any, b: any) => {
-      if (a.courseTerm === 1 && b.courseTerm !== 1) return -1
-      if (a.courseTerm !== 1 && b.courseTerm === 1) return 1
-      return b.courseTerm - a.courseTerm
-    })
-  }
-}
-
 // 放大評論照片 modal 控制
 const isPhotoModalOpen = ref<boolean>(false)
 const selectedImageUrl = ref<string>('')
@@ -70,7 +48,8 @@ onMounted(async () => {
   getOneCourseComments()
 })
 
-// 取得單一課程評論
+let filterComments: any = ref([])
+// 取得單一課程所有評論
 async function getOneCourseComments() {
   try {
     showLoading()
@@ -93,13 +72,96 @@ async function getOneCourseComments() {
 
 function request(result: { statusCode: number; data: any }) {
   if (result.statusCode === 200) {
-    courseInfo.value = result.data
+    // courseInfo.value = result.data
+    // 陣列物件內增加計算天數
+    courseInfo.value = result.data.map((comment: any) => {
+      return {
+        ...comment,
+        daysSince: calculateDaysSince(comment.createdAt)
+      }
+    })
+    console.log('Updated courseInfo:', courseInfo.value)
     // console.log(`courseInfo = ${JSON.stringify(courseInfo.value)}`)
+    console.log(courseInfo.value)
+    // 排序用
+    filterComments.value = courseInfo.value
   } else {
     showToast('發生錯誤，請聯繫客服人員', 'error')
-    console.log('取得單一課程失敗')
+    console.log('取得單一課程所有評論失敗')
   }
 }
+
+// 計算每筆評論的距今天數
+const calculateDaysSince = (createdAt: any) => {
+  const today = new Date()
+  const createdDate = new Date(createdAt)
+  const diffTime = Math.abs(today.getTime() - createdDate.getTime())
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  return diffDays
+}
+
+const authStore = useAuthStore()
+const likeCommentInfo: any = ref({})
+// 新增課程評論按讚/取消讚
+const addLikeComment = async (itemId: string) => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  }
+
+  try {
+    if (authStore.isLogin) {
+      let likeCommentData = {
+        // commentId: courseInfo.id
+        commentId: itemId
+      }
+      const res = await courseStore.apiPostLikeComment(likeCommentData)
+      const result = res.data
+
+      if (result.statusCode === 200) {
+        likeCommentInfo.value = result.data
+        // console.log(`likeCommentInfo = ${JSON.stringify(likeCommentInfo.value)}`)
+        showToast('評論按讚/取消讚成功')
+        getOneCourseComments()
+      } else {
+        console.log('評論按讚/取消讚失敗')
+      }
+    }
+  } catch (e) {
+    console.log(e)
+    showToast('評論按讚/取消讚失敗，請聯繫客服人員', 'error')
+  }
+}
+
+// 處理排序
+const handleSort = (orderName: string) => {
+  if (orderName === 'newest') {
+    filterComments.value = filterComments.value.sort(
+      (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    isSortOpen.value = false
+  } else if (orderName === 'hot') {
+    filterComments.value = filterComments.value.sort((a: any, b: any) => {
+      return (b.likes ? b.likes.length : 0) - (a.likes ? a.likes.length : 0)
+    })
+    isSortOpen.value = false
+  } else if (orderName === 'highScore') {
+    filterComments.value = filterComments.value.sort((a: any, b: any) => {
+      return b.rating - a.rating
+    })
+    isSortOpen.value = false
+  } else if (orderName === 'lowScore') {
+    filterComments.value = filterComments.value.sort((a: any, b: any) => {
+      return a.rating - b.rating
+    })
+    isSortOpen.value = false
+  }
+}
+
+// 監控：當搜尋結果筆數>3筆數，就顯示"載入更多"
+const isShowloadMore = computed(() => {
+  return courseInfo.value.length > 2
+})
 </script>
 
 <template>
@@ -194,12 +256,14 @@ function request(result: { statusCode: number; data: any }) {
                     <Icon name="ph:chat-centered-dots" class="mr-3 text-[40px] text-secondary" />
                     <p>{{ item.id }}</p>
                   </li>
-                  <li class="flex items-center">
-                    <Icon name="ph:thumbs-up" class="mr-1 text-[32px] hover:cursor-pointer" />
-                    <p class="mr-3">
-                      有幫助(<span>{{ item.likes.length }}</span
-                      >)
-                    </p>
+                  <li>
+                    <button class="flex items-center" @click="addLikeComment(item.id)">
+                      <Icon name="ph:thumbs-up" class="mr-1 text-[32px] hover:cursor-pointer" />
+                      <p class="mr-3">
+                        有幫助(<span>{{ item.likes.length }}</span
+                        >)
+                      </p>
+                    </button>
                     <!-- <div class="relative">
                       <Icon
                         name="ph:dots-three-outline-vertical-fill"
@@ -234,7 +298,7 @@ function request(result: { statusCode: number; data: any }) {
                     <Icon name="ph:star-fill" class="text-2xl text-primary" />
                     <Icon name="ph:star-bold" class="text-2xl text-primary" />
                   </li>
-                  <li>1 天前</li>
+                  <li>{{ item.daysSince }} 天前</li>
                 </ul>
               </div>
               <div class="mb-5">
@@ -264,7 +328,7 @@ function request(result: { statusCode: number; data: any }) {
       </ul>
     </li>
   </ul>
-  <div class="flex justify-center">
+  <div class="flex justify-center" v-if="isShowloadMore">
     <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
       查看所有評價
     </button>

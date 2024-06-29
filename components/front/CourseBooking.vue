@@ -228,9 +228,12 @@ const resetData = (item: any) => {
                 class="mb-2 rounded border px-6 py-2"
                 :class="{
                   'text-secondary hover:bg-secondary hover:text-white': true,
-                  'bg-secondary text-white': selectedCapacity.itemName === item.itemName
+                  'bg-secondary text-white': selectedCapacity.itemName === item.itemName,
+                  'cursor-not-allowed bg-gray5 hover:bg-gray5 hover:text-secondary':
+                    item.capacity === 0
                 }"
                 @click="selectItem(item)"
+                :disabled="item.capacity === 0"
               >
                 {{ item.itemName }}
               </button>
@@ -240,7 +243,7 @@ const resetData = (item: any) => {
             <p class="mb-5">預約人數<span class="text-danger">*</span></p>
             <ul class="flex items-center justify-between border-b border-black pb-5">
               <li class="flex items-center">
-                <p class="mr-5">
+                <p class="mr-5 text-secondary">
                   NT$<span class="mx-2">{{ formattedPrice(item.coursePrice) }}</span
                   >/ 每人
                 </p>
@@ -271,7 +274,7 @@ const resetData = (item: any) => {
           <ul>
             <li class="mb-2 flex items-center justify-between">
               <p>總金額</p>
-              <p class="text-2xl font-medium leading-[36px]">
+              <p class="text-2xl font-medium leading-[36px] text-secondary">
                 NT$<span>{{ formattedPrice(totalPrice) }}</span>
               </p>
             </li>
@@ -299,6 +302,7 @@ const resetData = (item: any) => {
         <button
           class="flex items-center rounded bg-primary px-6 py-2 text-white hover:bg-primary-light"
           @click="addBooking()"
+          :disabled="selectedCapacity.capacity === 0"
         >
           <Icon name="ph:paper-plane-right" class="mr-2 text-xl" />
           送出訂單
