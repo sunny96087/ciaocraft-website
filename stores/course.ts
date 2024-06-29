@@ -94,7 +94,7 @@ export const useCourseStore = defineStore('course', {
       return await axios.get(`${apiUrl}/courses/${data.courseId}`)
     },
 
-    // 取得單一課程評論
+    // 取得單一課程所有評論
     async apiGetOneCourseComments(data: CourseQuery) {
       console.log(data.courseId)
       console.log(`${apiUrl}/courses/${data.courseId}/comments`)
@@ -106,6 +106,17 @@ export const useCourseStore = defineStore('course', {
       console.log(data)
       console.log(`${apiUrl}/orders`)
       return await axios.post(`${apiUrl}/orders`, data, {
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+
+    // 新增課程評論按讚/取消讚
+    async apiPostLikeComment(data: any) {
+      console.log(data)
+      console.log(`${apiUrl}/courses/comments/like`)
+      return await axios.post(`${apiUrl}/courses/comments/like`, data, {
         headers: {
           token: localStorage.getItem('token')
         }
