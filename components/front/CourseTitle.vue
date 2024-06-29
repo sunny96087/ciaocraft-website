@@ -4,6 +4,10 @@ import { defineEmits } from 'vue'
 const emit = defineEmits(['toggleBooking', 'scrollBooking'])
 
 const handleBookingClick = (): void => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  }
   emit('toggleBooking')
   emit('scrollBooking')
 }
