@@ -79,32 +79,32 @@ export const useCourseStore = defineStore('course', {
       // console.log(data.countCourseQuery)
       // console.log(data.query)
       if (data.countCourseQuery) {
-        console.log(`${apiUrl}/courses?${data.countCourseQuery}`)
+        // console.log(`${apiUrl}/courses?${data.countCourseQuery}`)
         return await axios.get(`${apiUrl}/courses?${data.countCourseQuery}`)
       } else {
-        console.log(`${apiUrl}/courses?${data.query}`)
+        // console.log(`${apiUrl}/courses?${data.query}`)
         return await axios.get(`${apiUrl}/courses?${data.query}`)
       }
     },
 
     // 取得單一課程
     async apiGetOneCourse(data: CourseQuery) {
-      console.log(data.courseId)
-      console.log(`${apiUrl}/courses/${data.courseId}`)
+      // console.log(data.courseId)
+      // console.log(`${apiUrl}/courses/${data.courseId}`)
       return await axios.get(`${apiUrl}/courses/${data.courseId}`)
     },
 
     // 取得單一課程評論
     async apiGetOneCourseComments(data: CourseQuery) {
-      console.log(data.courseId)
-      console.log(`${apiUrl}/courses/${data.courseId}/comments`)
+      // console.log(data.courseId)
+      // console.log(`${apiUrl}/courses/${data.courseId}/comments`)
       return await axios.get(`${apiUrl}/courses/${data.courseId}/comments`)
     },
 
     // 新增訂單(預約)
     async apiPostOrders(data: any) {
-      console.log(data)
-      console.log(`${apiUrl}/orders`)
+      // console.log(data)
+      // console.log(`${apiUrl}/orders`)
       return await axios.post(`${apiUrl}/orders`, data, {
         headers: {
           token: localStorage.getItem('token')
@@ -113,7 +113,7 @@ export const useCourseStore = defineStore('course', {
     },
 
     async getCourseCollection(data: JsonObject) {
-      console.log(`${apiUrl}/courses`)
+      // console.log(`${apiUrl}/courses`)
       return await axios.get(`${apiUrl}/courses`)
     },
 
@@ -183,7 +183,7 @@ export const useCourseStore = defineStore('course', {
 
     // 新增評論
     async addComment(data: JsonObject) {
-      console.log(`${apiUrl}/courses/comments`)
+      // console.log(`${apiUrl}/courses/comments`)
       return await axios.post(`${apiUrl}/courses/comments`, data, {
         headers: {
           token: localStorage.getItem('token')

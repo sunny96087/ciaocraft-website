@@ -152,14 +152,16 @@ const createComment = async () => {
   }
 }
 
+const hydrated = ref(false)
 onMounted(async () => {
+  hydrated.value = true
   await fetchOrder()
 })
 </script>
 <template>
   <div class="bg-gray1 py-5 lg:px-[100px]">
     <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="max-w-[817px]">
         <h2 class="mb-3 mt-3 text-4xl font-medium lg:text-3xl">課後心得分享</h2>
         <p class="mb-8">

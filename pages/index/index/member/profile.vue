@@ -120,7 +120,9 @@ const unlinkGoogleAccount = async () => {
   fetchMemberData()
 }
 
+const hydrated = ref(false)
 onMounted(() => {
+  hydrated.value = true
   fetchMemberData()
 })
 </script>
@@ -128,7 +130,7 @@ onMounted(() => {
 <template>
   <div class="bg-gray1">
     <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <h1 class="mb-3 mt-3 text-4xl lg:text-4xl">會員資料</h1>
       <p class="mb-8 text-base">
         請放心，你的電子郵件及所有與品牌溝通的訊息、檔案及相關購買資料，網站將依照個人資料保護法保障你的個人隱私！

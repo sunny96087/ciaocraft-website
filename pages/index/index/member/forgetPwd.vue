@@ -62,8 +62,9 @@ const resetPassword = async () => {
   }
   hideLoading()
 }
-
+const hydrated = ref(false)
 onMounted(() => {
+  hydrated.value = true
   getResetPasswordToken()
 })
 </script>
@@ -71,7 +72,7 @@ onMounted(() => {
 <template>
   <div class="bg-gray1">
     <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="space-y-8 md:max-w-[711px]">
         <h1 class="mb-3 mt-3 text-4xl">忘記密碼</h1>
         <div class="space-y-3">

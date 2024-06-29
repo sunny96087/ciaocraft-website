@@ -223,18 +223,22 @@ const showCancelModal = ref(false)
 
 // 點擊背景關閉 modal
 const clickMaskToCloseModal = (e: MouseEvent) => {
-  showCancelModal.value = false
+  if (e.target === e.currentTarget) {
+    showConfirmModal.value = false
+  }
 }
 
+const hydrated = ref(false)
 onMounted(() => {
   fetchOrder(orderId)
+  hydrated.value = true
 })
 </script>
 
 <template>
   <div class="bg-gray1 py-5 lg:px-[100px]">
     <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="max-w-[817px]">
         <h1 class="mb-8 mt-3 text-4xl font-medium lg:text-3xl">訂單詳情</h1>
         <div class="mb-3 justify-between md:flex">
@@ -444,7 +448,7 @@ onMounted(() => {
 
   <!-- 繳費完成通知 Modal -->
   <transition name="modal">
-    <div class="modal-bg z-40" v-if="showConfirmModal" @click.capture="showConfirmModal = false">
+    <div class="modal-bg z-40" v-if="showConfirmModal" @click.stop="clickMaskToCloseModal">
       <div
         class="z-50 mx-auto w-full max-w-[560px] flex-col items-center justify-center rounded-lg bg-white p-5"
       >

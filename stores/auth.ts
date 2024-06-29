@@ -11,7 +11,8 @@ export const useAuthStore = defineStore('auth', {
     token: null as any,
     photo: null as any,
     isLogin: false as any,
-    isLoginModalOpen: false as boolean
+    isLoginModalOpen: false as boolean,
+    hydrated: false as boolean
   }),
   actions: {
     async login(data: JsonObject) {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
 const emit = defineEmits(['changeContent'])
 const authStore = useAuthStore()
 const googleUrl = ref(authStore.apiUrl + '/auth/google')
