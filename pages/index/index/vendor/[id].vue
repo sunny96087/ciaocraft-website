@@ -251,7 +251,7 @@ const openLoginModal = (): void => {
                       class="flex items-center justify-center rounded border border-primary hover:bg-primary-light hover:text-white"
                     >
                       <nuxt-link
-                        class="px-[93px] py-2 text-lg leading-[26px]"
+                        class="cursor-pointer px-[93px] py-2 text-lg leading-[26px]"
                         @click="openLoginModal"
                       >
                         <Icon name="ph:chats" class="mr-2 text-base" />
