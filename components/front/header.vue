@@ -33,7 +33,7 @@ const openLoginModal = (): void => {
   isMenuOpen.value = false
 }
 
-// 前往會員中心，點擊我的收我的收藏 tab
+// 前往會員管理，點擊我的收我的收藏 tab
 const toMemberAndClickTab = (tab: string): void => {
   isMenuOpen.value = false
   if (isLogin.value && tab === 'collections') {

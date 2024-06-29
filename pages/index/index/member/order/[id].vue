@@ -13,7 +13,7 @@ const today = new Date().toString()
 
 const breadcrumb = [
   { pageName: '首頁', link: '/', isCurrentPage: false },
-  { pageName: '會員中心', link: '/member', isCurrentPage: false },
+  { pageName: '會員管理', link: '/member', isCurrentPage: false },
   { pageName: '訂單詳情', link: `/member/order/${orderId}`, isCurrentPage: true }
 ]
 

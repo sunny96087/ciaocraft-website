@@ -11,7 +11,7 @@ const uploadStore = useUploadStore()
 
 const breadcrumb = [
   { pageName: '首頁', link: '/', isCurrentPage: false },
-  { pageName: '會員中心', link: '/member', isCurrentPage: false },
+  { pageName: '會員管理', link: '/member', isCurrentPage: false },
   { pageName: '會員資料', link: `/member/profile`, isCurrentPage: true }
 ]
 

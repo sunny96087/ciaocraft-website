@@ -13,7 +13,7 @@ const courseStore = useCourseStore()
 
 const breadcrumb = [
   { pageName: '首頁', link: '/', isCurrentPage: false },
-  { pageName: '會員中心', link: '/member', isCurrentPage: false },
+  { pageName: '會員管理', link: '/member', isCurrentPage: false },
   { pageName: '訂單詳情', link: `/member/order/${orderId}`, isCurrentPage: false },
   { pageName: '課後心得分享', link: `/member/comment/${orderId}`, isCurrentPage: true }
 ]

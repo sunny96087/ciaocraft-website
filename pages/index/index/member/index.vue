@@ -11,7 +11,7 @@ const route = useRoute()
 
 const breadcrumb = [
   { pageName: '首頁', link: '/', isCurrentPage: false },
-  { pageName: '會員中心', link: '/member', isCurrentPage: true }
+  { pageName: '會員管理', link: '/member', isCurrentPage: true }
 ]
 
 // 會員資料區
