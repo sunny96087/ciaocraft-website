@@ -164,6 +164,19 @@ const removeCollection = async (courseId: string) => {
     showToast('取消收藏失敗，請聯繫客服人員', 'error')
   }
 }
+
+const openLoginModal = (): void => {
+  if (!authStore.isLogin) {
+    authStore.openLoginModal()
+    return
+  } else {
+    const vid = vendorInfo.value.vendor?._id
+    router.push({
+      name: 'index-index-message',
+      query: { vendorId: vid }
+    })
+  }
+}
 </script>
 
 <template>
@@ -236,8 +249,8 @@ const removeCollection = async (courseId: string) => {
                       class="flex items-center justify-center rounded border border-primary hover:bg-primary-light hover:text-white"
                     >
                       <nuxt-link
-                        :to="{ path: '/message', query: { vendorId: vendorInfo.vendor?._id } }"
                         class="px-[93px] py-2 text-lg leading-[26px]"
+                        @click="openLoginModal"
                       >
                         <Icon name="ph:chats" class="mr-2 text-base" />
                         品牌聊聊
