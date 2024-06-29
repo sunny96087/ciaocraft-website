@@ -152,11 +152,12 @@ const openLoginModal = (): void => {
     <ul class="mb-[22px] flex items-center">
       <li class="mr-2 text-[18px] font-medium leading-[26px]">{{ item.courseAvgRating }}</li>
       <li class="mr-2 flex">
-        <Icon name="ph:star-fill" class="text-2xl text-primary" />
-        <Icon name="ph:star-fill" class="text-2xl text-primary" />
-        <Icon name="ph:star-fill" class="text-2xl text-primary" />
-        <Icon name="ph:star-fill" class="text-2xl text-primary" />
-        <Icon name="ph:star-bold" class="text-2xl text-primary" />
+        <Icon
+          v-for="index in 5"
+          :key="index"
+          :name="index <= Math.round(item.courseAvgRating) ? 'ph:star-fill' : 'ph:star'"
+          class="text-2xl text-primary"
+        />
       </li>
       <li>({{ item.courseCommentsCount }})</li>
     </ul>
@@ -182,9 +183,9 @@ const openLoginModal = (): void => {
         預約課程
       </button>
     </div>
-    <div class="mb-3 rounded">
+    <div class="mb-3">
       <button
-        class="flex w-full items-center justify-center bg-secondary text-lg leading-[3rem] text-white hover:bg-[#2B71BF]"
+        class="flex w-full items-center justify-center rounded bg-secondary text-lg leading-[3rem] text-white hover:bg-[#2B71BF]"
         @click="addCollection(courseStore.oneCourseData[0].id)"
         v-if="!isCollected"
       >
@@ -192,7 +193,7 @@ const openLoginModal = (): void => {
         收藏課程
       </button>
       <button
-        class="flex w-full items-center justify-center border border-primary bg-white text-lg leading-[3rem]"
+        class="flex w-full items-center justify-center rounded border border-primary bg-white text-lg leading-[3rem] hover:border-[#2B71BF] hover:bg-[#2B71BF]"
         @click="removeCollection(courseStore.oneCourseData[0].id)"
         v-else
       >

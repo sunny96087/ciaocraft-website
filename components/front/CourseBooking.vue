@@ -52,8 +52,6 @@ const getRemainingCapacity = (selectedItem: any) => {
       _id: ''
     }
   }
-  console.log(selectedObject.value)
-
   return selectedObject.value ? selectedObject.value : 0
 }
 
@@ -108,7 +106,7 @@ const addBooking = async () => {
         endTime: selectedObject.value.endTime,
         note: suggestion.value
       }
-      console.log(data)
+
       const res: any = await courseStore.apiPostOrders(data)
       const result = res.data
 
@@ -137,11 +135,8 @@ async function getOneCourse() {
     }
     const res = await courseStore.apiGetOneCourse(data)
     const result = res.data
-    console.log(result)
     // 將資料寫入 courseStore
     courseStore.oneCourseData[0].courseItemId = result.data.courseItemId
-
-    console.log(courseStore.oneCourseData)
 
     if (result.statusCode === 200) {
       courseInfo.value = result.data

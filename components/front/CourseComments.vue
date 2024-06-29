@@ -45,7 +45,6 @@ const courseInfoAll: any = ref({})
 onMounted(async () => {
   // 從網址取得參數
   courseId.value = route.params.id
-  console.log(courseId)
   filterComments.value = []
   sortedComments.value = []
   await getOneCourseComments()
@@ -62,7 +61,6 @@ async function getOneCourseComments() {
     }
     const res = await courseStore.apiGetOneCourseComments(data)
     const result = res.data
-    console.log(result)
 
     request(result)
   } catch (e) {
@@ -88,7 +86,6 @@ function request(result: { statusCode: number; data: any }) {
         daysSince: calculateDaysSince(comment.createdAt)
       }
     })
-    console.log('Updated courseInfo:', courseInfo.value)
     // console.log(`courseInfoAll = ${JSON.stringify(courseInfoAll.value)}`)
 
     // 依據 showAll 狀態控制 courseInfo 顯示筆數(預設2筆)
@@ -290,12 +287,13 @@ const uniqueTags = computed(() => {
         <li class="mr-2 text-[18px] font-medium leading-[26px]">
           {{ courseStore.oneCourseData[0].courseAvgRating }}
         </li>
-        <li class="mr-2 flex">
-          <Icon name="ph:star-fill" class="text-2xl text-primary" />
-          <Icon name="ph:star-fill" class="text-2xl text-primary" />
-          <Icon name="ph:star-fill" class="text-2xl text-primary" />
-          <Icon name="ph:star-fill" class="text-2xl text-primary" />
-          <Icon name="ph:star-bold" class="text-2xl text-primary" />
+        <li class="mr-2 flex" v-for="(item, index) in courseStore.oneCourseData" :key="index">
+          <Icon
+            v-for="index in 5"
+            :key="index"
+            :name="index <= Math.round(item.courseAvgRating) ? 'ph:star-fill' : 'ph:star'"
+            class="text-2xl text-primary"
+          />
         </li>
         <li>({{ courseStore.oneCourseData[0].courseCommentsCount }})</li>
       </ul>
@@ -430,11 +428,12 @@ const uniqueTags = computed(() => {
               <div class="mb-3">
                 <ul class="flex items-center">
                   <li class="mr-5 flex">
-                    <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                    <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                    <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                    <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                    <Icon name="ph:star-bold" class="text-2xl text-primary" />
+                    <Icon
+                      v-for="index in 5"
+                      :key="index"
+                      :name="index <= Math.round(item.rating) ? 'ph:star-fill' : 'ph:star'"
+                      class="text-2xl text-primary"
+                    />
                   </li>
                   <li>{{ item.daysSince }} 天前</li>
                 </ul>

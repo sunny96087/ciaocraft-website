@@ -45,8 +45,6 @@ async function getCourse(
   sortBy: string,
   pageSize: number
 ) {
-  // console.log(courseTerm, courseType, keyword, sortBy, pageSize)
-  // console.log('被call了')
   isCardLoading.value = true
   try {
     let query = ''
@@ -65,16 +63,12 @@ async function getCourse(
     query += `sortBy=${sortBy}&pageSize=${pageSize}&keyword=${keyword}`
     countCourseQuery += `sortBy=${sortBy}&keyword=${keyword}`
 
-    // console.log(query)
     res = await courseStore.apiGetCourses({ query })
     countRes = await courseStore.apiGetCourses({ countCourseQuery })
 
     const result = res.data
     const countresult = countRes.data
     courseStore.courseData.searchResultCount = countresult.data.length
-    // console.log(result)
-    // console.log(countresult.data.length)
-    // console.log(courseStore.courseData)
 
     request(result)
   } catch (e) {

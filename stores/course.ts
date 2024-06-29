@@ -112,8 +112,8 @@ export const useCourseStore = defineStore('course', {
 
     // 新增課程評論按讚/取消讚
     async apiPostLikeComment(data: any) {
-      console.log(data)
-      console.log(`${apiUrl}/courses/comments/like`)
+      // console.log(data)
+      // console.log(`${apiUrl}/courses/comments/like`)
       return await axios.post(`${apiUrl}/courses/comments/like`, data, {
         headers: {
           token: localStorage.getItem('token')

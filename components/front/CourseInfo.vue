@@ -103,11 +103,12 @@ const courseStore = useCourseStore()
                   {{ item.vendorAvgRating }}
                 </li>
                 <li class="mr-2 flex">
-                  <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                  <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                  <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                  <Icon name="ph:star-fill" class="text-2xl text-primary" />
-                  <Icon name="ph:star-bold" class="text-2xl text-primary" />
+                  <Icon
+                    v-for="index in 5"
+                    :key="index"
+                    :name="index <= Math.round(item.vendorAvgRating) ? 'ph:star-fill' : 'ph:star'"
+                    class="text-2xl text-primary"
+                  />
                 </li>
                 <li>({{ item.vendorCommentsCount }})</li>
               </ul>
