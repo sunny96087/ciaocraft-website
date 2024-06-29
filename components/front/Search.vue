@@ -14,10 +14,8 @@ watch(
 
 const handleKeyUp = (event: KeyboardEvent) => {
   if (event.key === 'Enter') {
-    console.log(keyword.value)
     courseStore.courseData.keyword = keyword.value
     courseStore.resetPageSize()
-    console.log(courseStore.courseData.keyword)
   }
 }
 
