@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { APIStore } from '~/stores/apiService'
+import { hideLoading, showLoading, showToast } from '~/stores/eventBus'
 const store = APIStore()
 const courseStore = useCourseStore()
-import { showToast, openDialog, showLoading, hideLoading } from '~/stores/eventBus'
 const authStore = useAuthStore()
 const memberStore = useMemberStore()
 const router = useRouter()
@@ -34,10 +34,10 @@ const toggleSort = (): void => {
 }
 
 // NOTE swiper
-import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/vue'
 const modules = [Navigation]
 
 const hydrated = ref(false)
@@ -581,11 +581,11 @@ const removeCollection = async (courseId: string) => {
           </div>
         </div>
 
-        <div class="flex justify-center pb-[66px]">
+        <!-- <div class="flex justify-center pb-[66px]">
           <button class="rounded bg-primary px-6 py-2 text-white hover:bg-primary-light">
             載入更多
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
