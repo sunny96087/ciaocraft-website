@@ -40,10 +40,13 @@ import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 const modules = [Navigation]
 
+const hydrated = ref(false)
 onMounted(async () => {
   // 從網址取得參數
   vendorId.value = route.params.id
+  hydrated.value = true
   getVendorData()
+  fetchMemberCollection()
 })
 
 // 取得廠商資料
@@ -166,7 +169,7 @@ const removeCollection = async (courseId: string) => {
 <template>
   <div class="bg-gray1 py-14 lg:px-[100px]">
     <div class="mx-auto px-5 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div v-if="vendorInfo">
         <section>
           <!-- <front-vender-title /> -->

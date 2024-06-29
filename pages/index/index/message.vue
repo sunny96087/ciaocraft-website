@@ -38,10 +38,11 @@ const sendMemberMessage = () => {
   inputMemberMessage.value = ''
 }
 
+const hydrated = ref(false)
 onMounted(async () => {
   //   const memberInfo = await store.getVendorInfoFromLocalStorage()
   //   console.log(memberInfo)
-
+  hydrated.value = true
   vendorId.value = route.query.vendorId as string
 
   // 從 localStorage 取得 memberId
@@ -49,7 +50,7 @@ onMounted(async () => {
   if (storedMemberId) {
     memberId.value = storedMemberId
   }
-  console.log(`memberId: ${memberId.value}`)
+  // console.log(`memberId: ${memberId.value}`)
 
   // memberId.value = '665e98d8d118bf965c174ad8' // 測試魚
   // memberId.value = store.memberInfo.id
@@ -65,14 +66,14 @@ onMounted(async () => {
       const res = await store.apiGetMemberRooms(data)
       const result = res.data
       if (result && result.statusCode === 200) {
-        console.log(result.data)
+        // console.log(result.data)
         rooms.value = result.data
 
         // 檢查是否存在與特定會員的聊天室
-        console.log(`rooms: ${JSON.stringify(rooms.value)}`)
+        // console.log(`rooms: ${JSON.stringify(rooms.value)}`)
 
         const room = await rooms.value.find((room: any) => room.vendorId?._id === vendorId.value)
-        console.log(`room: ${JSON.stringify(room)}`)
+        // console.log(`room: ${JSON.stringify(room)}`)
 
         if (room) {
           roomId.value = room._id // 如果存在聊天室，則設置 roomId
@@ -112,7 +113,7 @@ onMounted(async () => {
       const res = await store.apiGetMemberRooms(data)
       const result = res.data
       if (result && result.statusCode === 200) {
-        console.log(result.data)
+        // console.log(result.data)
         rooms.value = result.data
       }
     } catch (e) {
@@ -257,7 +258,7 @@ const breadcrumb = [
   <div class="bg-gray1 py-5 lg:px-[100px]">
     <div class="mx-auto px-5 py-9 lg:max-w-screen-xl">
       <!-- * mb -->
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="relative h-[90vh] items-start gap-[30px] overflow-hidden p-5 lg:hidden">
         <!-- * mb 聊天室列表 -->
         <div class="m-message-list" v-if="rooms.length">

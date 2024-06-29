@@ -10,7 +10,7 @@ const breadcrumb = [
   { pageName: '首頁', link: '/', isCurrentPage: false },
   { pageName: '會員中心', link: '/member', isCurrentPage: false },
   { pageName: '會員資料', link: '/member/profile', isCurrentPage: false },
-  { pageName: '修改密碼', link: '/member/profile/resetPwd', isCurrentPage: true }
+  { pageName: '修改密碼', link: '/member/resetPwd', isCurrentPage: true }
 ]
 
 const memberStore = useMemberStore()
@@ -67,12 +67,17 @@ const resetPassword = async () => {
   hasError.value = false
   errorMessage.value = ''
 }
+
+const hydrated = ref(false)
+onMounted(() => {
+  hydrated.value = true
+})
 </script>
 
 <template>
   <div class="bg-gray1">
     <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="space-y-8 md:max-w-[711px]">
         <h1 class="mb-3 mt-3 text-4xl">修改密碼</h1>
         <div class="space-y-3">

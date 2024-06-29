@@ -8,6 +8,8 @@ const props = defineProps<{
     brandName: string
     courseName: string
     courseImage: string
+    courseTerm: string
+    itemName: string
     count: number
     totalPrice: number
     paidStatus: number
@@ -70,20 +72,20 @@ const getPaidStatusTagColor: any = (status: number) => {
     class="items-center rounded-lg border-[1px] border-solid border-gray3 bg-white p-4 md:flex md:justify-between"
     :id="order._id"
   >
-    <div class="mb-8 flex items-center md:m-0">
+    <div class="mb-8 flex md:m-0 md:items-center">
       <NuxtLink
         :to="{ name: 'index-index-course-id', params: { id: order.courseId } }"
-        class="group mr-6 block aspect-square max-w-[120px] overflow-hidden rounded bg-gray2"
+        class="group mr-4 mt-2 block aspect-square max-h-[150px] max-w-[150px] md:mr-6 md:mt-0"
       >
         <img
           :src="order.courseImage || defaultImage"
           alt="course-img"
-          class="h-full w-full object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
+          class="aspect-square w-full rounded bg-gray2 object-cover transition duration-500 group-hover:opacity-50 group-hover:transition-opacity"
         />
       </NuxtLink>
       <div class="space-y-1">
         <NuxtLink :to="{ name: 'index-index-course-id', params: { id: order.courseId } }">
-          <h2 class="line-clamp-1 font-medium leading-[22px] transition hover:text-gray">
+          <h2 class="line-clamp-2 font-medium transition hover:text-gray">
             {{ order.courseName }}
           </h2>
         </NuxtLink>
@@ -91,8 +93,14 @@ const getPaidStatusTagColor: any = (status: number) => {
           :to="{ name: 'index-index-vendor-id', params: { id: order.vendorId } }"
           class="block transition duration-500 hover:opacity-50 hover:transition-opacity"
         >
-          <div class="line-clamp-1 text-sm font-medium leading-[22px]">{{ order.brandName }}</div>
+          <div class="line-clamp-1 text-sm font-medium leading-[22px] text-dark4">
+            {{ order.brandName }}
+          </div>
         </NuxtLink>
+        <div class="space-x-3 text-sm leading-[22px]">
+          <span class="font-medium">項目名稱</span>
+          <span> {{ order.itemName }}</span>
+        </div>
         <div class="space-x-3 text-sm leading-[22px]">
           <span class="font-medium">總計</span>
           <span>NT$ {{ formatCurrency(order.totalPrice) }}</span>
@@ -101,11 +109,13 @@ const getPaidStatusTagColor: any = (status: number) => {
           <span class="font-medium">訂單編號 </span>
           <span class="break-all">{{ order._id }}</span>
         </div>
-        <span
-          class="inline-block rounded-full px-2 py-1 text-sm leading-[22px]"
-          :class="getPaidStatusTagColor(order.paidStatus)"
-          >{{ getOrderStatusName(order.paidStatus) }}</span
-        >
+        <div class="pt-1">
+          <span
+            class="inline-block rounded-full px-2 py-1 align-text-top text-sm"
+            :class="getPaidStatusTagColor(order.paidStatus)"
+            >{{ getOrderStatusName(order.paidStatus) }}</span
+          >
+        </div>
       </div>
     </div>
     <div class="space-y-3">

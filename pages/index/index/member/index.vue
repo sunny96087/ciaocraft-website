@@ -182,6 +182,7 @@ const fetchOrdersData = async () => {
       item.courseImage = item.courseId?.courseImage?.[0] || ''
       item.courseTerm = item.courseId.courseTerm || ''
       item.courseId = item.courseId?._id || ''
+      item.itemName = item.courseItemId.itemName || ''
       return item
     })
     memberStore.orders = orderData
@@ -226,8 +227,9 @@ const tab = watch(
     }
   }
 )
-
+const hydrated = ref(false)
 onMounted(async () => {
+  hydrated.value = true
   fetchMember()
   // 元件初始時，判斷路由 query 參數切換畫面
   if (route.query.tab === 'collections') {
@@ -242,7 +244,7 @@ onMounted(async () => {
 <template>
   <div class="bg-gray1">
     <div class="mx-auto px-5 py-14 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div class="mx-auto mb-14 flex space-x-8" :class="{ 'animate-pulse': isMemberLoading }">
         <!-- 大頭貼 -->
         <div
@@ -540,11 +542,17 @@ onMounted(async () => {
           <div
             class="w-full items-center rounded-[4px] border-[1px] border-solid border-gray4 bg-gray1 p-4 md:flex md:justify-between"
           >
-            <div class="mb-8 flex items-center md:m-0">
-              <div class="mr-6 h-[120px] w-[120px] rounded-lg bg-gray4"></div>
+            <div class="mb-8 flex md:m-0 md:items-center">
+              <div
+                class="mr-4 aspect-square max-h-[150px] w-[150px] rounded-lg bg-gray4 md:mr-6 md:mt-1"
+              ></div>
               <div class="space-y-1">
                 <div class="rounded-[4px] bg-gray4 text-sm text-transparent">課程名稱</div>
                 <div class="rounded-[4px] bg-gray4 text-sm text-transparent">品牌名稱</div>
+                <div class="space-x-1 text-sm text-transparent">
+                  <span class="rounded-[4px] bg-gray4">項目名稱</span>
+                  <span class="rounded-[4px] bg-gray4">1900-01-01 00:00 ~ 00:00</span>
+                </div>
                 <div class="space-x-1 text-sm text-transparent">
                   <span class="rounded-[4px] bg-gray4">總計</span>
                   <span class="rounded-[4px] bg-gray4">NT$ 1,000</span>
@@ -580,12 +588,6 @@ onMounted(async () => {
         v-if="hasData && currentView === 'collections' && !isCardLoading"
       >
         <li v-for="item in filterCollection" :key="item._id">
-          <!-- <component
-            :is="content[currentView]"
-            :key="currentView"
-            :collection="item"
-            @refecthCollections="handleRefreshCollections"
-          ></component> -->
           <FrontMemberCourseCard
             :collection="item"
             @refecthCollections="handleRefreshCollections"

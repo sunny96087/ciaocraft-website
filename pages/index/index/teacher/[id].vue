@@ -27,12 +27,13 @@ const toggleSort = (): void => {
 // teacher
 const teacherId = ref()
 const teacherInfo: any = ref({})
-
+const hydrated = ref(false)
 onMounted(async () => {
   // 從網址取得參數
   teacherId.value = route.params.id
   await getTeacherData()
   await fetchMemberCollection()
+  hydrated.value = true
 })
 
 // 取得教師資料
@@ -137,7 +138,7 @@ const removeCollection = async (courseId: string) => {
 <template>
   <div class="bg-gray1 py-14">
     <div class="mx-auto px-5 lg:max-w-screen-xl">
-      <FrontBreadcrumb class="mb-8" :breadcrumb="breadcrumb" v-if="vid"></FrontBreadcrumb>
+      <FrontBreadcrumb v-if="hydrated" class="mb-8" :breadcrumb="breadcrumb"></FrontBreadcrumb>
       <div v-if="teacherInfo">
         <section class="mb-[56px]">
           <!-- <front-coash-title /> -->
@@ -147,7 +148,7 @@ const removeCollection = async (courseId: string) => {
             >
               <div class="mr-8 h-[180px] w-[180px] md:mb-0 lg:h-[287px] lg:w-[287px]">
                 <img
-                  :src="teacherInfo?.photo"
+                  :src="teacherInfo?.photo || defaultImage"
                   alt="品牌賣場橫幅圖片"
                   class="d-block mx-auto h-full w-full rounded-full object-cover"
                 />
@@ -288,7 +289,7 @@ const removeCollection = async (courseId: string) => {
               >
                 <img
                   v-if="item.courseImage.length > 0"
-                  :src="item.courseImage[0]"
+                  :src="item.courseImage[0] || defaultImage"
                   alt="課程圖片"
                   class="pic-auto"
                 />
